@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>ANIA - Fiche parlementaire</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+.fiche-header { background:#1a1a2e; color:white; padding:28px 32px; border-radius:12px; margin-bottom:20px; }
+.fiche-nom { font-size:26px; font-weight:700; margin-bottom:6px; }
+.fiche-meta { font-size:14px; opacity:.8; display:flex; gap:16px; flex-wrap:wrap; }
+.section-title { font-size:15px; font-weight:700; margin-bottom:12px; color:#1a1a2e; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.vote-row { display:flex; justify-content:space-between; align-items:center; padding:8px 12px; border-bottom:1px solid #f0f0f0; font-size:13px; }
+.vote-row:last-child { border-bottom:none; }
+.score-bar { background:#eee; border-radius:4px; height:8px; margin-top:4px; }
+.score-bar-fill { height:8px; border-radius:4px; background:#e85d04; }
+@media(max-width:768px) { .grid-2 { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link active">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="container" style="max-width:900px">
+<a href="parlementaires.html" style="color:#666;font-size:13px;display:inline-block;margin-bottom:16px">← Retour à la liste</a>
+<div id="content"><div class="card" style="padding:40px;text-align:center;color:#888">Chargement...</div></div>
+</div>
+<script>
+const SCRUTINS_META = [{"id": "egalim1", "label": "EGALIM 1 (2018)", "loi": "2018-938"}, {"id": "egalim2", "label": "EGALIM 2 (2021)", "loi": "2021-1357"}, {"id": "egalim3", "label": "EGALIM 3 / Descrozaille (2023)", "loi": "2023-221"}, {"id": "loa2024", "label": "LOA 2024", "loi": "PLOA-2024"}, {"id": "revenu_agri", "label": "PPL Revenu agri (2024)", "loi": "PPL"}];
+const VOTE_COLORS = {pour:'#28a745',contre:'#dc3545',abstention:'#fd7e14',absent:'#bbb'};
+const VOTE_ICONS = {pour:'✅',contre:'❌',abstention:'🟡',absent:'⬜'};
+
+function voteRow(label, v, loi) {
+  const c = VOTE_COLORS[v] || '#eee';
+  const icon = VOTE_ICONS[v] || '-';
+  return `<div class="vote-row">
+    <div>
+      <div style="font-weight:600">${label}</div>
+      ${loi?`<div style="font-size:11px;color:#888">Loi ${loi}</div>`:''}
+    </div>
+    <span style="background:${c};color:${v==='absent'||!v?'#555':'white'};padding:4px 12px;border-radius:5px;font-size:12px;font-weight:600">${icon} ${v||'-'}</span>
+  </div>`;
+}
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+if (!id) { document.getElementById('content').innerHTML='<div class="card" style="padding:24px">ID manquant dans l\'URL</div>'; }
+
+fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
+  const p = data.find(d => d.id === id || d.nom.toLowerCase().replace(/\s+/g,'-') === id);
+  if (!p) {
+    document.getElementById('content').innerHTML = '<div class="card" style="padding:24px">Parlementaire non trouvé.</div>';
+    return;
+  }
+  document.title = `ANIA - ${p.nom}`;
+  const chambreColor = p.chambre === 'AN' ? '#e85d04' : '#4361ee';
+
+  const badgesHtml = [
+    p.commission_agri ? '<span class="badge badge-agri">🌾 Commission Agriculture</span>' : '',
+    p.commission_eco  ? '<span class="badge badge-eco">🏦 Commission Économique</span>' : '',
+    p.mission_egalim  ? '<span class="badge badge-egalim">⚖️ Mission EGALIM</span>' : '',
+    p.commission_env  ? '<span class="badge" style="background:#d1e7dd;color:#0a4023">🌿 Commission Environnement</span>' : '',
+  ].filter(Boolean).join(' ');
+
+  const votesHtml = p.chambre === 'AN' ?
+    SCRUTINS_META.map(s => voteRow(s.label, (p.votes||{})[s.id], s.loi)).join('') :
+    '<div style="padding:16px;color:#888;font-size:13px">Les votes nominatifs sont disponibles uniquement pour les députés (AN). Les sénateurs votent selon des procédures différentes.</div>';
+
+  const scoreMax = 800;
+  const scoreWidth = Math.min(100, (p.score / scoreMax) * 100);
+
+  const sitesList = p.entreprises ? p.entreprises.split(';').filter(Boolean).slice(0, 30).map(e=>`<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #f5f5f5">${e.trim()}</div>`).join('') + (p.entreprises.split(';').length > 30 ? `<div style="font-size:11px;color:#888;padding:6px 0">... et ${p.entreprises.split(';').length - 30} autres</div>` : '') : '<span style="color:#999;font-size:12px">Aucun site IAA dans la zone</span>';
+
+  document.getElementById('content').innerHTML = `
+    <div class="fiche-header">
+      <div class="fiche-nom">${p.nom}</div>
+      <div class="fiche-meta">
+        <span style="background:${chambreColor};padding:3px 10px;border-radius:5px;font-size:13px;font-weight:600">${p.chambre === 'AN' ? '🏛️ Assemblée Nationale' : '🏦 Sénat'}</span>
+        <span>🏷️ ${p.groupe}</span>
+        <span>📍 Dept. ${p.dept} - ${p.nom_dept}</span>
+        ${p.circo ? `<span>Circ. ${p.circo}</span>` : ''}
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">📊 Score ANIA</div>
+        <div style="font-size:13px;color:#666;margin-bottom:4px">Score global (implantation × implication)</div>
+        <div style="font-size:32px;font-weight:700;color:#e85d04">${p.score.toFixed(1)}</div>
+        <div class="score-bar"><div class="score-bar-fill" style="width:${scoreWidth}%"></div></div>
+        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+          <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
+            <div style="font-size:18px;font-weight:700">${p.score_eco.toFixed(1)}</div>
+            <div style="font-size:10px;color:#888">🏭 Implantation</div>
+          </div>
+          <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
+            <div style="font-size:18px;font-weight:700">${p.score_impl.toFixed(1)}</div>
+            <div style="font-size:10px;color:#888">📋 Implication</div>
+          </div>
+          <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
+            <div style="font-size:18px;font-weight:700">${p.score_egalim||0}</div>
+            <div style="font-size:10px;color:#888">⚖️ EGALIM</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">🎭 Engagement parlementaire</div>
+        ${badgesHtml || '<span style="color:#999;font-size:13px">Pas de commission agriculture identifiée</span>'}
+        ${p.position && p.position !== 'inconnu' ? `<div style="margin-top:10px;font-size:13px;font-weight:600">↗ Position votes : ${p.position}</div>` : ''}
+        ${p.commission ? `<div style="font-size:12px;color:#888;margin-top:8px">📌 ${p.commission}</div>` : ''}
+        ${p.aria_regions && p.aria_regions !== 'Non rattaché' ? `<div style="font-size:12px;color:#888;margin-top:4px">🌍 Région : ${p.aria_regions}</div>` : ''}
+        ${p.mail ? `<div style="margin-top:12px"><a href="mailto:${p.mail}" style="color:#4361ee;font-size:13px">✉️ ${p.mail}</a></div>` : ''}
+        ${p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${p.twitter.replace('@','')}" target="_blank" style="color:#1d9bf0;font-size:13px">🐦 @${p.twitter.replace('@','')}</a></div>` : ''}
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="section-title">🗳️ Votes nominatifs</div>
+        ${votesHtml}
+      </div>
+
+      <div class="card">
+        <div class="section-title">🏭 Sites IAA dans la zone (${p.nb_sites} site${p.nb_sites>1?'s':''})</div>
+        ${p.nb_vins > 0 ? '<div style="font-size:11px;color:#8b1a1a;margin-bottom:6px">🍷 dont '+p.nb_vins+' sites viticoles</div>' : ''}
+        ${p.nb_huiles > 0 ? '<div style="font-size:11px;color:#6b9e3a;margin-bottom:6px">🫒 dont '+p.nb_huiles+' sites oléicoles</div>' : ''}
+        <div style="max-height:300px;overflow-y:auto">${sitesList}</div>
+      </div>
+    </div>
+  `;
+});
+</script>
+</body>
+</html>
