@@ -112,32 +112,24 @@ tr:hover td { background: #fafafa; }
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const SCRUTIN_LABELS = {"egalim1":"EGALIM 1","egalim2":"EGALIM 2","egalim3":"EGALIM 3","loa2024":"LOA 2024","revenu_agri":"PPL Revenu Agri"};
+const SCRUTIN_LABELS = {"egalim1":"EGALIM 1","egalim2":"EGALIM 2","egalim3":"EGALIM 3 (Descrozaille)","loa2024":"LOA 2024","revenu_agri":"PPL Revenu Agri"};
 const VOTE_COLORS = {pour:"#28a745",contre:"#dc3545",abstention:"#fd7e14",absent:"#aaa"};
 const NAF_COLORS = {"10.1":"#7b2d8b","10.3":"#2e8b57","10.4":"#6b9e3a","10.5":"#d4a017","10.7":"#c17f3a","11.":"#c0392b"};
-
-function voteCell(v) {
-  if (!v) return '<span style="color:#bbb;font-size:10px">-</span>';
-  const c = VOTE_COLORS[v] || '#ddd';
-  return `<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:${c};color:${v==='absent'?'#555':'white'};font-size:10px;font-weight:600">${v}</span>`;
-}
-
 const REGION_BOUNDS = {
-  'ARIA Sud': [[43.0, 4.2], [45.2, 7.7]],
-  'ARIA Auvergne-Rhone-Alpes': [[44.1, 2.0], [46.8, 7.2]],
-  'ARIA Grand Est': [[47.4, 5.8], [49.5, 8.2]],
-  'ARIA Hauts-de-France': [[49.7, 1.4], [51.1, 4.3]],
-  'ARIA Ile-de-France': [[48.1, 1.4], [49.2, 3.6]],
-  'ARIA Normandie': [[48.6, -1.8], [50.0, 1.8]],
-  'ARIA Nouvelle-Aquitaine': [[43.0, -1.8], [47.1, 2.6]],
-  'ARIA Occitanie': [[42.3, -0.3], [45.0, 4.9]],
-  'ARIA Pays de la Loire': [[46.3, -2.6], [48.2, 0.9]],
-  'ARIA Bretagne': [[47.3, -5.1], [48.8, -1.1]],
-  'ARIA Bourgogne-Franche-Comte': [[46.1, 2.8], [48.0, 7.0]],
-  'ARIA Centre-Val de Loire': [[46.3, 0.1], [48.9, 3.2]],
-  'ARIA Corse': [[41.3, 8.5], [43.1, 9.6]],
+  'ARIA Sud': [[43.0,4.2],[45.2,7.7]],
+  'ARIA Auvergne-Rhone-Alpes': [[44.1,2.0],[46.8,7.2]],
+  'ARIA Grand Est': [[47.4,5.8],[49.5,8.2]],
+  'ARIA Hauts-de-France': [[49.7,1.4],[51.1,4.3]],
+  'ARIA Ile-de-France': [[48.1,1.4],[49.2,3.6]],
+  'ARIA Normandie': [[48.6,-1.8],[50.0,1.8]],
+  'ARIA Nouvelle-Aquitaine': [[43.0,-1.8],[47.1,2.6]],
+  'ARIA Occitanie': [[42.3,-0.3],[45.0,4.9]],
+  'ARIA Pays de la Loire': [[46.3,-2.6],[48.2,0.9]],
+  'ARIA Bretagne': [[47.3,-5.1],[48.8,-1.1]],
+  'ARIA Bourgogne-Franche-Comte': [[46.1,2.8],[48.0,7.0]],
+  'ARIA Centre-Val de Loire': [[46.3,0.1],[48.9,3.2]],
+  'ARIA Corse': [[41.3,8.5],[43.1,9.6]],
 };
-
 const allMarkers = [];
 
 function focusSud() {
@@ -155,11 +147,14 @@ function applyRegionFilter() {
       if (map.hasLayer(marker)) map.removeLayer(marker);
     }
   });
-  if (region && REGION_BOUNDS[region]) {
-    map.fitBounds(REGION_BOUNDS[region]);
-  } else if (!region) {
-    map.setView([46.5, 2.5], 6);
-  }
+  if (region && REGION_BOUNDS[region]) map.fitBounds(REGION_BOUNDS[region]);
+  else if (!region) map.setView([46.5, 2.5], 6);
+}
+
+function voteCell(v) {
+  if (!v) return '<span style="color:#bbb;font-size:10px">-</span>';
+  const c = VOTE_COLORS[v] || '#ddd';
+  return `<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:${c};color:${v==='absent'?'#555':'white'};font-size:10px;font-weight:600">${v}</span>`;
 }
 
 const map = L.map('map').setView([46.5, 2.5], 6);
@@ -260,11 +255,15 @@ function renderPanel(deptProps) {
         <span class="parl-score">${p.score.toFixed(1)}</span>
         <div class="parl-nom">${p.nom} ${p.mail?`<a href="mailto:${p.mail}" style="color:#4361ee;font-size:11px">mail</a>`:''}</div>
         <div class="parl-groupe">${p.chambre==='AN'?'AN':'Senat'} - ${p.groupe}</div>
-        ${p.commission_agri?'<span class="badge badge-agri">Agri</span>':''}
-        ${p.commission_eco?'<span class="badge badge-eco">Eco</span>':''}
-        ${p.mission_egalim?'<span class="badge badge-egalim">EGALIM</span>':''}
-        ${p.position&&p.chambre==='AN'?`<div style="font-size:10px;margin-top:3px;${posColor}">${p.position}</div>`:''}
-        ${p.nb_sites>0?`<div style="font-size:11px;color:#666;margin-top:2px">Zone: ${p.nb_sites} site(s)</div>`:''}
+        <div style="display:flex;gap:3px;flex-wrap:wrap;margin:3px 0">
+          ${p.commission_agri?'<span class="badge badge-agri">Agri</span>':''}
+          ${p.commission_eco?'<span class="badge badge-eco">Eco</span>':''}
+          ${p.mission_egalim?'<span class="badge badge-egalim">EGALIM</span>':''}
+          ${p.commission_env?'<span class="badge" style="background:#d1e7dd;color:#0a4023">Env</span>':''}
+          ${p.score_egalim>3?'<span class="badge" style="background:#fff3cd;color:#7a5c00;font-size:10px">EGALIM ★</span>':''}
+        </div>
+        ${p.position&&p.chambre==='AN'?`<div style="font-size:10px;margin-top:2px;${posColor}">${p.position}</div>`:''}
+        ${p.nb_sites>0?`<div style="font-size:11px;color:#666;margin-top:2px">Zone: ${p.nb_sites} IAA${p.nb_vins>0?' · '+p.nb_vins+' vins':''}</div>`:''}
         ${votesHtml}
       </div>`;
     });
