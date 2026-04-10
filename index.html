@@ -83,11 +83,29 @@ tr:hover td { background: #fafafa; }
   </div>
   <div id="panel-filters">
     <label for="filter-chambre" class="sr-only">Filtrer par chambre</label>
-    <select id="filter-chambre" onchange="renderPanel()">
+    <select id="filter-chambre" onchange="renderPanel()" style="width:100%;margin-bottom:6px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:12px;background:white">
       <option value="">AN + Senat</option>
       <option value="AN">Assemblee Nationale</option>
       <option value="SEN">Senat</option>
     </select>
+    <label for="filter-region" class="sr-only">Filtrer par region ARIA</label>
+    <select id="filter-region" onchange="applyRegionFilter()" style="width:100%;margin-bottom:6px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:12px;background:white">
+      <option value="">Toutes les regions</option>
+      <option value="ARIA Sud">ARIA Sud (PACA)</option>
+      <option value="ARIA Auvergne-Rhone-Alpes">Auvergne-Rhone-Alpes</option>
+      <option value="ARIA Grand Est">Grand Est</option>
+      <option value="ARIA Hauts-de-France">Hauts-de-France</option>
+      <option value="ARIA Ile-de-France">Ile-de-France</option>
+      <option value="ARIA Normandie">Normandie</option>
+      <option value="ARIA Nouvelle-Aquitaine">Nouvelle-Aquitaine</option>
+      <option value="ARIA Occitanie">Occitanie</option>
+      <option value="ARIA Pays de la Loire">Pays de la Loire</option>
+      <option value="ARIA Bretagne">Bretagne</option>
+      <option value="ARIA Bourgogne-Franche-Comte">Bourgogne-Franche-Comte</option>
+      <option value="ARIA Centre-Val de Loire">Centre-Val de Loire</option>
+      <option value="ARIA Corse">Corse</option>
+    </select>
+    <button onclick="focusSud()" style="width:100%;padding:5px 8px;border:none;border-radius:4px;background:#e85d04;color:white;font-size:12px;font-weight:600;cursor:pointer">Focus Sud - PACA</button>
   </div>
   <div id="panel-content"><div class="empty-state">Cliquez sur un departement colore pour explorer</div></div>
 </div>
@@ -102,6 +120,46 @@ function voteCell(v) {
   if (!v) return '<span style="color:#bbb;font-size:10px">-</span>';
   const c = VOTE_COLORS[v] || '#ddd';
   return `<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:${c};color:${v==='absent'?'#555':'white'};font-size:10px;font-weight:600">${v}</span>`;
+}
+
+const REGION_BOUNDS = {
+  'ARIA Sud': [[43.0, 4.2], [45.2, 7.7]],
+  'ARIA Auvergne-Rhone-Alpes': [[44.1, 2.0], [46.8, 7.2]],
+  'ARIA Grand Est': [[47.4, 5.8], [49.5, 8.2]],
+  'ARIA Hauts-de-France': [[49.7, 1.4], [51.1, 4.3]],
+  'ARIA Ile-de-France': [[48.1, 1.4], [49.2, 3.6]],
+  'ARIA Normandie': [[48.6, -1.8], [50.0, 1.8]],
+  'ARIA Nouvelle-Aquitaine': [[43.0, -1.8], [47.1, 2.6]],
+  'ARIA Occitanie': [[42.3, -0.3], [45.0, 4.9]],
+  'ARIA Pays de la Loire': [[46.3, -2.6], [48.2, 0.9]],
+  'ARIA Bretagne': [[47.3, -5.1], [48.8, -1.1]],
+  'ARIA Bourgogne-Franche-Comte': [[46.1, 2.8], [48.0, 7.0]],
+  'ARIA Centre-Val de Loire': [[46.3, 0.1], [48.9, 3.2]],
+  'ARIA Corse': [[41.3, 8.5], [43.1, 9.6]],
+};
+
+const allMarkers = [];
+
+function focusSud() {
+  map.fitBounds(REGION_BOUNDS['ARIA Sud']);
+  document.getElementById('filter-region').value = 'ARIA Sud';
+  applyRegionFilter();
+}
+
+function applyRegionFilter() {
+  const region = document.getElementById('filter-region').value;
+  allMarkers.forEach(({marker, aria_region}) => {
+    if (!region || aria_region === region) {
+      if (!map.hasLayer(marker)) marker.addTo(map);
+    } else {
+      if (map.hasLayer(marker)) map.removeLayer(marker);
+    }
+  });
+  if (region && REGION_BOUNDS[region]) {
+    map.fitBounds(REGION_BOUNDS[region]);
+  } else if (!region) {
+    map.setView([46.5, 2.5], 6);
+  }
 }
 
 const map = L.map('map').setView([46.5, 2.5], 6);
@@ -134,13 +192,14 @@ Promise.all([
       html:`<div style="width:8px;height:8px;border-radius:50%;background:${color};border:1px solid white;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
       iconSize:[8,8], iconAnchor:[4,4]
     });
-    L.marker([s.lat,s.lng],{icon}).bindPopup(
+    const marker = L.marker([s.lat,s.lng],{icon}).bindPopup(
       `<div style="min-width:190px;font-size:13px"><b>${s.nom}</b>` +
       `<div style="margin-top:5px"><span style="background:${color};color:white;padding:2px 6px;border-radius:3px;font-size:11px">${s.naf_label}</span></div>` +
       `<div style="margin-top:4px;color:#444">${s.commune} ${s.cp}</div>` +
       (s.aria_region?`<div style="font-size:11px;color:#888">ARIA: ${s.aria_region}</div>`:'') +
       `</div>`
     ).addTo(map);
+    allMarkers.push({marker, aria_region: s.aria_region || ''});
     if (s.dept) { if (!deptData[s.dept]) deptData[s.dept]={nb_sites:0,parl:[]}; deptData[s.dept].nb_sites++; }
   });
 
