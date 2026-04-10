@@ -54,7 +54,7 @@ tr:hover td { background: #fafafa; }
 <nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link active">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
 <div class="container">
   <div class="page-title">Groupes industriels</div>
-  <div class="page-subtitle">Groupes IAA multi-departements (21 374 SIREN uniques - affichage groupes avec 2+ depts)</div>
+  <div class="page-subtitle">Groupes IAA multi-départements (21 374 SIREN uniques - groupes avec 2+ départements)</div>
   <div class="card">
     <label for="search" class="sr-only">Rechercher un groupe industriel</label>
     <input type="text" class="search-bar" id="search" placeholder="Rechercher un groupe..." oninput="renderGroupes()">
@@ -62,10 +62,10 @@ tr:hover td { background: #fafafa; }
     <table>
       <thead><tr>
         <th onclick="sortTable(0)">Groupe</th>
-        <th onclick="sortTable(1)">SIREN</th>
+        <th onclick="sortTable(1)">Catégorie</th>
         <th onclick="sortTable(2)">Sites</th>
-        <th onclick="sortTable(3)">Depts</th>
-        <th>Departements couverts</th>
+        <th onclick="sortTable(3)">Dép.</th>
+        <th>Départements couverts</th>
       </tr></thead>
       <tbody id="tbody"></tbody>
     </table>
@@ -73,7 +73,9 @@ tr:hover td { background: #fafafa; }
   </div>
 </div>
 <script>
-let allData = [], sortCol = 3, sortDir = -1;
+let allData = [], sortCol = 2, sortDir = -1;
+
+const EFFECTIF_LABELS = {'11':'1-9','12':'10-19','21':'20-49','22':'50-99','31':'100-199','32':'200-499','41':'500-999','42':'1000-1999','51':'2000-4999','52':'5000+','NN':'?'};
 
 fetch('data/groupes.json').then(r=>r.json()).then(data => {
   allData = data;
@@ -82,18 +84,21 @@ fetch('data/groupes.json').then(r=>r.json()).then(data => {
 
 function renderGroupes() {
   const q = document.getElementById('search').value.toLowerCase();
-  let data = q ? allData.filter(g=>g.nom.toLowerCase().includes(q)) : allData;
+  let data = q ? allData.filter(g=>(g.nom||'').toLowerCase().includes(q)||(g.siren||'').includes(q)) : allData;
   data = [...data].sort((a,b) => {
-    const vals = [[a.nom,b.nom],[a.siren,b.siren],[a.nb_sites,b.nb_sites],[a.nb_depts,b.nb_depts]];
-    const [ka,kb] = vals[sortCol] || [0,0];
-    return typeof ka === 'number' ? (ka-kb)*sortDir : (ka<kb?-1:ka>kb?1:0)*sortDir;
+    const vals = [[a.nom,b.nom],[a.categorie,b.categorie],[a.nb_sites,b.nb_sites],[a.nb_depts,b.nb_depts]];
+    const [ka,kb] = vals[Math.min(sortCol,3)] || [0,0];
+    return typeof ka === 'number' ? (ka-kb)*sortDir : (String(ka||'') < String(kb||'') ? -1 : String(ka||'') > String(kb||'') ? 1 : 0)*sortDir;
   });
   document.getElementById('tbody').innerHTML = data.slice(0, 500).map(g => {
-    const depts = g.depts.split(',').map(d=>d.trim()).filter(Boolean);
+    const depts = (g.depts||'').split(',').map(d=>d.trim()).filter(Boolean);
     const deptsHtml = depts.map(d=>`<span style="background:#f0f0f0;border-radius:3px;padding:1px 5px;font-size:11px;margin:1px">${d}</span>`).join('');
     const multiStyle = g.nb_depts >= 10 ? 'font-weight:700;color:#e85d04' : g.nb_depts >= 5 ? 'font-weight:600' : '';
+    const catBadge = g.categorie ? `<span style="font-size:10px;background:#e8f4fd;color:#1a3a5c;padding:1px 5px;border-radius:3px;margin-left:4px">${g.categorie}</span>` : '';
+    const effLabel = EFFECTIF_LABELS[g.effectif] || g.effectif || '';
+    const subInfo = [g.commune, effLabel ? effLabel+' sal.' : ''].filter(Boolean).join(' · ');
     return `<tr>
-      <td><b>${g.nom}</b></td>
+      <td><b>${g.nom||g.siren}</b>${catBadge}<div style="font-size:11px;color:#888;margin-top:1px">${subInfo}</div></td>
       <td style="font-size:11px;color:#888">${g.siren}</td>
       <td style="text-align:center">${g.nb_sites}</td>
       <td style="text-align:center;${multiStyle}">${g.nb_depts}</td>
