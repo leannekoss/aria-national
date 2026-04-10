@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Entreprises IAA - ANIA x Parlementaires</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+.siren-link { color: #1a1a2e; font-weight: 600; text-decoration: none; border-bottom: 1px dotted #ccc; }
+.siren-link:hover { color: #e85d04; border-bottom-color: #e85d04; }
+.naf-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+@media(max-width:768px) { table th:nth-child(n+5), table td:nth-child(n+5) { display:none; } }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="entreprises.html" class="nav-link active">Entreprises</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="container">
+<h1 class="page-title">🏭 Entreprises IAA</h1>
+<p class="page-subtitle">Toutes les entreprises des industries alimentaires en France - données INSEE/SIRENE. Cliquez sur une entreprise pour sa fiche détaillée.</p>
+<div class="stats-grid" id="stats"></div>
+<div class="card">
+<label for="search" class="sr-only">Rechercher</label>
+<input class="search-bar" id="search" placeholder="🔍 Rechercher une entreprise, un SIREN..." oninput="render()">
+<div class="filter-row">
+  <label for="fRegion" class="sr-only">Région ARIA</label>
+  <select class="filter-select" id="fRegion" onchange="render()"><option value="">🌍 Toutes les régions ARIA</option></select>
+  <label for="fNaf" class="sr-only">Secteur</label>
+  <select class="filter-select" id="fNaf" onchange="render()"><option value="">🏭 Tous les secteurs</option></select>
+  <label for="fSites" class="sr-only">Nombre de sites</label>
+  <select class="filter-select" id="fSites" onchange="render()">
+    <option value="">Toutes tailles</option>
+    <option value="10">10+ sites</option>
+    <option value="5">5+ sites</option>
+    <option value="2">Multi-sites (2+)</option>
+  </select>
+</div>
+<div id="count" style="font-size:13px;color:#888;margin-bottom:12px"></div>
+<div style="overflow-x:auto"><table><thead><tr>
+  <th onclick="sortBy('nom')">Entreprise ↕</th>
+  <th onclick="sortBy('siren')">SIREN</th>
+  <th onclick="sortBy('naf')">Secteur</th>
+  <th onclick="sortBy('nb_sites')" style="text-align:center">📍 Sites ↕</th>
+  <th onclick="sortBy('nb_depts')" style="text-align:center">Depts</th>
+  <th onclick="sortBy('aria_region')">Région ARIA</th>
+</tr></thead><tbody id="tbody"></tbody></table></div>
+<div class="pagination" id="pagination"></div>
+</div>
+</div>
+<script>
+const NAF_LABELS = {"10.11Z": "Abattage / viande", "10.12Z": "Volaille", "10.13A": "Prépa viande", "10.13B": "Charcuterie", "10.31Z": "Pommes de terre", "10.32Z": "Jus fruits/légumes", "10.39A": "Légumes surgelés", "10.39B": "Transfo fruits/légumes", "10.41A": "Huile olive", "10.41B": "Huiles végétales", "10.51A": "Lait/crème", "10.51C": "Beurre", "10.51D": "Fromage", "10.52Z": "Glaces/sorbets", "10.72Z": "Biscuits/pâtisseries", "10.84Z": "Condiments", "10.85Z": "Plats préparés", "10.86Z": "Aliments diététiques", "10.89Z": "Autres alimentaires", "11.01Z": "Eaux-de-vie", "11.02A": "Vins AOC", "11.02B": "Autres vins", "11.03Z": "Cidre/fruits", "11.07A": "Eaux minérales", "11.07B": "Limonades/boissons"};
+const NAF_COLORS = {'10.1':'#7b2d8b','10.3':'#2e8b57','10.4':'#6b9e3a','10.5':'#d4a017','10.7':'#c17f3a','10.8':'#e85d04','10.9':'#555','11.0':'#8b1a1a'};
+function nafColor(c) { const p=c?c.slice(0,4):''; for(const[k,v] of Object.entries(NAF_COLORS)) if(p.startsWith(k)) return v; return '#666'; }
+let data=[], filtered=[], sortCol='nb_sites', sortDir=-1, page=1;
+const PAGE=50;
+fetch('data/entreprises.json').then(r=>r.json()).then(d=>{
+  data=d;
+  const regions=[...new Set(d.map(e=>e.aria_region).filter(Boolean))].sort();
+  const nafs=[...new Set(d.map(e=>e.naf).filter(Boolean))].sort();
+  regions.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;document.getElementById('fRegion').appendChild(o);});
+  nafs.forEach(n=>{const o=document.createElement('option');o.value=n;o.textContent=(NAF_LABELS[n]||n)+' ('+n+')';document.getElementById('fNaf').appendChild(o);});
+  const ts=d.reduce((a,e)=>a+e.nb_sites,0);
+  const ms=d.filter(e=>e.nb_sites>=2).length;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat-card"><div class="stat-value">${d.length.toLocaleString()}</div><div class="stat-label">🏭 Entreprises IAA</div></div>
+    <div class="stat-card"><div class="stat-value">${ts.toLocaleString()}</div><div class="stat-label">📍 Sites de production</div></div>
+    <div class="stat-card"><div class="stat-value">${ms.toLocaleString()}</div><div class="stat-label">🏗️ Multi-sites (2+)</div></div>
+    <div class="stat-card"><div class="stat-value">${regions.length}</div><div class="stat-label">🌍 Régions ARIA</div></div>`;
+  render();
+});
+function render(){
+  const q=document.getElementById('search').value.toLowerCase();
+  const reg=document.getElementById('fRegion').value;
+  const naf=document.getElementById('fNaf').value;
+  const minS=parseInt(document.getElementById('fSites').value)||0;
+  filtered=data.filter(e=>{
+    if(q&&!(e.nom.toLowerCase().includes(q)||e.siren.includes(q))) return false;
+    if(reg&&e.aria_region!==reg) return false;
+    if(naf&&e.naf!==naf) return false;
+    if(minS&&e.nb_sites<minS) return false;
+    return true;
+  });
+  filtered.sort((a,b)=>{
+    const va=a[sortCol]??'', vb=b[sortCol]??'';
+    return sortDir*(va>vb?1:va<vb?-1:0);
+  });
+  page=1; paginate();
+}
+function sortBy(col){sortCol===col?sortDir*=-1:(sortCol=col,sortDir=-1);render();}
+function paginate(){
+  const total=filtered.length, pages=Math.ceil(total/PAGE)||1;
+  document.getElementById('count').textContent=total.toLocaleString()+' entreprise'+(total>1?'s':'');
+  const slice=filtered.slice((page-1)*PAGE,page*PAGE);
+  document.getElementById('tbody').innerHTML=slice.map(e=>`<tr>
+    <td><a href="fiche-entreprise.html?siren=${e.siren}" class="siren-link">${e.nom}</a></td>
+    <td style="font-family:monospace;font-size:12px;color:#888">${e.siren}</td>
+    <td><span class="naf-dot" style="background:${nafColor(e.naf)}"></span><span style="font-size:12px">${NAF_LABELS[e.naf]||e.naf}</span></td>
+    <td style="text-align:center;font-weight:700">${e.nb_sites}</td>
+    <td style="text-align:center">${e.nb_depts}</td>
+    <td style="font-size:12px">${e.aria_region||'-'}</td>
+  </tr>`).join('');
+  const pag=document.getElementById('pagination'); pag.innerHTML='';
+  if(pages<=1) return;
+  for(let i=1;i<=Math.min(pages,10);i++){const b=document.createElement('button');b.className='page-btn'+(i===page?' active':'');b.textContent=i;b.onclick=(p=>()=>{page=p;paginate();})(i);pag.appendChild(b);}
+  if(pages>10){const s=document.createElement('span');s.textContent=` ... ${pages}`;s.style.cssText='padding:5px;font-size:13px;color:#888';pag.appendChild(s);}
+}
+</script>
+</body>
+</html>
