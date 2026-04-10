@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>IAA France - Carte parlementaire</title>
+<title>ANIA - Carte parlementaire</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -74,23 +74,23 @@ tr:hover td { background: #fafafa; }
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link active">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Regions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link active">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
 <div class="map-wrap">
 <div id="map"></div>
 <div id="side-panel">
-  <div id="panel-header">Carte IAA France - 27 201 sites
-    <span>Cliquez sur un departement pour voir les parlementaires</span>
+  <div id="panel-header">Carte ANIA - 27 201 sites IAA
+    <span>Cliquez sur un département pour voir les parlementaires</span>
   </div>
   <div id="panel-filters">
     <label for="filter-chambre" class="sr-only">Filtrer par chambre</label>
     <select id="filter-chambre" onchange="renderPanel()" style="width:100%;margin-bottom:6px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:12px;background:white">
-      <option value="">AN + Senat</option>
-      <option value="AN">Assemblee Nationale</option>
-      <option value="SEN">Senat</option>
+      <option value="">AN + Sénat</option>
+      <option value="AN">Assemblée Nationale</option>
+      <option value="SEN">Sénat</option>
     </select>
-    <label for="filter-region" class="sr-only">Filtrer par region ARIA</label>
+    <label for="filter-region" class="sr-only">Filtrer par région ARIA</label>
     <select id="filter-region" onchange="applyRegionFilter()" style="width:100%;margin-bottom:6px;padding:5px 8px;border:1px solid #ddd;border-radius:4px;font-size:12px;background:white">
-      <option value="">Toutes les regions</option>
+      <option value="">Toutes les régions</option>
       <option value="ARIA Sud">ARIA Sud (PACA)</option>
       <option value="ARIA Auvergne-Rhone-Alpes">Auvergne-Rhone-Alpes</option>
       <option value="ARIA Grand Est">Grand Est</option>
@@ -107,7 +107,7 @@ tr:hover td { background: #fafafa; }
     </select>
     <button onclick="focusSud()" style="width:100%;padding:5px 8px;border:none;border-radius:4px;background:#e85d04;color:white;font-size:12px;font-weight:600;cursor:pointer">Focus Sud - PACA</button>
   </div>
-  <div id="panel-content"><div class="empty-state">Cliquez sur un departement colore pour explorer</div></div>
+  <div id="panel-content"><div class="empty-state">Cliquez sur un département coloré pour explorer</div></div>
 </div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -130,25 +130,41 @@ const REGION_BOUNDS = {
   'ARIA Centre-Val de Loire': [[46.3,0.1],[48.9,3.2]],
   'ARIA Corse': [[41.3,8.5],[43.1,9.6]],
 };
-const allMarkers = [];
+const sitesByDept = {};
+const activeMarkers = [];
 
 function focusSud() {
   map.fitBounds(REGION_BOUNDS['ARIA Sud']);
   document.getElementById('filter-region').value = 'ARIA Sud';
-  applyRegionFilter();
 }
 
 function applyRegionFilter() {
   const region = document.getElementById('filter-region').value;
-  allMarkers.forEach(({marker, aria_region}) => {
-    if (!region || aria_region === region) {
-      if (!map.hasLayer(marker)) marker.addTo(map);
-    } else {
-      if (map.hasLayer(marker)) map.removeLayer(marker);
-    }
-  });
   if (region && REGION_BOUNDS[region]) map.fitBounds(REGION_BOUNDS[region]);
   else if (!region) map.setView([46.5, 2.5], 6);
+}
+
+function showDeptMarkers(deptCode) {
+  activeMarkers.forEach(m => map.removeLayer(m));
+  activeMarkers.length = 0;
+  (sitesByDept[deptCode] || []).forEach(s => {
+    if (!s.lat || !s.lng) return;
+    const nafKey = Object.keys(NAF_COLORS).find(k => s.naf && s.naf.startsWith(k)) || null;
+    const color = nafKey ? NAF_COLORS[nafKey] : '#555';
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="width:8px;height:8px;border-radius:50%;background:${color};border:1px solid white;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
+      iconSize:[8,8], iconAnchor:[4,4]
+    });
+    const marker = L.marker([s.lat,s.lng],{icon}).bindPopup(
+      `<div style="min-width:190px;font-size:13px"><b>${s.nom}</b>` +
+      `<div style="margin-top:5px"><span style="background:${color};color:white;padding:2px 6px;border-radius:3px;font-size:11px">${s.naf_label}</span></div>` +
+      `<div style="margin-top:4px;color:#444">${s.commune} ${s.cp}</div>` +
+      (s.aria_region?`<div style="font-size:11px;color:#888">ARIA: ${s.aria_region}</div>`:'') +
+      `</div>`
+    ).addTo(map);
+    activeMarkers.push(marker);
+  });
 }
 
 function voteCell(v) {
@@ -158,8 +174,9 @@ function voteCell(v) {
 }
 
 const map = L.map('map').setView([46.5, 2.5], 6);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution:'© OpenStreetMap © CartoDB', subdomains:'abcd', maxZoom:19
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+  attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributeurs - Rendu OpenStreetMap France',
+  subdomains:'abc', maxZoom:20
 }).addTo(map);
 
 function getColor(nb) {
@@ -179,23 +196,11 @@ Promise.all([
   });
 
   sites.forEach(s => {
-    if (!s.lat||!s.lng) return;
-    const nafKey = Object.keys(NAF_COLORS).find(k => s.naf && s.naf.startsWith(k)) || null;
-    const color = nafKey ? NAF_COLORS[nafKey] : '#555';
-    const icon = L.divIcon({
-      className:'',
-      html:`<div style="width:8px;height:8px;border-radius:50%;background:${color};border:1px solid white;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
-      iconSize:[8,8], iconAnchor:[4,4]
-    });
-    const marker = L.marker([s.lat,s.lng],{icon}).bindPopup(
-      `<div style="min-width:190px;font-size:13px"><b>${s.nom}</b>` +
-      `<div style="margin-top:5px"><span style="background:${color};color:white;padding:2px 6px;border-radius:3px;font-size:11px">${s.naf_label}</span></div>` +
-      `<div style="margin-top:4px;color:#444">${s.commune} ${s.cp}</div>` +
-      (s.aria_region?`<div style="font-size:11px;color:#888">ARIA: ${s.aria_region}</div>`:'') +
-      `</div>`
-    ).addTo(map);
-    allMarkers.push({marker, aria_region: s.aria_region || ''});
-    if (s.dept) { if (!deptData[s.dept]) deptData[s.dept]={nb_sites:0,parl:[]}; deptData[s.dept].nb_sites++; }
+    if (!s.dept) return;
+    if (!sitesByDept[s.dept]) sitesByDept[s.dept] = [];
+    sitesByDept[s.dept].push(s);
+    if (!deptData[s.dept]) deptData[s.dept] = {nb_sites:0,parl:[]};
+    deptData[s.dept].nb_sites++;
   });
 
   return fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson');
@@ -212,12 +217,13 @@ Promise.all([
         if (currentDept) geojsonLayer.eachLayer(ll => { if(ll.feature&&ll.feature.properties.code===currentDept) geojsonLayer.resetStyle(ll); });
         currentDept=f.properties.code;
         e.target.setStyle({weight:3,color:'#1a1a2e',fillOpacity:.9});
+        showDeptMarkers(f.properties.code);
         renderPanel(f.properties);
       }
     });
     const nb=(deptData[f.properties.code]||{}).nb_sites||0;
     const nbParl=((deptData[f.properties.code]||{}).parl||[]).length;
-    l.bindTooltip(`<b>${f.properties.nom} (${f.properties.code})</b><br>${nb} sites IAA - ${nbParl} elus`,{sticky:true});
+    l.bindTooltip(`<b>${f.properties.nom} (${f.properties.code})</b><br>${nb} sites IAA · ${nbParl} élu(s)`,{sticky:true});
   }
   geojsonLayer = L.geoJSON(geo,{style,onEachFeature:onEach}).addTo(map);
 }).catch(e=>console.warn('GeoJSON error',e));
@@ -234,7 +240,7 @@ function renderPanel(deptProps) {
   filtered.sort((a,b)=>b.score-a.score);
 
   let html=`<div class="dept-title">${nom} (${code})</div>
-    <div class="dept-stats">${nb} site(s) IAA - ${parl.filter(p=>p.chambre==='AN').length} depute(s) - ${parl.filter(p=>p.chambre==='SEN').length} senateur(s)</div>`;
+    <div class="dept-stats">${nb} sites IAA · ${parl.filter(p=>p.chambre==='AN').length} député(s) · ${parl.filter(p=>p.chambre==='SEN').length} sénateur(s)</div>`;
 
   if (!filtered.length) {
     html+='<div class="empty-state">Aucun parlementaire</div>';
@@ -275,7 +281,7 @@ const leg=L.control({position:'bottomleft'});
 leg.onAdd=()=>{
   const d=L.DomUtil.create('div','legend');
   d.style.cssText='background:white;padding:12px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.25);font-size:12px;min-width:140px';
-  d.innerHTML='<div style="font-weight:700;font-size:13px;margin-bottom:8px;color:#1a1a2e">Sites IAA / dept.</div>'+
+  d.innerHTML='<div style="font-weight:700;font-size:13px;margin-bottom:8px;color:#1a1a2e">Sites IAA / dép.</div>'+
     [{n:100,l:'100+'},{n:60,l:'60-99'},{n:40,l:'40-59'},{n:25,l:'25-39'},{n:15,l:'15-24'},{n:8,l:'8-14'},{n:1,l:'1-7'},{n:0,l:'0'}]
     .map(({n,l})=>`<div style="display:flex;align-items:center;gap:8px;margin:3px 0"><div style="width:18px;height:14px;border-radius:2px;background:${getColor(n)};border:1px solid rgba(0,0,0,.1)"></div><span>${l}</span></div>`)
     .join('');
