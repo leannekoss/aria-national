@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IAA France - Groupes industriels</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+@media(max-width:768px) { table th:nth-child(2), table td:nth-child(2) { display:none; } }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Regions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link active">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="container">
+  <div class="page-title">Groupes industriels</div>
+  <div class="page-subtitle">Groupes IAA multi-departements (21 374 SIREN uniques - affichage groupes avec 2+ depts)</div>
+  <div class="card">
+    <label for="search" class="sr-only">Rechercher un groupe industriel</label>
+    <input type="text" class="search-bar" id="search" placeholder="Rechercher un groupe..." oninput="renderGroupes()">
+    <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th onclick="sortTable(0)">Groupe</th>
+        <th onclick="sortTable(1)">SIREN</th>
+        <th onclick="sortTable(2)">Sites</th>
+        <th onclick="sortTable(3)">Depts</th>
+        <th>Departements couverts</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    </div>
+  </div>
+</div>
+<script>
+let allData = [], sortCol = 3, sortDir = -1;
+
+fetch('data/groupes.json').then(r=>r.json()).then(data => {
+  allData = data;
+  renderGroupes();
+});
+
+function renderGroupes() {
+  const q = document.getElementById('search').value.toLowerCase();
+  let data = q ? allData.filter(g=>g.nom.toLowerCase().includes(q)) : allData;
+  data = [...data].sort((a,b) => {
+    const vals = [[a.nom,b.nom],[a.siren,b.siren],[a.nb_sites,b.nb_sites],[a.nb_depts,b.nb_depts]];
+    const [ka,kb] = vals[sortCol] || [0,0];
+    return typeof ka === 'number' ? (ka-kb)*sortDir : (ka<kb?-1:ka>kb?1:0)*sortDir;
+  });
+  document.getElementById('tbody').innerHTML = data.slice(0, 500).map(g => {
+    const depts = g.depts.split(',').map(d=>d.trim()).filter(Boolean);
+    const deptsHtml = depts.map(d=>`<span style="background:#f0f0f0;border-radius:3px;padding:1px 5px;font-size:11px;margin:1px">${d}</span>`).join('');
+    const multiStyle = g.nb_depts >= 10 ? 'font-weight:700;color:#e85d04' : g.nb_depts >= 5 ? 'font-weight:600' : '';
+    return `<tr>
+      <td><b>${g.nom}</b></td>
+      <td style="font-size:11px;color:#888">${g.siren}</td>
+      <td style="text-align:center">${g.nb_sites}</td>
+      <td style="text-align:center;${multiStyle}">${g.nb_depts}</td>
+      <td>${deptsHtml}</td>
+    </tr>`;
+  }).join('');
+}
+
+function sortTable(col) {
+  if (sortCol===col) sortDir*=-1; else {sortCol=col;sortDir=col>=2?-1:1;}
+  renderGroupes();
+}
+</script>
+</body>
+</html>

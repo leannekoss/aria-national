@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IAA France - Carte parlementaire</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+#map { width:100%; height:calc(100vh - 52px); }
+#side-panel { width:380px; flex-shrink:0; background:white; border-left:1px solid #ddd; overflow-y:auto; display:flex; flex-direction:column; }
+.map-wrap { display:flex; height:calc(100vh - 52px); }
+@media(max-width:768px) {
+  .map-wrap { flex-direction:column; height:auto; }
+  #map { height:50vh; }
+  #side-panel { width:100%; border-left:none; border-top:1px solid #ddd; max-height:50vh; }
+}
+#panel-header { padding:14px 16px; background:#1a1a2e; color:white; font-weight:600; font-size:14px; }
+#panel-header span { display:block; font-size:11px; font-weight:400; opacity:.7; margin-top:3px; }
+#panel-filters { padding:8px 12px; border-bottom:1px solid #eee; }
+#filter-chambre { width:100%; padding:5px 8px; border:1px solid #ddd; border-radius:4px; font-size:12px; background:white; }
+#panel-content { padding:12px; flex:1; }
+.dept-title { font-size:17px; font-weight:700; color:#1a1a2e; margin-bottom:3px; }
+.dept-stats { font-size:12px; color:#666; margin-bottom:10px; }
+.parl-card { background:#f8f9fa; border-radius:8px; padding:10px 12px; margin-bottom:8px; border-left:4px solid #ccc; }
+.parl-card.an { border-left-color:#e85d04; }
+.parl-card.sen { border-left-color:#4361ee; }
+.parl-nom { font-weight:600; font-size:13px; }
+.parl-groupe { font-size:11px; color:#666; margin-top:2px; }
+.parl-score { float:right; font-size:12px; background:#1a1a2e; color:white; padding:2px 7px; border-radius:4px; }
+.empty-state { text-align:center; color:#999; padding:40px 16px; font-size:13px; }
+.legend { background:white; padding:10px 14px; border-radius:8px; box-shadow:0 1px 5px rgba(0,0,0,.3); font-size:11px; }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link active">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Regions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="map-wrap">
+<div id="map"></div>
+<div id="side-panel">
+  <div id="panel-header">Carte IAA France - 27 201 sites
+    <span>Cliquez sur un departement pour voir les parlementaires</span>
+  </div>
+  <div id="panel-filters">
+    <label for="filter-chambre" class="sr-only">Filtrer par chambre</label>
+    <select id="filter-chambre" onchange="renderPanel()">
+      <option value="">AN + Senat</option>
+      <option value="AN">Assemblee Nationale</option>
+      <option value="SEN">Senat</option>
+    </select>
+  </div>
+  <div id="panel-content"><div class="empty-state">Cliquez sur un departement colore pour explorer</div></div>
+</div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const SCRUTIN_LABELS = {"egalim1":"EGALIM 1","egalim2":"EGALIM 2","egalim3":"EGALIM 3","loa2024":"LOA 2024","revenu_agri":"PPL Revenu Agri"};
+const VOTE_COLORS = {pour:"#28a745",contre:"#dc3545",abstention:"#fd7e14",absent:"#aaa"};
+const NAF_COLORS = {"10.1":"#7b2d8b","10.3":"#2e8b57","10.4":"#6b9e3a","10.5":"#d4a017","10.7":"#c17f3a","11.":"#c0392b"};
+
+function voteCell(v) {
+  if (!v) return '<span style="color:#bbb;font-size:10px">-</span>';
+  const c = VOTE_COLORS[v] || '#ddd';
+  return `<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:${c};color:${v==='absent'?'#555':'white'};font-size:10px;font-weight:600">${v}</span>`;
+}
+
+const map = L.map('map').setView([46.5, 2.5], 6);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution:'© OpenStreetMap © CartoDB', subdomains:'abcd', maxZoom:19
+}).addTo(map);
+
+function getColor(nb) {
+  return nb>=100?'#800026':nb>=60?'#BD0026':nb>=40?'#E31A1C':nb>=25?'#FC4E2A':nb>=15?'#FD8D3C':nb>=8?'#FEB24C':nb>=1?'#FED976':'#eee';
+}
+
+let currentDept=null, geojsonLayer=null, deptData={};
+
+Promise.all([
+  fetch('data/sites.json').then(r=>r.json()),
+  fetch('data/parlementaires.json').then(r=>r.json()),
+]).then(([sites, parls]) => {
+  parls.forEach(p => {
+    if (!p.dept) return;
+    if (!deptData[p.dept]) deptData[p.dept] = {nb_sites:0, parl:[]};
+    deptData[p.dept].parl.push(p);
+  });
+
+  sites.forEach(s => {
+    if (!s.lat||!s.lng) return;
+    const nafKey = Object.keys(NAF_COLORS).find(k => s.naf && s.naf.startsWith(k)) || null;
+    const color = nafKey ? NAF_COLORS[nafKey] : '#555';
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="width:8px;height:8px;border-radius:50%;background:${color};border:1px solid white;box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
+      iconSize:[8,8], iconAnchor:[4,4]
+    });
+    L.marker([s.lat,s.lng],{icon}).bindPopup(
+      `<div style="min-width:190px;font-size:13px"><b>${s.nom}</b>` +
+      `<div style="margin-top:5px"><span style="background:${color};color:white;padding:2px 6px;border-radius:3px;font-size:11px">${s.naf_label}</span></div>` +
+      `<div style="margin-top:4px;color:#444">${s.commune} ${s.cp}</div>` +
+      (s.aria_region?`<div style="font-size:11px;color:#888">ARIA: ${s.aria_region}</div>`:'') +
+      `</div>`
+    ).addTo(map);
+    if (s.dept) { if (!deptData[s.dept]) deptData[s.dept]={nb_sites:0,parl:[]}; deptData[s.dept].nb_sites++; }
+  });
+
+  return fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson');
+}).then(r=>r.json()).then(geo => {
+  function style(f) {
+    const nb = (deptData[f.properties.code]||{}).nb_sites||0;
+    return {fillColor:getColor(nb),weight:1,color:'#666',fillOpacity:.75};
+  }
+  function onEach(f,l) {
+    l.on({
+      mouseover: e => { e.target.setStyle({weight:2.5,color:'#333',fillOpacity:.9}); e.target.bringToFront(); },
+      mouseout: e => { if (currentDept!==f.properties.code) geojsonLayer.resetStyle(e.target); },
+      click: e => {
+        if (currentDept) geojsonLayer.eachLayer(ll => { if(ll.feature&&ll.feature.properties.code===currentDept) geojsonLayer.resetStyle(ll); });
+        currentDept=f.properties.code;
+        e.target.setStyle({weight:3,color:'#1a1a2e',fillOpacity:.9});
+        renderPanel(f.properties);
+      }
+    });
+    const nb=(deptData[f.properties.code]||{}).nb_sites||0;
+    const nbParl=((deptData[f.properties.code]||{}).parl||[]).length;
+    l.bindTooltip(`<b>${f.properties.nom} (${f.properties.code})</b><br>${nb} sites IAA - ${nbParl} elus`,{sticky:true});
+  }
+  geojsonLayer = L.geoJSON(geo,{style,onEachFeature:onEach}).addTo(map);
+}).catch(e=>console.warn('GeoJSON error',e));
+
+function renderPanel(deptProps) {
+  const content=document.getElementById('panel-content');
+  if(!deptProps) return;
+  const code=deptProps.code, nom=deptProps.nom;
+  const dd=deptData[code]||{};
+  const nb=dd.nb_sites||0;
+  const parl=dd.parl||[];
+  const filter=document.getElementById('filter-chambre').value;
+  const filtered=filter?parl.filter(p=>p.chambre===filter):parl;
+  filtered.sort((a,b)=>b.score-a.score);
+
+  let html=`<div class="dept-title">${nom} (${code})</div>
+    <div class="dept-stats">${nb} site(s) IAA - ${parl.filter(p=>p.chambre==='AN').length} depute(s) - ${parl.filter(p=>p.chambre==='SEN').length} senateur(s)</div>`;
+
+  if (!filtered.length) {
+    html+='<div class="empty-state">Aucun parlementaire</div>';
+  } else {
+    filtered.forEach(p => {
+      const posColor=p.position&&p.position.includes('pro')?'color:#155724':p.position&&p.position.includes('reserve')?'color:#721c24':'color:#555';
+      let votesHtml='';
+      if (p.chambre==='AN'&&p.votes) {
+        const hasVotes=Object.values(p.votes).some(v=>v&&v!=='absent');
+        if (hasVotes) {
+          votesHtml='<div style="margin-top:5px;border-top:1px solid #eee;padding-top:4px">'+
+            Object.entries(SCRUTIN_LABELS).map(([k,label])=>
+              `<div style="display:flex;justify-content:space-between;align-items:center;font-size:10px;margin:1px 0"><span style="color:#777">${label}</span>${voteCell((p.votes||{})[k])}</div>`
+            ).join('')+'</div>';
+        }
+      }
+      html+=`<div class="parl-card ${p.chambre.toLowerCase()}">
+        <span class="parl-score">${p.score.toFixed(1)}</span>
+        <div class="parl-nom">${p.nom} ${p.mail?`<a href="mailto:${p.mail}" style="color:#4361ee;font-size:11px">mail</a>`:''}</div>
+        <div class="parl-groupe">${p.chambre==='AN'?'AN':'Senat'} - ${p.groupe}</div>
+        ${p.commission_agri?'<span class="badge badge-agri">Agri</span>':''}
+        ${p.commission_eco?'<span class="badge badge-eco">Eco</span>':''}
+        ${p.mission_egalim?'<span class="badge badge-egalim">EGALIM</span>':''}
+        ${p.position&&p.chambre==='AN'?`<div style="font-size:10px;margin-top:3px;${posColor}">${p.position}</div>`:''}
+        ${p.nb_sites>0?`<div style="font-size:11px;color:#666;margin-top:2px">Zone: ${p.nb_sites} site(s)</div>`:''}
+        ${votesHtml}
+      </div>`;
+    });
+  }
+  content.innerHTML=html;
+}
+
+const leg=L.control({position:'bottomleft'});
+leg.onAdd=()=>{
+  const d=L.DomUtil.create('div','legend');
+  d.style.cssText='background:white;padding:12px 16px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.25);font-size:12px;min-width:140px';
+  d.innerHTML='<div style="font-weight:700;font-size:13px;margin-bottom:8px;color:#1a1a2e">Sites IAA / dept.</div>'+
+    [{n:100,l:'100+'},{n:60,l:'60-99'},{n:40,l:'40-59'},{n:25,l:'25-39'},{n:15,l:'15-24'},{n:8,l:'8-14'},{n:1,l:'1-7'},{n:0,l:'0'}]
+    .map(({n,l})=>`<div style="display:flex;align-items:center;gap:8px;margin:3px 0"><div style="width:18px;height:14px;border-radius:2px;background:${getColor(n)};border:1px solid rgba(0,0,0,.1)"></div><span>${l}</span></div>`)
+    .join('');
+  return d;
+};
+leg.addTo(map);
+</script>
+</body>
+</html>

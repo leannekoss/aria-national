@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Cartographie IAA France x Parlementaires</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+.hero { background: #1a1a2e; background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px); background-size: 24px 24px; color: white; padding: 56px 20px; text-align: center; }
+.hero-title { font-size: clamp(24px, 4vw, 42px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
+.hero-subtitle { font-size: 16px; opacity: .75; max-width: 640px; margin: 0 auto 32px; line-height: 1.6; }
+.hero-cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn-primary { background: #e85d04; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
+.btn-primary:hover { background: #c94e00; }
+.btn-secondary { background: rgba(255,255,255,.15); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; border: 1px solid rgba(255,255,255,.3); }
+.btn-secondary:hover { background: rgba(255,255,255,.25); }
+.section-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.feature-card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 1px 4px rgba(0,0,0,.08); text-decoration: none; color: inherit; transition: all .2s; border-top: 4px solid #e85d04; }
+.feature-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.feature-icon { font-size: 26px; margin-bottom: 8px; }
+.feature-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
+.feature-desc { font-size: 12px; color: #666; line-height: 1.5; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link active">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Regions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="hero">
+  <div style="max-width:800px;margin:0 auto">
+    <div style="display:inline-block;background:rgba(232,93,4,.2);color:#e85d04;border:1px solid rgba(232,93,4,.4);padding:4px 16px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:18px;letter-spacing:.6px">NATIONAL · 16 ASSOCIATIONS ARIA · DONNEES AVRIL 2026</div>
+    <div class="hero-title">Cartographie <span style="color:#e85d04">IAA France</span><br>x Parlementaires</div>
+    <div class="hero-subtitle">
+      27 201 sites industriels alimentaires (PME+) sur toute la France - 16 associations ARIA regionales - 925 parlementaires scores
+    </div>
+    <div class="hero-cta">
+      <a href="index.html" class="btn-primary">Explorer la carte</a>
+      <a href="regions.html" class="btn-secondary">16 regions ARIA</a>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="stats-grid" style="margin-top:32px;grid-template-columns:repeat(4,1fr)">
+    <div class="stat-card"><div class="stat-value">27 201</div><div class="stat-label">Sites IAA (PME+)</div></div>
+    <div class="stat-card"><div class="stat-value">925</div><div class="stat-label">Parlementaires scores</div></div>
+    <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">Regions ARIA</div></div>
+    <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">Votes suivis (EGALIM)</div></div>
+  </div>
+  <div class="section-cards">
+    <a href="index.html" class="feature-card">
+      <div class="feature-icon">Map</div>
+      <div class="feature-title">Carte interactive</div>
+      <div class="feature-desc">Choroplèthe départementale par intensite industrielle. Cliquez sur un departement pour ses parlementaires.</div>
+    </a>
+    <a href="parlementaires.html" class="feature-card">
+      <div class="feature-icon">Elus</div>
+      <div class="feature-title">Parlementaires</div>
+      <div class="feature-desc">925 elus (577 deputes + 348 senateurs) classes par score ARIA.</div>
+    </a>
+    <a href="regions.html" class="feature-card">
+      <div class="feature-icon">Regions</div>
+      <div class="feature-title">Regions ARIA</div>
+      <div class="feature-desc">16 associations ARIA regionales : repartition des sites, top departements, elu cle.</div>
+    </a>
+    <a href="partis.html" class="feature-card">
+      <div class="feature-icon">Partis</div>
+      <div class="feature-title">Partis politiques</div>
+      <div class="feature-desc">Exposition par groupe politique aux zones de production IAA nationale.</div>
+    </a>
+    <a href="groupes.html" class="feature-card">
+      <div class="feature-icon">Industrie</div>
+      <div class="feature-title">Groupes industriels</div>
+      <div class="feature-desc">Groupes IAA multi-departements (21 374 SIREN uniques).</div>
+    </a>
+    <a href="methodologie.html" class="feature-card">
+      <div class="feature-icon">Methode</div>
+      <div class="feature-title">Methodologie</div>
+      <div class="feature-desc">Sources, formule de scoring ARIA, codes NAF IAA couverts.</div>
+    </a>
+  </div>
+
+  <div class="card">
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#1a1a2e">Top 10 score ARIA - National</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Théophile Dominique</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1420.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Califer Elie</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1103.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Baptiste Christian</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1103.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mathiasin Max</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Serva Olivier</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Lurel Victorin</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">7</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Nadille Solanges</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">8</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Guhl Antoinette</div><div style="font-size:11px;color:#888">SEN · 75 Paris</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">891.8</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">9</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Gaillard Perceval</div><div style="font-size:11px;color:#888">AN · 974 Réunion</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">785.4</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">10</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Naillet Philippe</div><div style="font-size:11px;color:#888">AN · 974 Réunion</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">777.7</span></div>
+    <div style="margin-top:12px;text-align:right">
+      <a href="parlementaires.html" style="font-size:12px;color:#e85d04;text-decoration:none;font-weight:600">Voir les 925 elus</a>
+    </div>
+  </div>
+
+  <footer style="text-align:center;color:#888;font-size:12px;padding:32px 0">
+    Donnees : Assemblee Nationale · Senat · SIRENE (INSEE) · 16 associations ARIA regionales · Avril 2026
+  </footer>
+</div>
+</body>
+</html>

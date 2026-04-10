@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IAA France - 16 regions ARIA</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+.region-card { background:white; border-radius:12px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.08); margin-bottom:14px; display:flex; align-items:flex-start; gap:16px; border-left:5px solid #e85d04; }
+.region-rank { width:36px; height:36px; border-radius:50%; background:#e85d04; color:white; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.region-body { flex:1; min-width:0; }
+.region-name { font-size:18px; font-weight:700; color:#1a1a2e; margin-bottom:4px; }
+.region-sites { font-size:24px; font-weight:800; color:#e85d04; }
+.region-sub { font-size:12px; color:#888; }
+.dept-tag { display:inline-block; background:#f0f0f0; border-radius:4px; padding:2px 8px; font-size:12px; margin:2px; }
+.top-parl { background:#f8f9fa; border-radius:8px; padding:10px 12px; margin-top:10px; display:flex; justify-content:space-between; align-items:center; }
+.top-parl-name { font-weight:600; font-size:13px; }
+.top-parl-meta { font-size:11px; color:#888; }
+.score-badge { background:#1a1a2e; color:white; padding:3px 9px; border-radius:4px; font-size:13px; font-weight:700; }
+#choropleth { width:100%; height:420px; border-radius:12px; overflow:hidden; margin-bottom:24px; box-shadow:0 2px 8px rgba(0,0,0,.12); }
+</style>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link active">Regions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="container">
+  <div class="page-title">16 regions ARIA</div>
+  <div class="page-subtitle">27 201 sites IAA (PME+) repartis par association ARIA regionale - Classes par volume</div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">Associations ARIA</div></div>
+    <div class="stat-card"><div class="stat-value">27 201</div><div class="stat-label">Sites IAA total</div></div>
+    <div class="stat-card"><div class="stat-value" id="sites-with-region">-</div><div class="stat-label">Sites rattaches a une ARIA</div></div>
+    <div class="stat-card"><div class="stat-value">103</div><div class="stat-label">Departements couverts</div></div>
+  </div>
+  <div id="choropleth"></div>
+  <input type="text" class="search-bar" id="search" placeholder="Filtrer par region ARIA..." oninput="renderRegions()">
+  <div id="regions-list"></div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const REGIONS_DATA = [{"nom": "AREA Occitanie", "nb_sites": 3415, "top3_depts": [{"dept": "34", "nb": 585}, {"dept": "30", "nb": 417}, {"dept": "31", "nb": 396}], "top_parl": {"nom": "Bouquin Manon", "chambre": "AN", "dept": "34", "score": 596.7}}, {"nom": "AREA Nouvelle Aquitaine", "nb_sites": 3252, "top3_depts": [{"dept": "33", "nb": 614}, {"dept": "64", "nb": 544}, {"dept": "17", "nb": 345}], "top_parl": {"nom": "Diaz Edwige", "chambre": "AN", "dept": "33", "score": 632.42}}, {"nom": "ARIA AURA", "nb_sites": 3183, "top3_depts": [{"dept": "69", "nb": 503}, {"dept": "38", "nb": 361}, {"dept": "74", "nb": 324}], "top_parl": {"nom": "Fugit Jean-Luc", "chambre": "AN", "dept": "69", "score": 518.09}}, {"nom": "ARIA Grand Est", "nb_sites": 2291, "top3_depts": [{"dept": "51", "nb": 596}, {"dept": "67", "nb": 420}, {"dept": "68", "nb": 295}], "top_parl": {"nom": "Michelet Maxime", "chambre": "AN", "dept": "51", "score": 607.92}}, {"nom": "ARIA Sud", "nb_sites": 2275, "top3_depts": [{"dept": "13", "nb": 678}, {"dept": "83", "nb": 508}, {"dept": "06", "nb": 421}], "top_parl": {"nom": "Fayssat Olivier", "chambre": "AN", "dept": "13", "score": 698.34}}, {"nom": "AREA Île-de-France", "nb_sites": 2221, "top3_depts": [{"dept": "75", "nb": 686}, {"dept": "77", "nb": 252}, {"dept": "92", "nb": 245}], "top_parl": {"nom": "Guhl Antoinette", "chambre": "SEN", "dept": "75", "score": 891.8}}, {"nom": "ABEA", "nb_sites": 1487, "top3_depts": [{"dept": "29", "nb": 414}, {"dept": "35", "nb": 401}, {"dept": "56", "nb": 380}], "top_parl": {"nom": "Bleunven Yves", "chambre": "SEN", "dept": "56", "score": 494.0}}, {"nom": "Non rattaché", "nb_sites": 1435, "top3_depts": [{"dept": "971", "nb": 1093}, {"dept": "973", "nb": 217}, {"dept": "976", "nb": 79}], "top_parl": {"nom": "Théophile Dominique", "chambre": "SEN", "dept": "971", "score": 1420.9}}, {"nom": "AREA Pays de la Loire", "nb_sites": 1305, "top3_depts": [{"dept": "44", "nb": 410}, {"dept": "49", "nb": 310}, {"dept": "85", "nb": 299}], "top_parl": {"nom": "Garnier Laurence", "chambre": "SEN", "dept": "44", "score": 533.0}}, {"nom": "Vitagora", "nb_sites": 1295, "top3_depts": [{"dept": "25", "nb": 295}, {"dept": "21", "nb": 249}, {"dept": "39", "nb": 218}], "top_parl": {"nom": "Jacquemet Annick", "chambre": "SEN", "dept": "25", "score": 324.5}}, {"nom": "Agro-Spheres", "nb_sites": 1294, "top3_depts": [{"dept": "59", "nb": 483}, {"dept": "62", "nb": 341}, {"dept": "60", "nb": 169}], "top_parl": {"nom": "Linkenheld Audrey", "chambre": "SEN", "dept": "59", "score": 627.9}}, {"nom": "AREA Normandie", "nb_sites": 1127, "top3_depts": [{"dept": "76", "nb": 299}, {"dept": "14", "nb": 284}, {"dept": "50", "nb": 219}], "top_parl": {"nom": "Chauvet Patrick", "chambre": "SEN", "dept": "76", "score": 328.9}}, {"nom": "AREA Centre-Val de Loire", "nb_sites": 841, "top3_depts": [{"dept": "37", "nb": 218}, {"dept": "41", "nb": 176}, {"dept": "45", "nb": 152}], "top_parl": {"nom": "Louault Vincent", "chambre": "SEN", "dept": "37", "score": 239.8}}, {"nom": "ADIR", "nb_sites": 770, "top3_depts": [{"dept": "974", "nb": 770}], "top_parl": {"nom": "Gaillard Perceval", "chambre": "AN", "dept": "974", "score": 785.4}}, {"nom": "ARIA Corse", "nb_sites": 593, "top3_depts": [{"dept": "2B", "nb": 345}, {"dept": "2A", "nb": 248}], "top_parl": {"nom": "Parigi Paul Toussaint", "chambre": "SEN", "dept": "2B", "score": 345.0}}, {"nom": "AMPI", "nb_sites": 417, "top3_depts": [{"dept": "972", "nb": 417}], "top_parl": {"nom": "Buval Frédéric", "chambre": "SEN", "dept": "972", "score": 458.7}}];
+
+// Stats
+const attached = REGIONS_DATA.filter(r => r.nom !== 'Non rattaché').reduce((a, r) => a + r.nb_sites, 0);
+document.getElementById('sites-with-region').textContent = attached.toLocaleString('fr-FR');
+
+// Couleurs par region
+const REGION_COLORS = [
+  '#e85d04','#1a1a2e','#2e8b57','#8b1a1a','#0057b8','#6a0dad',
+  '#c17f3a','#2e6db4','#d4a017','#7b2d8b','#cc4400','#155724',
+  '#3d5a80','#8b4513','#003366','#666666'
+];
+const regionColorMap = {};
+REGIONS_DATA.forEach((r, i) => { regionColorMap[r.nom] = REGION_COLORS[i % REGION_COLORS.length]; });
+
+// Carte choroplèthe par region
+const mapEl = document.getElementById('choropleth');
+const map = L.map(mapEl).setView([46.5, 2.5], 5);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution:'© OpenStreetMap © CartoDB', subdomains:'abcd', maxZoom:14
+}).addTo(map);
+
+// Mapping dept → region (via REGIONS_DATA top3 + total)
+// On construit depuis les données : tous les depts dans top3_depts
+const deptToRegion = {};
+REGIONS_DATA.forEach(r => {
+  r.top3_depts.forEach(d => { deptToRegion[d.dept] = r.nom; });
+});
+
+const maxSites = Math.max(...REGIONS_DATA.map(r => r.nb_sites));
+function regionColor(regionNom) {
+  return regionColorMap[regionNom] || '#ccc';
+}
+
+fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson')
+  .then(r => r.json())
+  .then(geo => {
+    L.geoJSON(geo, {
+      style: f => {
+        const region = deptToRegion[f.properties.code];
+        const color = region ? regionColor(region) : '#eee';
+        return {fillColor: color, weight: 1, color: '#fff', fillOpacity: 0.7};
+      },
+      onEachFeature: (f, l) => {
+        const region = deptToRegion[f.properties.code];
+        const regionData = region ? REGIONS_DATA.find(r => r.nom === region) : null;
+        const tooltip = region
+          ? `<b>${f.properties.nom} (${f.properties.code})</b><br>${region}: ${regionData ? regionData.nb_sites : '-'} sites`
+          : `<b>${f.properties.nom}</b><br>Non classifie`;
+        l.bindTooltip(tooltip, {sticky: true});
+      }
+    }).addTo(map);
+
+    // Legende
+    const leg = L.control({position: 'bottomright'});
+    leg.onAdd = () => {
+      const d = L.DomUtil.create('div');
+      d.style.cssText = 'background:white;padding:10px 14px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:11px;max-height:260px;overflow-y:auto;max-width:200px';
+      d.innerHTML = '<b style="font-size:12px">Regions ARIA</b><br>' +
+        REGIONS_DATA.filter(r => r.nom !== 'Non rattache').map(r =>
+          `<div style="display:flex;align-items:center;gap:6px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${r.nom}">
+            <div style="width:14px;height:10px;border-radius:2px;background:${regionColor(r.nom)};flex-shrink:0"></div>
+            <span style="overflow:hidden;text-overflow:ellipsis">${r.nom.replace('AREA ','').replace('ARIA ','')}</span>
+          </div>`).join('');
+      return d;
+    };
+    leg.addTo(map);
+  });
+
+function renderRegions() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const data = q ? REGIONS_DATA.filter(r => r.nom.toLowerCase().includes(q)) : REGIONS_DATA;
+  const container = document.getElementById('regions-list');
+  container.innerHTML = data.map((r, i) => {
+    const realRank = REGIONS_DATA.indexOf(r) + 1;
+    const top3Html = r.top3_depts.map(d =>
+      `<span class="dept-tag">Dept ${d.dept}: ${d.nb} sites</span>`
+    ).join('');
+    const toplParl = r.top_parl ? `
+      <div class="top-parl">
+        <div>
+          <div class="top-parl-name">Elu cle : ${r.top_parl.nom}</div>
+          <div class="top-parl-meta">${r.top_parl.chambre} - Dept. ${r.top_parl.dept}</div>
+        </div>
+        <span class="score-badge">${r.top_parl.score.toFixed(0)}</span>
+      </div>` : '';
+    return `<div class="region-card">
+      <div class="region-rank">${realRank}</div>
+      <div class="region-body">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          <div>
+            <div class="region-name" style="border-left:4px solid ${regionColor(r.nom)};padding-left:8px">${r.nom}</div>
+          </div>
+          <div style="text-align:right">
+            <div class="region-sites">${r.nb_sites.toLocaleString('fr-FR')}</div>
+            <div class="region-sub">sites IAA</div>
+          </div>
+        </div>
+        <div style="margin-top:8px">${top3Html}</div>
+        ${toplParl}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+renderRegions();
+</script>
+</body>
+</html>

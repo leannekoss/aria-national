@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IAA France - Parlementaires</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+@media(max-width:768px) { #table th:nth-child(n+7), #table td:nth-child(n+7) { display:none; } }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link active">Parlementaires</a><a href="regions.html" class="nav-link ">Regions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="container">
+  <div class="page-title">Parlementaires</div>
+  <div class="page-subtitle">925 elus classes par score ARIA national (implantation x implication)</div>
+  <div class="stats-grid" id="stats-grid"></div>
+  <div class="card">
+    <label for="search" class="sr-only">Rechercher un parlementaire</label>
+    <input type="text" class="search-bar" id="search" placeholder="Rechercher par nom, groupe, departement..." oninput="renderTable()">
+    <div class="filter-row">
+      <select class="filter-select" id="f-chambre" onchange="renderTable()"><option value="">AN + Senat</option><option value="AN">Assemblee Nationale</option><option value="SEN">Senat</option></select>
+      <select class="filter-select" id="f-dept" onchange="renderTable()"><option value="">Tous les depts</option></select>
+      <select class="filter-select" id="f-groupe" onchange="renderTable()"><option value="">Tous les groupes</option></select>
+      <select class="filter-select" id="f-commission" onchange="renderTable()">
+        <option value="">Toutes commissions</option>
+        <option value="agri">Commission Agriculture</option>
+        <option value="eco">Commission Economique</option>
+        <option value="egalim">Mission EGALIM</option>
+      </select>
+      <select class="filter-select" id="f-sites" onchange="renderTable()"><option value="">Tous les elus</option><option value="1">Avec sites IAA</option></select>
+    </div>
+    <div id="result-count" style="font-size:12px;color:#666;margin-bottom:8px"></div>
+    <div style="overflow-x:auto">
+    <table id="table">
+      <thead><tr>
+        <th onclick="sortTable(0)">Nom</th>
+        <th onclick="sortTable(1)">Chambre</th>
+        <th onclick="sortTable(2)">Groupe</th>
+        <th onclick="sortTable(3)">Dept</th>
+        <th onclick="sortTable(4)">Sites</th>
+        <th onclick="sortTable(5)">Score ARIA</th>
+        <th>Position votes</th>
+        <th>Commissions</th>
+        <th onclick="sortTable(11)">EGALIM 1 (20</th><th onclick="sortTable(12)">EGALIM 2 (20</th><th onclick="sortTable(13)">EGALIM 3 / D</th><th onclick="sortTable(14)">LOA 2024</th><th onclick="sortTable(15)">PPL Revenu a</th>
+      </tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+<script>
+const SCRUTIN_IDS = ["egalim1", "egalim2", "egalim3", "loa2024", "revenu_agri"];
+const SCRUTIN_LABELS = {"egalim1": "EGALIM 1 (2018)", "egalim2": "EGALIM 2 (2021)", "egalim3": "EGALIM 3 / Descrozaille (2023)", "loa2024": "LOA 2024", "revenu_agri": "PPL Revenu agri (2024)"};
+const VOTE_COLORS = {pour:'#28a745',contre:'#dc3545',abstention:'#fd7e14',absent:'#aaa'};
+const PAGE_SIZE = 50;
+let allData = [], filtered = [], sortCol = 5, sortDir = -1, page = 0;
+
+function voteCell(v) {
+  if (!v) return '<span style="color:#ccc">-</span>';
+  const c = VOTE_COLORS[v] || '#eee';
+  return `<span class="badge" style="background:${c};color:${v==='absent'?'#555':'white'}">${v}</span>`;
+}
+
+fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
+  allData = data;
+  const depts = [...new Set(data.map(p=>p.dept+' - '+p.nom_dept).filter(Boolean))].sort();
+  const groupes = [...new Set(data.map(p=>p.groupe).filter(Boolean))].sort();
+  const sel_d = document.getElementById('f-dept');
+  depts.forEach(d => sel_d.add(new Option(d, d.split(' - ')[0])));
+  const sel_g = document.getElementById('f-groupe');
+  groupes.forEach(g => sel_g.add(new Option(g, g)));
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.chambre==='AN').length}</div><div class="stat-label">Deputes</div></div>
+    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.chambre==='SEN').length}</div><div class="stat-label">Senateurs</div></div>
+    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.nb_sites>0).length}</div><div class="stat-label">En zone IAA</div></div>
+    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.commission_agri||p.commission_eco||p.mission_egalim).length}</div><div class="stat-label">Actifs agri/EGALIM</div></div>
+  `;
+  renderTable();
+});
+
+function filterData() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const fc = document.getElementById('f-chambre').value;
+  const fd = document.getElementById('f-dept').value;
+  const fg = document.getElementById('f-groupe').value;
+  const fcom = document.getElementById('f-commission').value;
+  const fs = document.getElementById('f-sites').value;
+  return allData.filter(p =>
+    (!q || p.nom.toLowerCase().includes(q) || (p.groupe||'').toLowerCase().includes(q) || (p.nom_dept||'').toLowerCase().includes(q)) &&
+    (!fc || p.chambre === fc) &&
+    (!fd || p.dept === fd) &&
+    (!fg || p.groupe === fg) &&
+    (!fcom || (fcom==='agri'&&p.commission_agri) || (fcom==='eco'&&p.commission_eco) || (fcom==='egalim'&&p.mission_egalim)) &&
+    (!fs || p.nb_sites > 0)
+  );
+}
+
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = col === 0 ? 1 : -1; }
+  page = 0; renderTable();
+}
+
+function sortKey(p, col) {
+  switch(col) {
+    case 0: return p.nom; case 1: return p.chambre; case 2: return p.groupe;
+    case 3: return p.dept; case 4: return p.nb_sites; case 5: return p.score;
+    default: return (p.votes||{})[SCRUTIN_IDS[col-11]]||'';
+  }
+}
+
+function renderTable() {
+  filtered = filterData();
+  filtered.sort((a,b) => {
+    const ka=sortKey(a,sortCol), kb=sortKey(b,sortCol);
+    return typeof ka==='number' ? (ka-kb)*sortDir : (ka<kb?-1:ka>kb?1:0)*sortDir;
+  });
+  page = Math.max(0, Math.min(page, Math.floor((filtered.length-1)/PAGE_SIZE)));
+  document.getElementById('result-count').textContent = `${filtered.length} resultats`;
+  const slice = filtered.slice(page*PAGE_SIZE, (page+1)*PAGE_SIZE);
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = slice.map(p => {
+    const badges = [p.commission_agri?'<span class="badge badge-agri">Agri</span>':'', p.commission_eco?'<span class="badge badge-eco">Eco</span>':'', p.mission_egalim?'<span class="badge badge-egalim">EGALIM</span>':''].filter(Boolean).join(' ');
+    const votesCells = SCRUTIN_IDS.map(id => `<td>${voteCell((p.votes||{})[id])}</td>`).join('');
+    const scoreMax = 800;
+    const scorePct = Math.min(100, Math.round((p.score / scoreMax) * 100));
+    const scoreColor = p.score > 200 ? '#e85d04' : p.score > 50 ? '#1a1a2e' : '#555';
+    const scoreStyle = `font-weight:${p.score>50?'700':'400'};color:${scoreColor};background:linear-gradient(to right,rgba(232,93,4,0.1) ${scorePct}%,transparent ${scorePct}%)`;
+    return `<tr>
+      <td style="font-weight:600">${p.nom}</td>
+      <td><span class="badge ${p.chambre==='AN'?'badge-an':'badge-sen'}">${p.chambre}</span></td>
+      <td style="font-size:12px;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.groupe}</td>
+      <td><span title="${p.nom_dept}">${p.dept}</span></td>
+      <td style="text-align:center">${p.nb_sites>0?`<b>${p.nb_sites}</b>`:0}</td>
+      <td style="${scoreStyle}">${p.score.toFixed(1)}</td>
+      <td style="font-size:11px;white-space:nowrap">${p.position||''}</td>
+      <td>${badges}</td>
+      ${votesCells}
+    </tr>`;
+  }).join('');
+  const totalPages = Math.ceil(filtered.length/PAGE_SIZE);
+  const pag = document.getElementById('pagination');
+  let pagHtml = '';
+  for (let i=0; i<totalPages; i++) {
+    if (i===0||i===totalPages-1||Math.abs(i-page)<=2) pagHtml+=`<button class="page-btn${i===page?' active':''}" onclick="goPage(${i})">${i+1}</button>`;
+    else if (Math.abs(i-page)===3) pagHtml+='<span style="padding:5px">...</span>';
+  }
+  pag.innerHTML = pagHtml;
+}
+
+function goPage(p) { page=p; renderTable(); window.scrollTo(0,0); }
+</script>
+</body>
+</html>

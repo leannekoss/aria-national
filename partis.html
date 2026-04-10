@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>IAA France - Analyse par parti</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
+.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
+.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
+.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
+.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+.badge-agri { background: #d4edda; color: #155724; }
+.badge-eco { background: #cce5ff; color: #004085; }
+.badge-egalim { background: #fff3cd; color: #856404; }
+.badge-an { background: #fce8d5; color: #8a3a00; }
+.badge-sen { background: #d9e8ff; color: #003680; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
+th:hover { background: #e9ecef; }
+td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+tr:hover td { background: #fafafa; }
+.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
+.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+.filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
+.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
+.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
+.page-btn:hover:not(.active) { background: #f0f0f0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
+:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
+@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
+@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+
+.parti-card { background:white; border-radius:10px; padding:16px; box-shadow:0 1px 4px rgba(0,0,0,.08); margin-bottom:12px; display:flex; align-items:center; gap:16px; }
+.parti-bar-bg { flex:1; background:#eee; border-radius:4px; height:8px; }
+.parti-bar-fill { height:8px; border-radius:4px; }
+.parti-name { font-weight:700; font-size:14px; min-width:200px; }
+.parti-stats { font-size:12px; color:#666; margin-top:3px; }
+</style>
+</head>
+<body>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">IAA France</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Regions ARIA</a><a href="partis.html" class="nav-link active">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Methode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<div class="container">
+  <div class="page-title">Analyse par parti politique</div>
+  <div class="page-subtitle">Classement par exposition aux zones de production IAA nationale</div>
+  <div class="filter-row">
+    <select class="filter-select" id="f-chambre" onchange="renderPartis()"><option value="">AN + Senat</option><option value="AN">Assemblee Nationale</option><option value="SEN">Senat</option></select>
+    <select class="filter-select" id="f-sort" onchange="renderPartis()">
+      <option value="total_sites">Total sites en zone</option>
+      <option value="pct_zone">% elus en zone IAA</option>
+      <option value="score_moyen">Score ARIA moyen</option>
+      <option value="nb_elus">Nombre d'elus</option>
+    </select>
+  </div>
+  <div id="partis-content"></div>
+</div>
+<script>
+let partisData = [];
+fetch('data/partis.json').then(r=>r.json()).then(data => {
+  partisData = data;
+  renderPartis();
+});
+
+function renderPartis() {
+  const fc = document.getElementById('f-chambre').value;
+  const fs = document.getElementById('f-sort').value;
+  let data = fc ? partisData.filter(p=>p.chambre===fc) : partisData;
+  data = [...data].sort((a,b) => b[fs] - a[fs]);
+  const maxSites = Math.max(...data.map(p=>p.total_sites)) || 1;
+
+  document.getElementById('partis-content').innerHTML = data.map(p => {
+    const pct = Math.round(p.pct_zone);
+    const barW = Math.round((p.total_sites/maxSites)*100);
+    const chambreLabel = p.chambre === 'AN' ? '<span class="badge badge-an">AN</span>' : '<span class="badge badge-sen">Senat</span>';
+    return `<div class="parti-card">
+      <div style="width:14px;height:44px;border-radius:3px;background:${p.color};flex-shrink:0"></div>
+      <div style="flex:1">
+        <div class="parti-name">${chambreLabel} ${p.groupe}</div>
+        <div class="parti-stats">${p.nb_elus} elu(s) - ${p.nb_elus_zone} en zone IAA (${pct}%) - Score moy. ${p.score_moyen.toFixed(1)}</div>
+        <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
+          <div class="parti-bar-bg"><div class="parti-bar-fill" style="width:${barW}%;background:${p.color}"></div></div>
+          <span style="font-size:13px;font-weight:700;min-width:30px">${p.total_sites}</span>
+          <span style="font-size:11px;color:#888">sites</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+</script>
+</body>
+</html>
