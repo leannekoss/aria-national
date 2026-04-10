@@ -65,16 +65,16 @@ tr:hover td { background: #fafafa; }
 <body>
 <nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link active">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
 <div class="container">
-  <div class="page-title">16 regions ARIA</div>
-  <div class="page-subtitle">27 201 sites IAA (PME+) repartis par association ARIA regionale - Classes par volume</div>
+  <div class="page-title">16 régions ARIA</div>
+  <div class="page-subtitle">27 201 sites IAA (PME+) répartis par association ARIA régionale - Classés par volume</div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">Associations ARIA</div></div>
     <div class="stat-card"><div class="stat-value">27 201</div><div class="stat-label">Sites IAA total</div></div>
-    <div class="stat-card"><div class="stat-value" id="sites-with-region">-</div><div class="stat-label">Sites rattaches a une ARIA</div></div>
-    <div class="stat-card"><div class="stat-value">103</div><div class="stat-label">Departements couverts</div></div>
+    <div class="stat-card"><div class="stat-value" id="sites-with-region">-</div><div class="stat-label">Sites rattachés à une ARIA</div></div>
+    <div class="stat-card"><div class="stat-value">103</div><div class="stat-label">Départements couverts</div></div>
   </div>
   <div id="choropleth"></div>
-  <input type="text" class="search-bar" id="search" placeholder="Filtrer par region ARIA..." oninput="renderRegions()">
+  <input type="text" class="search-bar" id="search" placeholder="Filtrer par région ARIA..." oninput="renderRegions()">
   <div id="regions-list"></div>
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -97,8 +97,8 @@ REGIONS_DATA.forEach((r, i) => { regionColorMap[r.nom] = REGION_COLORS[i % REGIO
 // Carte choroplèthe par region
 const mapEl = document.getElementById('choropleth');
 const map = L.map(mapEl).setView([46.5, 2.5], 5);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution:'© OpenStreetMap © CartoDB', subdomains:'abcd', maxZoom:14
+L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
+  attribution:'© OpenStreetMap France', subdomains:'abc', maxZoom:20
 }).addTo(map);
 
 // Mapping dept → region (via REGIONS_DATA top3 + total)
@@ -127,7 +127,7 @@ fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/dep
         const regionData = region ? REGIONS_DATA.find(r => r.nom === region) : null;
         const tooltip = region
           ? `<b>${f.properties.nom} (${f.properties.code})</b><br>${region}: ${regionData ? regionData.nb_sites : '-'} sites`
-          : `<b>${f.properties.nom}</b><br>Non classifie`;
+          : `<b>${f.properties.nom}</b><br>Non classifié`;
         l.bindTooltip(tooltip, {sticky: true});
       }
     }).addTo(map);
@@ -137,8 +137,8 @@ fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/dep
     leg.onAdd = () => {
       const d = L.DomUtil.create('div');
       d.style.cssText = 'background:white;padding:10px 14px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.2);font-size:11px;max-height:260px;overflow-y:auto;max-width:200px';
-      d.innerHTML = '<b style="font-size:12px">Regions ARIA</b><br>' +
-        REGIONS_DATA.filter(r => r.nom !== 'Non rattache').map(r =>
+      d.innerHTML = '<b style="font-size:12px">Régions ARIA</b><br>' +
+        REGIONS_DATA.filter(r => r.nom !== 'Non rattaché').map(r =>
           `<div style="display:flex;align-items:center;gap:6px;margin:3px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${r.nom}">
             <div style="width:14px;height:10px;border-radius:2px;background:${regionColor(r.nom)};flex-shrink:0"></div>
             <span style="overflow:hidden;text-overflow:ellipsis">${r.nom.replace('AREA ','').replace('ARIA ','')}</span>
@@ -155,12 +155,12 @@ function renderRegions() {
   container.innerHTML = data.map((r, i) => {
     const realRank = REGIONS_DATA.indexOf(r) + 1;
     const top3Html = r.top3_depts.map(d =>
-      `<span class="dept-tag">Dept ${d.dept}: ${d.nb} sites</span>`
+      `<span class="dept-tag">Dép. ${d.dept}: ${d.nb} sites</span>`
     ).join('');
     const toplParl = r.top_parl ? `
       <div class="top-parl">
         <div>
-          <div class="top-parl-name">Elu cle : ${r.top_parl.nom}</div>
+          <div class="top-parl-name">Élu clé : ${r.top_parl.nom}</div>
           <div class="top-parl-meta">${r.top_parl.chambre} - Dept. ${r.top_parl.dept}</div>
         </div>
         <span class="score-badge">${r.top_parl.score.toFixed(0)}</span>

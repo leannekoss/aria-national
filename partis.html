@@ -60,12 +60,12 @@ tr:hover td { background: #fafafa; }
   <div class="page-title">Analyse par parti politique</div>
   <div class="page-subtitle">Classement par exposition aux zones de production IAA nationale</div>
   <div class="filter-row">
-    <select class="filter-select" id="f-chambre" onchange="renderPartis()"><option value="">AN + Senat</option><option value="AN">Assemblee Nationale</option><option value="SEN">Senat</option></select>
+    <select class="filter-select" id="f-chambre" onchange="renderPartis()"><option value="">AN + Sénat</option><option value="AN">Assemblée Nationale</option><option value="SEN">Sénat</option></select>
     <select class="filter-select" id="f-sort" onchange="renderPartis()">
       <option value="total_sites">Total sites en zone</option>
-      <option value="pct_zone">% elus en zone IAA</option>
+      <option value="pct_zone">% élus en zone IAA</option>
       <option value="score_moyen">Score ARIA moyen</option>
-      <option value="nb_elus">Nombre d'elus</option>
+      <option value="nb_elus">Nombre d'élus</option>
     </select>
   </div>
   <div id="partis-content"></div>
@@ -87,12 +87,12 @@ function renderPartis() {
   document.getElementById('partis-content').innerHTML = data.map(p => {
     const pct = Math.round(p.pct_zone);
     const barW = Math.round((p.total_sites/maxSites)*100);
-    const chambreLabel = p.chambre === 'AN' ? '<span class="badge badge-an">AN</span>' : '<span class="badge badge-sen">Senat</span>';
+    const chambreLabel = p.chambre === 'AN' ? '<span class="badge badge-an">AN</span>' : '<span class="badge badge-sen">Sénat</span>';
     return `<div class="parti-card">
       <div style="width:14px;height:44px;border-radius:3px;background:${p.color};flex-shrink:0"></div>
       <div style="flex:1">
         <div class="parti-name">${chambreLabel} ${p.groupe}</div>
-        <div class="parti-stats">${p.nb_elus} elu(s) - ${p.nb_elus_zone} en zone IAA (${pct}%) - Score moy. ${p.score_moyen.toFixed(1)}</div>
+        <div class="parti-stats">${p.nb_elus} élu(s) - ${p.nb_elus_zone} en zone IAA (${pct}%) - Score moy. ${p.score_moyen.toFixed(1)}</div>
         <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
           <div class="parti-bar-bg"><div class="parti-bar-fill" style="width:${barW}%;background:${p.color}"></div></div>
           <span style="font-size:13px;font-weight:700;min-width:30px">${p.total_sites}</span>

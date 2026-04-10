@@ -57,17 +57,17 @@ tr:hover td { background: #fafafa; }
 <body>
 <nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link active">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
 <div class="container" style="max-width:900px">
-  <div class="page-title">Methodologie et Sources</div>
-  <div class="page-subtitle">Comment sont calcules les scores et d'ou viennent les donnees</div>
+  <div class="page-title">Méthodologie et Sources</div>
+  <div class="page-subtitle">Comment sont calculés les scores et d'où viennent les données</div>
 
   <div class="meth-section">
     <div class="meth-title">Formule du score ARIA</div>
-    <p style="font-size:13px;color:#555;margin-bottom:12px">Le score ARIA mesure la <strong>priorite de contact</strong> d'un elu pour les affaires publiques des industries alimentaires : un elu fortement ancre dans une zone de production IAA ET actif sur les dossiers agricoles est prioritaire.</p>
+    <p style="font-size:13px;color:#555;margin-bottom:12px">Le score ARIA mesure la <strong>priorité de contact</strong> d'un elu pour les affaires publiques des industries alimentaires : un elu fortement ancre dans une zone de production IAA ET actif sur les dossiers agricoles est prioritaire.</p>
     <div class="formula-box">
 score_aria = score_eco x (1 + score_impl / 10)<br>
 <br>
 # Score implantation (poids economique de la zone)<br>
-score_eco = nb_sites_aria (etablissements IAA dans le departement)<br>
+score_eco = nb_sites_aria (établissements IAA dans le département)<br>
 <br>
 # Score implication parlementaire<br>
 score_impl = 3 x membre_commission_agriculture<br>
@@ -80,15 +80,15 @@ score_impl = 3 x membre_commission_agriculture<br>
   <div class="meth-section">
     <div class="meth-title">Votes nominatifs suivis (5 scrutins)</div>
     <div class="vote-item"><span class="vote-badge">EGALIM 1</span><div><strong>Loi 2018-938</strong> - Relations commerciales dans le secteur agricole et alimentation</div></div>
-    <div class="vote-item"><span class="vote-badge">EGALIM 2</span><div><strong>Loi 2021-1357</strong> - Protection de la remuneration des agriculteurs</div></div>
+    <div class="vote-item"><span class="vote-badge">EGALIM 2</span><div><strong>Loi 2021-1357</strong> - Protection de la rémunération des agriculteurs</div></div>
     <div class="vote-item"><span class="vote-badge">EGALIM 3</span><div><strong>Loi 2023-221 / Descrozaille</strong> - Equilibre des relations commerciales</div></div>
-    <div class="vote-item"><span class="vote-badge">LOA 2024</span><div><strong>Loi d'orientation agricole 2024</strong> - Souverainete agricole</div></div>
+    <div class="vote-item"><span class="vote-badge">LOA 2024</span><div><strong>Loi d'orientation agricole 2024</strong> - Souveraineté agricole</div></div>
     <div class="vote-item" style="border-bottom:none"><span class="vote-badge">PPL Revenu Agri</span><div><strong>2024</strong> - PPL relative au revenu des agriculteurs</div></div>
   </div>
 
   <div class="meth-section">
-    <div class="meth-title">Perimetre national - 16 associations ARIA</div>
-    <p style="font-size:13px;color:#555;margin-bottom:12px">27 201 etablissements IAA (PME, ETI, GE - codes NAF 10.* et 11.*) sur l'ensemble du territoire francais.</p>
+    <div class="meth-title">Périmètre national - 16 associations ARIA</div>
+    <p style="font-size:13px;color:#555;margin-bottom:12px">27 201 établissements IAA (PME, ETI, GE - codes NAF 10.* et 11.*) sur l'ensemble du territoire francais.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
       <div style="padding:8px;background:#f8f9fa;border-radius:6px">AREA Occitanie (3 415 sites)</div>
       <div style="padding:8px;background:#f8f9fa;border-radius:6px">AREA Nouvelle Aquitaine (3 252 sites)</div>
@@ -109,20 +109,20 @@ score_impl = 3 x membre_commission_agriculture<br>
   </div>
 
   <div class="meth-section">
-    <div class="meth-title">Sources de donnees</div>
+    <div class="meth-title">Sources de données</div>
     <table style="font-size:13px">
-      <thead><tr><th>Source</th><th>Donnees</th></tr></thead>
+      <thead><tr><th>Source</th><th>Données</th></tr></thead>
       <tbody>
-        <tr><td><strong>Assemblee Nationale</strong> (open data)</td><td>Deputes, groupes, scrutins nominatifs, commissions</td></tr>
-        <tr><td><strong>Senat</strong> (data.senat.fr)</td><td>Senateurs actifs, commissions permanentes</td></tr>
-        <tr><td><strong>SIRENE / INSEE</strong></td><td>27 201 etablissements IAA actifs (codes NAF 10.* + 11.*) - geolocalisation</td></tr>
-        <tr><td><strong>16 associations ARIA</strong></td><td>Rattachement regional de chaque etablissement</td></tr>
+        <tr><td><strong>Assemblée Nationale</strong> (open data)</td><td>Députés, groupes, scrutins nominatifs, commissions</td></tr>
+        <tr><td><strong>Sénat</strong> (data.senat.fr)</td><td>Sénateurs actifs, commissions permanentes</td></tr>
+        <tr><td><strong>SIRENE / INSEE</strong></td><td>27 201 établissements IAA actifs (codes NAF 10.* + 11.*) - géolocalisation</td></tr>
+        <tr><td><strong>16 associations ARIA</strong></td><td>Rattachement régional de chaque établissement</td></tr>
       </tbody>
     </table>
   </div>
 
   <div style="background:#1a1a2e;color:rgba(255,255,255,.7);border-radius:12px;padding:20px 24px;text-align:center;font-size:13px">
-    Cartographie <strong style="color:#e85d04">IAA France x Parlementaires</strong> - 16 associations ARIA - Donnees collectees en avril 2026
+    Cartographie <strong style="color:#e85d04">ANIA × Parlementaires</strong> - 16 associations ARIA - Données collectées en avril 2026
   </div>
 </div>
 </body>

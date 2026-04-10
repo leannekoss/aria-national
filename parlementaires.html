@@ -54,14 +54,14 @@ tr:hover td { background: #fafafa; }
 <nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link active">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
 <div class="container">
   <div class="page-title">Parlementaires</div>
-  <div class="page-subtitle">925 elus classes par score ARIA national (implantation x implication)</div>
+  <div class="page-subtitle">925 élus classés par score ANIA national (implantation x implication)</div>
   <div class="stats-grid" id="stats-grid"></div>
   <div class="card">
     <label for="search" class="sr-only">Rechercher un parlementaire</label>
-    <input type="text" class="search-bar" id="search" placeholder="Rechercher par nom, groupe, departement..." oninput="renderTable()">
+    <input type="text" class="search-bar" id="search" placeholder="Rechercher par nom, groupe, département..." oninput="renderTable()">
     <div class="filter-row">
-      <select class="filter-select" id="f-chambre" onchange="renderTable()"><option value="">AN + Senat</option><option value="AN">Assemblee Nationale</option><option value="SEN">Senat</option></select>
-      <select class="filter-select" id="f-dept" onchange="renderTable()"><option value="">Tous les depts</option></select>
+      <select class="filter-select" id="f-chambre" onchange="renderTable()"><option value="">AN + Sénat</option><option value="AN">Assemblée Nationale</option><option value="SEN">Sénat</option></select>
+      <select class="filter-select" id="f-dept" onchange="renderTable()"><option value="">Tous les dép.</option></select>
       <select class="filter-select" id="f-groupe" onchange="renderTable()"><option value="">Tous les groupes</option></select>
       <select class="filter-select" id="f-commission" onchange="renderTable()">
         <option value="">Toutes commissions</option>
@@ -113,8 +113,8 @@ fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
   const sel_g = document.getElementById('f-groupe');
   groupes.forEach(g => sel_g.add(new Option(g, g)));
   document.getElementById('stats-grid').innerHTML = `
-    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.chambre==='AN').length}</div><div class="stat-label">Deputes</div></div>
-    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.chambre==='SEN').length}</div><div class="stat-label">Senateurs</div></div>
+    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.chambre==='AN').length}</div><div class="stat-label">Députés</div></div>
+    <div class="stat-card"><div class="stat-value">${data.filter(p=>p.chambre==='SEN').length}</div><div class="stat-label">Sénateurs</div></div>
     <div class="stat-card"><div class="stat-value">${data.filter(p=>p.nb_sites>0).length}</div><div class="stat-label">En zone IAA</div></div>
     <div class="stat-card"><div class="stat-value">${data.filter(p=>p.commission_agri||p.commission_eco||p.mission_egalim).length}</div><div class="stat-label">Actifs agri/EGALIM</div></div>
   `;

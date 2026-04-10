@@ -260,7 +260,7 @@ function renderPanel(deptProps) {
       html+=`<div class="parl-card ${p.chambre.toLowerCase()}">
         <span class="parl-score">${p.score.toFixed(1)}</span>
         <div class="parl-nom">${p.nom} ${p.mail?`<a href="mailto:${p.mail}" style="color:#4361ee;font-size:11px">mail</a>`:''}</div>
-        <div class="parl-groupe">${p.chambre==='AN'?'AN':'Senat'} - ${p.groupe}</div>
+        <div class="parl-groupe">${p.chambre==='AN'?'AN':'Sénat'} - ${p.groupe}</div>
         <div style="display:flex;gap:3px;flex-wrap:wrap;margin:3px 0">
           ${p.commission_agri?'<span class="badge badge-agri">Agri</span>':''}
           ${p.commission_eco?'<span class="badge badge-eco">Eco</span>':''}
