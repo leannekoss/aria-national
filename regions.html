@@ -7,45 +7,87 @@
 <title>ANIA - 16 régions ARIA</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
 <style>
+:root {
+  --ink: #172033;
+  --muted: #647084;
+  --line: #dbe2ea;
+  --paper: #fbfcf8;
+  --surface: #ffffff;
+  --navy: #1a1a2e;
+  --navy-2: #26324a;
+  --accent: #d85b12;
+  --accent-soft: #fff1e8;
+  --success: #176b4d;
+  --warning: #9a5b00;
+  --danger: #9f2a2a;
+  --info: #245d86;
+  --radius: 8px;
+  --shadow: 0 1px 2px rgba(18, 30, 50, .08), 0 10px 30px rgba(18, 30, 50, .05);
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
-.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
-.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
-.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
-.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
-.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
-.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
-.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
-.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-.badge-agri { background: #d4edda; color: #155724; }
-.badge-eco { background: #cce5ff; color: #004085; }
-.badge-egalim { background: #fff3cd; color: #856404; }
-.badge-an { background: #fce8d5; color: #8a3a00; }
-.badge-sen { background: #d9e8ff; color: #003680; }
+html { background: var(--paper); color: var(--ink); }
+body { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
+a { color: inherit; }
+.top-nav { background: var(--navy); color: white; padding: 0 22px; min-height: 56px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; gap: 18px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.nav-brand-link { color: white; text-decoration: none; font-weight: 800; font-size: 15px; letter-spacing: .01em; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-link { color: rgba(255,255,255,.72); text-decoration: none; padding: 8px 11px; border-radius: 7px; font-size: 13px; font-weight: 650; white-space: nowrap; transition: background .16s, color .16s; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,.12); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
+.page-title { font-size: clamp(24px, 3vw, 34px); font-weight: 850; line-height: 1.12; margin-bottom: 8px; color: var(--ink); letter-spacing: 0; }
+.page-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 22px; max-width: 78ch; }
+.section-title { font-size: 16px; font-weight: 820; color: var(--ink); margin-bottom: 4px; }
+.section-note { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.card:hover { box-shadow: var(--shadow); }
+.evidence { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 11px; margin-top: 10px; }
+.badge, .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 750; line-height: 1.35; border: 1px solid transparent; white-space: nowrap; }
+.badge-agri { background: #edf7f1; color: var(--success); border-color: #cde8d8; }
+.badge-eco { background: #edf5fb; color: var(--info); border-color: #c9e0f1; }
+.badge-egalim { background: #fff7df; color: var(--warning); border-color: #f4df9d; }
+.badge-an { background: var(--accent-soft); color: #8b3908; border-color: #f1c7ad; }
+.badge-sen { background: #edf2ff; color: #24406f; border-color: #ccd7f4; }
+.badge-danger { background: #fff0f0; color: var(--danger); border-color: #f0caca; }
+.badge-neutral { background: #f4f6f8; color: #526071; border-color: #dce3eb; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
-th:hover { background: #e9ecef; }
-td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
-tr:hover td { background: #fafafa; }
-.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
-.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+th { text-align: left; padding: 11px 12px; background: #f6f8fa; font-weight: 750; font-size: 11px; color: #4d5968; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; white-space: nowrap; text-transform: uppercase; letter-spacing: .03em; }
+th:hover { background: #eef2f6; }
+td { padding: 11px 12px; border-bottom: 1px solid #eef2f5; vertical-align: middle; }
+tr:hover td { background: #fbfcfe; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+.search-bar { width: 100%; padding: 11px 13px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; margin-bottom: 12px; background: white; color: var(--ink); }
+.search-bar:focus, .filter-select:focus { outline: 2px solid color-mix(in srgb, var(--accent), white 68%); outline-offset: 1px; border-color: var(--accent); }
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
-.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.filter-select { padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; background: white; color: var(--ink); }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 16px; box-shadow: var(--shadow); min-width: 0; }
+.stat-value { font-size: clamp(24px, 3vw, 34px); font-weight: 850; color: var(--navy); line-height: 1.05; overflow-wrap: anywhere; }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 8px; }
 .pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
-.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
-.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
-.page-btn:hover:not(.active) { background: #f0f0f0; }
+.page-btn { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: white; cursor: pointer; font-size: 13px; color: var(--ink); }
+.page-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+.page-btn:hover:not(.active) { background: #f0f3f6; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
-:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
-@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
-@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mobile-cards { display: none; }
+@media(max-width:760px) {
+  .top-nav { padding: 8px 12px; align-items: flex-start; flex-direction: column; gap: 6px; min-height: 0; }
+  .nav-links { width: 100%; }
+  .nav-link { font-size: 12px; padding: 7px 9px; }
+  .container { padding: 20px 14px; }
+  .filter-row { flex-direction: column; }
+  .filter-select { width: 100%; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 16px; }
+  table { font-size: 12px; }
+  th, td { padding: 8px; }
+}
+@media(max-width:430px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-card { padding: 13px 12px; }
+  .stat-label { font-size: 11px; }
+}
 
 .region-card { background:white; border-radius:12px; padding:20px; box-shadow:0 1px 4px rgba(0,0,0,.08); margin-bottom:14px; display:flex; align-items:flex-start; gap:16px; border-left:5px solid #e85d04; }
 .region-rank { width:36px; height:36px; border-radius:50%; background:#e85d04; color:white; font-size:14px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
@@ -63,7 +105,7 @@ tr:hover td { background: #fafafa; }
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 </head>
 <body>
-<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link active">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="entreprises.html" class="nav-link ">Entreprises</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link">ANIA Radar</a><div class="nav-links"><a href="accueil.html" class="nav-link ">Cockpit</a><a href="dossiers-chauds.html" class="nav-link ">Dossiers</a><a href="timeline-reglementaire.html" class="nav-link ">Timeline</a><a href="parlementaires.html" class="nav-link ">Élus</a><a href="index.html" class="nav-link ">Carte</a><a href="entreprises.html" class="nav-link ">Entreprises</a><a href="regions.html" class="nav-link active">Régions</a><a href="methodologie.html" class="nav-link ">Sources</a></div></nav>
 <div class="container">
   <div class="page-title">🌍 Régions ARIA</div>
   <div class="page-subtitle">27 201 sites IAA (PME+) répartis par association ARIA régionale - Classés par volume</div>
@@ -79,7 +121,7 @@ tr:hover td { background: #fafafa; }
 </div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-const REGIONS_DATA = [{"nom": "AREA Occitanie", "nb_sites": 3415, "top3_depts": [{"dept": "34", "nb": 585}, {"dept": "30", "nb": 417}, {"dept": "31", "nb": 396}], "top_parl": {"nom": "Bouquin Manon", "chambre": "AN", "dept": "34", "score": 596.7}}, {"nom": "AREA Nouvelle Aquitaine", "nb_sites": 3252, "top3_depts": [{"dept": "33", "nb": 614}, {"dept": "64", "nb": 544}, {"dept": "17", "nb": 345}], "top_parl": {"nom": "Gillé Hervé", "chambre": "SEN", "dept": "33", "score": 675.4}}, {"nom": "ARIA AURA", "nb_sites": 3183, "top3_depts": [{"dept": "69", "nb": 503}, {"dept": "38", "nb": 361}, {"dept": "74", "nb": 324}], "top_parl": {"nom": "Fugit Jean-Luc", "chambre": "AN", "dept": "69", "score": 518.09}}, {"nom": "ARIA Grand Est", "nb_sites": 2291, "top3_depts": [{"dept": "51", "nb": 596}, {"dept": "67", "nb": 420}, {"dept": "68", "nb": 295}], "top_parl": {"nom": "Chevalier Cédric", "chambre": "SEN", "dept": "51", "score": 655.6}}, {"nom": "ARIA Sud", "nb_sites": 2275, "top3_depts": [{"dept": "13", "nb": 678}, {"dept": "83", "nb": 508}, {"dept": "06", "nb": 421}], "top_parl": {"nom": "Fayssat Olivier", "chambre": "AN", "dept": "13", "score": 698.34}}, {"nom": "AREA Île-de-France", "nb_sites": 2221, "top3_depts": [{"dept": "75", "nb": 686}, {"dept": "77", "nb": 252}, {"dept": "92", "nb": 245}], "top_parl": {"nom": "Guhl Antoinette", "chambre": "SEN", "dept": "75", "score": 891.8}}, {"nom": "ABEA", "nb_sites": 1487, "top3_depts": [{"dept": "29", "nb": 414}, {"dept": "35", "nb": 401}, {"dept": "56", "nb": 380}], "top_parl": {"nom": "Bleunven Yves", "chambre": "SEN", "dept": "56", "score": 494.0}}, {"nom": "Non rattaché", "nb_sites": 1435, "top3_depts": [{"dept": "971", "nb": 1093}, {"dept": "973", "nb": 217}, {"dept": "976", "nb": 79}], "top_parl": {"nom": "Théophile Dominique", "chambre": "SEN", "dept": "971", "score": 1420.9}}, {"nom": "AREA Pays de la Loire", "nb_sites": 1305, "top3_depts": [{"dept": "44", "nb": 410}, {"dept": "49", "nb": 310}, {"dept": "85", "nb": 299}], "top_parl": {"nom": "Garnier Laurence", "chambre": "SEN", "dept": "44", "score": 533.0}}, {"nom": "Vitagora", "nb_sites": 1295, "top3_depts": [{"dept": "25", "nb": 295}, {"dept": "21", "nb": 249}, {"dept": "39", "nb": 218}], "top_parl": {"nom": "Jacquemet Annick", "chambre": "SEN", "dept": "25", "score": 324.5}}, {"nom": "Agro-Spheres", "nb_sites": 1294, "top3_depts": [{"dept": "59", "nb": 483}, {"dept": "62", "nb": 341}, {"dept": "60", "nb": 169}], "top_parl": {"nom": "Linkenheld Audrey", "chambre": "SEN", "dept": "59", "score": 627.9}}, {"nom": "AREA Normandie", "nb_sites": 1127, "top3_depts": [{"dept": "76", "nb": 299}, {"dept": "14", "nb": 284}, {"dept": "50", "nb": 219}], "top_parl": {"nom": "Chauvet Patrick", "chambre": "SEN", "dept": "76", "score": 328.9}}, {"nom": "AREA Centre-Val de Loire", "nb_sites": 841, "top3_depts": [{"dept": "37", "nb": 218}, {"dept": "41", "nb": 176}, {"dept": "45", "nb": 152}], "top_parl": {"nom": "Louault Vincent", "chambre": "SEN", "dept": "37", "score": 239.8}}, {"nom": "ADIR", "nb_sites": 770, "top3_depts": [{"dept": "974", "nb": 770}], "top_parl": {"nom": "Gaillard Perceval", "chambre": "AN", "dept": "974", "score": 785.4}}, {"nom": "ARIA Corse", "nb_sites": 593, "top3_depts": [{"dept": "2B", "nb": 345}, {"dept": "2A", "nb": 248}], "top_parl": {"nom": "Parigi Paul Toussaint", "chambre": "SEN", "dept": "2B", "score": 345.0}}, {"nom": "AMPI", "nb_sites": 417, "top3_depts": [{"dept": "972", "nb": 417}], "top_parl": {"nom": "Buval Frédéric", "chambre": "SEN", "dept": "972", "score": 458.7}}];
+const REGIONS_DATA = [{"nom": "AREA Occitanie", "nb_sites": 3415, "top3_depts": [{"dept": "34", "nb": 585}, {"dept": "30", "nb": 417}, {"dept": "31", "nb": 396}], "top_parl": {"nom": "Gabarron Julien", "chambre": "AN", "dept": "34", "score": 819.0}}, {"nom": "AREA Nouvelle Aquitaine", "nb_sites": 3252, "top3_depts": [{"dept": "33", "nb": 614}, {"dept": "64", "nb": 544}, {"dept": "17", "nb": 345}], "top_parl": {"nom": "Mette Sophie", "chambre": "AN", "dept": "33", "score": 859.6}}, {"nom": "ARIA AURA", "nb_sites": 3183, "top3_depts": [{"dept": "69", "nb": 503}, {"dept": "38", "nb": 361}, {"dept": "74", "nb": 324}], "top_parl": {"nom": "Gassilloud Thomas", "chambre": "AN", "dept": "69", "score": 754.5}}, {"nom": "ARIA Grand Est", "nb_sites": 2291, "top3_depts": [{"dept": "51", "nb": 596}, {"dept": "67", "nb": 420}, {"dept": "68", "nb": 295}], "top_parl": {"nom": "Michelet Maxime", "chambre": "AN", "dept": "51", "score": 774.8}}, {"nom": "ARIA Sud", "nb_sites": 2275, "top3_depts": [{"dept": "13", "nb": 678}, {"dept": "83", "nb": 508}, {"dept": "06", "nb": 421}], "top_parl": {"nom": "Mélin Joëlle", "chambre": "AN", "dept": "13", "score": 949.2}}, {"nom": "AREA Île-de-France", "nb_sites": 2221, "top3_depts": [{"dept": "75", "nb": 686}, {"dept": "77", "nb": 252}, {"dept": "92", "nb": 245}], "top_parl": {"nom": "Ibled Catherine", "chambre": "AN", "dept": "75", "score": 960.4}}, {"nom": "ABEA", "nb_sites": 1487, "top3_depts": [{"dept": "29", "nb": 414}, {"dept": "35", "nb": 401}, {"dept": "56", "nb": 380}], "top_parl": {"nom": "Thomin Mélanie", "chambre": "AN", "dept": "29", "score": 662.4}}, {"nom": "Non rattaché", "nb_sites": 1435, "top3_depts": [{"dept": "971", "nb": 1093}, {"dept": "973", "nb": 217}, {"dept": "976", "nb": 79}], "top_parl": {"nom": "Théophile Dominique", "chambre": "SEN", "dept": "971", "score": 1420.9}}, {"nom": "AREA Pays de la Loire", "nb_sites": 1305, "top3_depts": [{"dept": "44", "nb": 410}, {"dept": "49", "nb": 310}, {"dept": "85", "nb": 299}], "top_parl": {"nom": "Roussel Fabrice", "chambre": "AN", "dept": "44", "score": 615.0}}, {"nom": "Vitagora", "nb_sites": 1295, "top3_depts": [{"dept": "25", "nb": 295}, {"dept": "21", "nb": 249}, {"dept": "39", "nb": 218}], "top_parl": {"nom": "Croizier Laurent", "chambre": "AN", "dept": "25", "score": 413.0}}, {"nom": "Agro-Spheres", "nb_sites": 1294, "top3_depts": [{"dept": "59", "nb": 483}, {"dept": "62", "nb": 341}, {"dept": "60", "nb": 169}], "top_parl": {"nom": "Marchio Matthieu", "chambre": "AN", "dept": "59", "score": 724.5}}, {"nom": "AREA Normandie", "nb_sites": 1127, "top3_depts": [{"dept": "76", "nb": 299}, {"dept": "14", "nb": 284}, {"dept": "50", "nb": 219}], "top_parl": {"nom": "Le Bourgeois Robert", "chambre": "AN", "dept": "76", "score": 478.4}}, {"nom": "AREA Centre-Val de Loire", "nb_sites": 841, "top3_depts": [{"dept": "37", "nb": 218}, {"dept": "41", "nb": 176}, {"dept": "45", "nb": 152}], "top_parl": {"nom": "Labaronne Daniel", "chambre": "AN", "dept": "37", "score": 283.4}}, {"nom": "ADIR", "nb_sites": 770, "top3_depts": [{"dept": "974", "nb": 770}], "top_parl": {"nom": "Gaillard Perceval", "chambre": "AN", "dept": "974", "score": 1078.0}}, {"nom": "ARIA Corse", "nb_sites": 593, "top3_depts": [{"dept": "2B", "nb": 345}, {"dept": "2A", "nb": 248}], "top_parl": {"nom": "Ceccoli François-Xavier", "chambre": "AN", "dept": "2B", "score": 483.0}}, {"nom": "AMPI", "nb_sites": 417, "top3_depts": [{"dept": "972", "nb": 417}], "top_parl": {"nom": "Nadeau Marcellin", "chambre": "AN", "dept": "972", "score": 583.8}}];
 
 // Stats
 const attached = REGIONS_DATA.filter(r => r.nom !== 'Non rattaché').reduce((a, r) => a + r.nb_sites, 0);
@@ -113,7 +155,7 @@ function regionColor(regionNom) {
   return regionColorMap[regionNom] || '#ccc';
 }
 
-fetch('https://raw.githubusercontent.com/gregoiredavid/france-geojson/master/departements-version-simplifiee.geojson')
+fetch('assets/departements-version-simplifiee.geojson')
   .then(r => r.json())
   .then(geo => {
     L.geoJSON(geo, {

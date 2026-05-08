@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-05-08T20:05:55+00:00",
+  "sources": [
+    {
+      "id": "assemblee_documents",
+      "label": "Assemblée nationale · publications",
+      "url": "https://www2.assemblee-nationale.fr/feeds/detail/documents-parlementaires",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 10,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "assemblee_debats",
+      "label": "Assemblée nationale · débats",
+      "url": "https://www2.assemblee-nationale.fr/feeds/detail/crs",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 10,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "assemblee_presse",
+      "label": "Assemblée nationale · presse",
+      "url": "https://www.assemblee-nationale.fr/dyn/rss/communiques-de-presse.xml",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 30,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "senat_rapports",
+      "label": "Sénat · rapports",
+      "url": "https://www.senat.fr/rss/rapports.rss",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 23,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "senat_textes",
+      "label": "Sénat · textes",
+      "url": "https://www.senat.fr/rss/textes.rss",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 30,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "senat_presse",
+      "label": "Sénat · presse",
+      "url": "https://www.senat.fr/rss/presse.rss",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 5,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "senat_agriculture",
+      "label": "Sénat · thème agriculture",
+      "url": "https://www.senat.fr/themes/rss/therss2.rss",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 30,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "ania_feed",
+      "label": "ANIA · flux RSS",
+      "url": "https://www.ania.net/feed",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 10,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "ania_posts",
+      "label": "ANIA · WordPress posts",
+      "url": "https://www.ania.net/wp-json/wp/v2/posts?per_page=25&_fields=id,date,modified,slug,link,title.rendered",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 25,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "ania_events",
+      "label": "ANIA · WordPress events",
+      "url": "https://www.ania.net/wp-json/tribe/events/v1/events?per_page=25",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:48+00:00",
+      "item_count": 25,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "hatvp",
+      "label": "HATVP · vues fusionnées",
+      "url": "https://www.hatvp.fr/agora/opendata/csv/Vues_Fusionnees.zip",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:54+00:00",
+      "item_count": 142763,
+      "freshness_status": "fresh",
+      "fallback_used": true
+    },
+    {
+      "id": "alimconfiance",
+      "label": "Alim'confiance · export JSON",
+      "url": "https://dgal.opendatasoft.com/api/explore/v2.1/catalog/datasets/export_alimconfiance/exports/json",
+      "refreshed_now": false,
+      "collected_at": "2026-05-08T20:05:54+00:00",
+      "item_count": 0,
+      "freshness_status": "stale",
+      "fallback_used": false,
+      "note": "Enrichissement optionnel: le build ne bloque pas si le dump complet n'est pas encore cache."
+    }
+  ],
+  "counts": {
+    "timeline_items": 198,
+    "hot_dossiers": 6,
+    "veille_thematique": 6,
+    "parlementaires_recent": 140,
+    "lobbying_recent": 60,
+    "alim_index": 0
+  }
+}

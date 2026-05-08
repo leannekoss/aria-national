@@ -7,45 +7,87 @@
 <title>ANIA - Fiche parlementaire</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
 <style>
+:root {
+  --ink: #172033;
+  --muted: #647084;
+  --line: #dbe2ea;
+  --paper: #fbfcf8;
+  --surface: #ffffff;
+  --navy: #1a1a2e;
+  --navy-2: #26324a;
+  --accent: #d85b12;
+  --accent-soft: #fff1e8;
+  --success: #176b4d;
+  --warning: #9a5b00;
+  --danger: #9f2a2a;
+  --info: #245d86;
+  --radius: 8px;
+  --shadow: 0 1px 2px rgba(18, 30, 50, .08), 0 10px 30px rgba(18, 30, 50, .05);
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
-.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
-.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
-.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
-.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
-.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
-.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
-.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
-.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-.badge-agri { background: #d4edda; color: #155724; }
-.badge-eco { background: #cce5ff; color: #004085; }
-.badge-egalim { background: #fff3cd; color: #856404; }
-.badge-an { background: #fce8d5; color: #8a3a00; }
-.badge-sen { background: #d9e8ff; color: #003680; }
+html { background: var(--paper); color: var(--ink); }
+body { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
+a { color: inherit; }
+.top-nav { background: var(--navy); color: white; padding: 0 22px; min-height: 56px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; gap: 18px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.nav-brand-link { color: white; text-decoration: none; font-weight: 800; font-size: 15px; letter-spacing: .01em; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-link { color: rgba(255,255,255,.72); text-decoration: none; padding: 8px 11px; border-radius: 7px; font-size: 13px; font-weight: 650; white-space: nowrap; transition: background .16s, color .16s; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,.12); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
+.page-title { font-size: clamp(24px, 3vw, 34px); font-weight: 850; line-height: 1.12; margin-bottom: 8px; color: var(--ink); letter-spacing: 0; }
+.page-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 22px; max-width: 78ch; }
+.section-title { font-size: 16px; font-weight: 820; color: var(--ink); margin-bottom: 4px; }
+.section-note { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.card:hover { box-shadow: var(--shadow); }
+.evidence { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 11px; margin-top: 10px; }
+.badge, .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 750; line-height: 1.35; border: 1px solid transparent; white-space: nowrap; }
+.badge-agri { background: #edf7f1; color: var(--success); border-color: #cde8d8; }
+.badge-eco { background: #edf5fb; color: var(--info); border-color: #c9e0f1; }
+.badge-egalim { background: #fff7df; color: var(--warning); border-color: #f4df9d; }
+.badge-an { background: var(--accent-soft); color: #8b3908; border-color: #f1c7ad; }
+.badge-sen { background: #edf2ff; color: #24406f; border-color: #ccd7f4; }
+.badge-danger { background: #fff0f0; color: var(--danger); border-color: #f0caca; }
+.badge-neutral { background: #f4f6f8; color: #526071; border-color: #dce3eb; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
-th:hover { background: #e9ecef; }
-td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
-tr:hover td { background: #fafafa; }
-.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
-.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+th { text-align: left; padding: 11px 12px; background: #f6f8fa; font-weight: 750; font-size: 11px; color: #4d5968; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; white-space: nowrap; text-transform: uppercase; letter-spacing: .03em; }
+th:hover { background: #eef2f6; }
+td { padding: 11px 12px; border-bottom: 1px solid #eef2f5; vertical-align: middle; }
+tr:hover td { background: #fbfcfe; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+.search-bar { width: 100%; padding: 11px 13px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; margin-bottom: 12px; background: white; color: var(--ink); }
+.search-bar:focus, .filter-select:focus { outline: 2px solid color-mix(in srgb, var(--accent), white 68%); outline-offset: 1px; border-color: var(--accent); }
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
-.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.filter-select { padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; background: white; color: var(--ink); }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 16px; box-shadow: var(--shadow); min-width: 0; }
+.stat-value { font-size: clamp(24px, 3vw, 34px); font-weight: 850; color: var(--navy); line-height: 1.05; overflow-wrap: anywhere; }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 8px; }
 .pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
-.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
-.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
-.page-btn:hover:not(.active) { background: #f0f0f0; }
+.page-btn { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: white; cursor: pointer; font-size: 13px; color: var(--ink); }
+.page-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+.page-btn:hover:not(.active) { background: #f0f3f6; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
-:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
-@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
-@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mobile-cards { display: none; }
+@media(max-width:760px) {
+  .top-nav { padding: 8px 12px; align-items: flex-start; flex-direction: column; gap: 6px; min-height: 0; }
+  .nav-links { width: 100%; }
+  .nav-link { font-size: 12px; padding: 7px 9px; }
+  .container { padding: 20px 14px; }
+  .filter-row { flex-direction: column; }
+  .filter-select { width: 100%; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 16px; }
+  table { font-size: 12px; }
+  th, td { padding: 8px; }
+}
+@media(max-width:430px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-card { padding: 13px 12px; }
+  .stat-label { font-size: 11px; }
+}
 
 .fiche-header { background:#1a1a2e; color:white; padding:28px 32px; border-radius:12px; margin-bottom:20px; }
 .fiche-nom { font-size:26px; font-weight:700; margin-bottom:6px; }
@@ -56,11 +98,13 @@ tr:hover td { background: #fafafa; }
 .vote-row:last-child { border-bottom:none; }
 .score-bar { background:#eee; border-radius:4px; height:8px; margin-top:4px; }
 .score-bar-fill { height:8px; border-radius:4px; background:#e85d04; }
+.recent-row { display:grid; grid-template-columns:1fr auto; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0; }
+.recent-row:last-child { border-bottom:none; }
 @media(max-width:768px) { .grid-2 { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
-<nav class="top-nav"><a href="accueil.html" class="nav-brand-link ">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link active">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="entreprises.html" class="nav-link ">Entreprises</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link">ANIA Radar</a><div class="nav-links"><a href="accueil.html" class="nav-link ">Cockpit</a><a href="dossiers-chauds.html" class="nav-link ">Dossiers</a><a href="timeline-reglementaire.html" class="nav-link ">Timeline</a><a href="parlementaires.html" class="nav-link active">Élus</a><a href="index.html" class="nav-link ">Carte</a><a href="entreprises.html" class="nav-link ">Entreprises</a><a href="regions.html" class="nav-link ">Régions</a><a href="methodologie.html" class="nav-link ">Sources</a></div></nav>
 <div class="container" style="max-width:900px">
 <a href="parlementaires.html" style="color:#666;font-size:13px;display:inline-block;margin-bottom:16px">← Retour à la liste</a>
 <div id="content"><div class="card" style="padding:40px;text-align:center;color:#888">Chargement...</div></div>
@@ -82,11 +126,36 @@ function voteRow(label, v, loi) {
   </div>`;
 }
 
+function priorityLabel(p) {
+  if (p.score >= 250) return 'Priorité forte';
+  if (p.score >= 80) return 'Priorité moyenne';
+  if (p.nb_sites > 0 || p.commission_agri || p.commission_eco || p.mission_egalim) return 'À qualifier';
+  return 'Veille simple';
+}
+
+function approachAngle(p) {
+  if (p.mission_egalim) return 'Entrer par les relations commerciales et la chaîne de valeur alimentaire.';
+  if (p.commission_agri) return 'Entrer par la souveraineté alimentaire, les producteurs et la transformation locale.';
+  if (p.commission_eco) return 'Entrer par compétitivité, emploi industriel et contraintes réglementaires.';
+  if (p.nb_sites > 0) return 'Entrer par l’empreinte économique locale et les sites IAA de son territoire.';
+  return 'Surveiller les prises de position publiques avant sollicitation prioritaire.';
+}
+
+function vigilancePoint(p) {
+  if ((p.position||'').includes('contre')) return 'Historique de vote défavorable: préparer des preuves territoriales factuelles.';
+  if ((p.position||'').includes('partag')) return 'Posture mixte: cadrer le rendez-vous sur un dossier précis.';
+  if (!p.nb_sites) return 'Faible exposition territoriale identifiée: ne pas prioriser sans signal parlementaire récent.';
+  return 'Rester factuel: score de priorité relationnelle, pas notation politique.';
+}
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 if (!id) { document.getElementById('content').innerHTML='<div class="card" style="padding:24px">ID manquant dans l\'URL</div>'; }
 
-fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
+Promise.all([
+  fetch('data/parlementaires.json').then(r=>r.json()),
+  fetch('data/parlementaires_recent.json').then(r=>r.json()).catch(()=>({})),
+]).then(([data, recentIndex]) => {
   const p = data.find(d => d.id === id || d.nom.toLowerCase().replace(/\s+/g,'-') === id);
   if (!p) {
     document.getElementById('content').innerHTML = '<div class="card" style="padding:24px">Parlementaire non trouvé.</div>';
@@ -108,8 +177,12 @@ fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
 
   const scoreMax = 800;
   const scoreWidth = Math.min(100, (p.score / scoreMax) * 100);
+  const recentItems = ((recentIndex||{})[p.id]||{}).items || [];
 
   const sitesList = p.entreprises ? p.entreprises.split(';').filter(Boolean).slice(0, 30).map(e=>`<div style="font-size:12px;padding:3px 0;border-bottom:1px solid #f5f5f5">${e.trim()}</div>`).join('') + (p.entreprises.split(';').length > 30 ? `<div style="font-size:11px;color:#888;padding:6px 0">... et ${p.entreprises.split(';').length - 30} autres</div>` : '') : '<span style="color:#999;font-size:12px">Aucun site IAA dans la zone</span>';
+  const recentHtml = recentItems.length
+    ? recentItems.map(item => `<div class="recent-row"><div><div style="font-weight:600;font-size:13px">${item.title}</div><div style="font-size:11px;color:#888">${item.source} · ${new Date(item.published_at).toLocaleDateString('fr-FR')}</div></div><span class="badge" style="background:#f8f9fa;color:#445">${(item.themes||[])[0]||'Signal'}</span></div>`).join('')
+    : '<div style="font-size:13px;color:#888">Aucun signal récent rattaché nominativement dans les flux suivis.</div>';
 
   document.getElementById('content').innerHTML = `
     <div class="fiche-header">
@@ -120,6 +193,21 @@ fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
         <span>📍 Dept. ${p.dept} - ${p.nom_dept}</span>
         ${p.circo ? `<span>Circ. ${p.circo}</span>` : ''}
       </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px;border-left:4px solid var(--accent)">
+      <div class="section-title">Brief rendez-vous</div>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px">
+        <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Priorité</div><div style="font-weight:800">${priorityLabel(p)}</div></div>
+        <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Preuve locale</div><div style="font-weight:800">${p.nb_sites} site${p.nb_sites>1?'s':''} IAA</div></div>
+        <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Posture</div><div style="font-weight:800">${p.position||'non qualifiée'}</div></div>
+      </div>
+      <div style="display:grid;gap:10px;font-size:13px;line-height:1.55">
+        <div><strong>Angle d’approche.</strong> ${approachAngle(p)}</div>
+        <div><strong>Justification.</strong> Score ${p.score.toFixed(1)} combinant exposition territoriale, commissions, historique public et votes suivis.</div>
+        <div><strong>Point de vigilance.</strong> ${vigilancePoint(p)}</div>
+      </div>
+      <div class="evidence">Sources: Assemblée nationale, Sénat, SIRENE, scrutins publics, flux de veille · données générées localement</div>
     </div>
 
     <div class="grid-2">
@@ -167,6 +255,12 @@ fetch('data/parlementaires.json').then(r=>r.json()).then(data => {
         ${p.nb_huiles > 0 ? '<div style="font-size:11px;color:#6b9e3a;margin-bottom:6px">🫒 dont '+p.nb_huiles+' sites oléicoles</div>' : ''}
         <div style="max-height:300px;overflow-y:auto">${sitesList}</div>
       </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">🕒 Activité récente détectée</div>
+      <div style="font-size:12px;color:#666;margin-bottom:8px">Flux croisés Assemblée, Sénat, ANIA et signaux de veille associés.</div>
+      ${recentHtml}
     </div>
   `;
 });

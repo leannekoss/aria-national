@@ -4,131 +4,219 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
-<title>Cartographie ANIA × Parlementaires</title>
+<title>Cockpit ANIA · accueil</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
 <style>
+:root {
+  --ink: #172033;
+  --muted: #647084;
+  --line: #dbe2ea;
+  --paper: #fbfcf8;
+  --surface: #ffffff;
+  --navy: #1a1a2e;
+  --navy-2: #26324a;
+  --accent: #d85b12;
+  --accent-soft: #fff1e8;
+  --success: #176b4d;
+  --warning: #9a5b00;
+  --danger: #9f2a2a;
+  --info: #245d86;
+  --radius: 8px;
+  --shadow: 0 1px 2px rgba(18, 30, 50, .08), 0 10px 30px rgba(18, 30, 50, .05);
+}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f7; color: #1d1d1f; }
-.top-nav { background: #1a1a2e; color: white; padding: 0 24px; display: flex; align-items: center; gap: 24px; height: 52px; position: sticky; top: 0; z-index: 1000; }
-.nav-brand { font-weight: 700; font-size: 16px; white-space: nowrap; }
-.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.nav-link { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 13px; transition: all .2s; white-space: nowrap; }
-.nav-link:hover, .nav-link.active { background: rgba(255,255,255,0.15); color: white; }
-.container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
-.page-title { font-size: 28px; font-weight: 800; margin-bottom: 6px; }
-.page-subtitle { font-size: 14px; color: #666; margin-bottom: 24px; }
-.card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.12); }
-.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-.badge-agri { background: #d4edda; color: #155724; }
-.badge-eco { background: #cce5ff; color: #004085; }
-.badge-egalim { background: #fff3cd; color: #856404; }
-.badge-an { background: #fce8d5; color: #8a3a00; }
-.badge-sen { background: #d9e8ff; color: #003680; }
+html { background: var(--paper); color: var(--ink); }
+body { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--ink); line-height: 1.45; }
+a { color: inherit; }
+.top-nav { background: var(--navy); color: white; padding: 0 22px; min-height: 56px; position: sticky; top: 0; z-index: 1000; display: flex; align-items: center; gap: 18px; border-bottom: 1px solid rgba(255,255,255,.08); }
+.nav-brand-link { color: white; text-decoration: none; font-weight: 800; font-size: 15px; letter-spacing: .01em; white-space: nowrap; }
+.nav-links { display: flex; gap: 4px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-link { color: rgba(255,255,255,.72); text-decoration: none; padding: 8px 11px; border-radius: 7px; font-size: 13px; font-weight: 650; white-space: nowrap; transition: background .16s, color .16s; }
+.nav-link:hover, .nav-link.active { background: rgba(255,255,255,.12); color: white; }
+.container { max-width: 1200px; margin: 0 auto; padding: 28px 20px; }
+.page-title { font-size: clamp(24px, 3vw, 34px); font-weight: 850; line-height: 1.12; margin-bottom: 8px; color: var(--ink); letter-spacing: 0; }
+.page-subtitle { font-size: 14px; color: var(--muted); margin-bottom: 22px; max-width: 78ch; }
+.section-title { font-size: 16px; font-weight: 820; color: var(--ink); margin-bottom: 4px; }
+.section-note { font-size: 12px; color: var(--muted); margin-bottom: 14px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+.card:hover { box-shadow: var(--shadow); }
+.evidence { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; color: var(--muted); font-size: 11px; margin-top: 10px; }
+.badge, .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; font-size: 11px; font-weight: 750; line-height: 1.35; border: 1px solid transparent; white-space: nowrap; }
+.badge-agri { background: #edf7f1; color: var(--success); border-color: #cde8d8; }
+.badge-eco { background: #edf5fb; color: var(--info); border-color: #c9e0f1; }
+.badge-egalim { background: #fff7df; color: var(--warning); border-color: #f4df9d; }
+.badge-an { background: var(--accent-soft); color: #8b3908; border-color: #f1c7ad; }
+.badge-sen { background: #edf2ff; color: #24406f; border-color: #ccd7f4; }
+.badge-danger { background: #fff0f0; color: var(--danger); border-color: #f0caca; }
+.badge-neutral { background: #f4f6f8; color: #526071; border-color: #dce3eb; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { text-align: left; padding: 10px 12px; background: #f8f9fa; font-weight: 600; font-size: 12px; color: #555; border-bottom: 2px solid #eee; cursor: pointer; user-select: none; white-space: nowrap; }
-th:hover { background: #e9ecef; }
-td { padding: 8px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
-tr:hover td { background: #fafafa; }
-.search-bar { width: 100%; padding: 10px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; margin-bottom: 12px; }
-.search-bar:focus { outline: 2px solid #e85d04; outline-offset: 1px; border-color: #e85d04; }
+th { text-align: left; padding: 11px 12px; background: #f6f8fa; font-weight: 750; font-size: 11px; color: #4d5968; border-bottom: 1px solid var(--line); cursor: pointer; user-select: none; white-space: nowrap; text-transform: uppercase; letter-spacing: .03em; }
+th:hover { background: #eef2f6; }
+td { padding: 11px 12px; border-bottom: 1px solid #eef2f5; vertical-align: middle; }
+tr:hover td { background: #fbfcfe; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: white; }
+.search-bar { width: 100%; padding: 11px 13px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 14px; margin-bottom: 12px; background: white; color: var(--ink); }
+.search-bar:focus, .filter-select:focus { outline: 2px solid color-mix(in srgb, var(--accent), white 68%); outline-offset: 1px; border-color: var(--accent); }
 .filter-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-.filter-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; background: white; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
-.stat-card { background: white; border-radius: 10px; padding: 20px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.stat-value { font-size: 36px; font-weight: 700; color: #1a1a2e; }
-.stat-label { font-size: 12px; color: #666; margin-top: 6px; }
+.filter-select { padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius); font-size: 13px; background: white; color: var(--ink); }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.stat-card { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 16px; box-shadow: var(--shadow); min-width: 0; }
+.stat-value { font-size: clamp(24px, 3vw, 34px); font-weight: 850; color: var(--navy); line-height: 1.05; overflow-wrap: anywhere; }
+.stat-label { font-size: 12px; color: var(--muted); margin-top: 8px; }
 .pagination { display: flex; gap: 4px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
-.page-btn { padding: 5px 10px; border: 1px solid #ddd; border-radius: 4px; background: white; cursor: pointer; font-size: 13px; }
-.page-btn.active { background: #1a1a2e; color: white; border-color: #1a1a2e; }
-.page-btn:hover:not(.active) { background: #f0f0f0; }
+.page-btn { padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: white; cursor: pointer; font-size: 13px; color: var(--ink); }
+.page-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+.page-btn:hover:not(.active) { background: #f0f3f6; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
-:focus-visible { outline: 2px solid #e85d04; outline-offset: 2px; }
-@media(max-width:640px) { .top-nav { padding: 6px 12px; gap: 8px; height: auto; flex-wrap: wrap; } .nav-links { width: 100%; overflow-x: auto; } .nav-link { padding: 4px 8px; font-size: 11px; } }
-@media(max-width:768px) { table { font-size: 12px; } th, td { padding: 6px 8px; } .filter-row { flex-direction: column; } .filter-select { width: 100%; } }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mobile-cards { display: none; }
+@media(max-width:760px) {
+  .top-nav { padding: 8px 12px; align-items: flex-start; flex-direction: column; gap: 6px; min-height: 0; }
+  .nav-links { width: 100%; }
+  .nav-link { font-size: 12px; padding: 7px 9px; }
+  .container { padding: 20px 14px; }
+  .filter-row { flex-direction: column; }
+  .filter-select { width: 100%; }
+  .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 16px; }
+  table { font-size: 12px; }
+  th, td { padding: 8px; }
+}
+@media(max-width:430px) {
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .stat-card { padding: 13px 12px; }
+  .stat-label { font-size: 11px; }
+}
 
-.hero { background: #1a1a2e; background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px); background-size: 24px 24px; color: white; padding: 56px 20px; text-align: center; }
-.hero-title { font-size: clamp(24px, 4vw, 42px); font-weight: 800; line-height: 1.2; margin-bottom: 16px; }
-.hero-subtitle { font-size: 16px; opacity: .75; max-width: 640px; margin: 0 auto 32px; line-height: 1.6; }
-.hero-cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-.btn-primary { background: #e85d04; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; }
-.btn-primary:hover { background: #c94e00; }
-.btn-secondary { background: rgba(255,255,255,.15); color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; border: 1px solid rgba(255,255,255,.3); }
-.btn-secondary:hover { background: rgba(255,255,255,.25); }
-.section-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.feature-card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 1px 4px rgba(0,0,0,.08); text-decoration: none; color: inherit; transition: all .2s; border-top: 4px solid #e85d04; }
-.feature-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.12); }
-.feature-icon { font-size: 26px; margin-bottom: 8px; }
-.feature-title { font-size: 15px; font-weight: 700; margin-bottom: 5px; }
-.feature-desc { font-size: 12px; color: #666; line-height: 1.5; }
+.hero { background:#1a1a2e; color:white; padding:56px 20px; }
+.hero-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.3fr .9fr; gap:18px; align-items:start; }
+.hero-panel { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:22px; }
+.hero-kicker { display:inline-block; background:rgba(232,93,4,.2); color:#ffb27a; border:1px solid rgba(232,93,4,.35); padding:5px 12px; border-radius:999px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px; }
+.hero-title { font-size:clamp(28px,4vw,46px); line-height:1.05; font-weight:850; max-width:14ch; margin-bottom:14px; }
+.hero-subtitle { font-size:15px; line-height:1.65; color:rgba(255,255,255,.78); max-width:60ch; }
+.hero-cta { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
+.btn-primary { background:var(--accent); color:white; padding:12px 18px; border-radius:8px; text-decoration:none; font-weight:750; font-size:14px; }
+.btn-secondary { background:rgba(255,255,255,.08); color:white; padding:12px 18px; border-radius:8px; text-decoration:none; font-weight:750; font-size:14px; border:1px solid rgba(255,255,255,.15); }
+.hero-aside-title { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#ffb27a; margin-bottom:10px; }
+.signal-row { display:grid; grid-template-columns:1fr auto; gap:8px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.signal-row:last-child { border-bottom:none; }
+.signal-title { font-size:13px; line-height:1.35; }
+.signal-meta { font-size:11px; color:rgba(255,255,255,.65); margin-top:4px; }
+.signal-badge { font-size:11px; border-radius:999px; padding:3px 8px; background:rgba(255,255,255,.08); color:white; align-self:start; }
+.exec-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:16px; margin:24px 0; }
+.exec-list { display:grid; gap:10px; }
+.exec-item { display:grid; grid-template-columns:1fr auto; gap:10px; padding:12px 0; border-bottom:1px solid #f0f0f0; }
+.exec-item:last-child { border-bottom:none; }
+.exec-item-title { font-size:14px; font-weight:700; }
+.exec-item-meta { font-size:11px; color:#777; margin-top:4px; }
+.chip { display:inline-flex; align-items:center; padding:3px 8px; border-radius:999px; font-size:11px; font-weight:700; background:#f3f4f6; color:#334155; }
+.stacked-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px; }
+.feature-card { background:white; border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); text-decoration:none; color:inherit; transition:all .2s; border:1px solid var(--line); border-top:4px solid var(--accent); }
+.feature-card:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
+.feature-icon { font-size:11px; font-weight:850; letter-spacing:.08em; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
+.feature-title { font-size:15px; font-weight:700; margin-bottom:5px; }
+.feature-desc { font-size:12px; color:#666; line-height:1.5; }
+@media(max-width:900px) { .hero-grid,.exec-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
-<nav class="top-nav"><a href="accueil.html" class="nav-brand-link active">ANIA</a><div class="nav-links"><a href="index.html" class="nav-link ">Carte</a><a href="parlementaires.html" class="nav-link ">Parlementaires</a><a href="regions.html" class="nav-link ">Régions ARIA</a><a href="partis.html" class="nav-link ">Partis</a><a href="entreprises.html" class="nav-link ">Entreprises</a><a href="groupes.html" class="nav-link ">Industriels</a><a href="methodologie.html" class="nav-link ">Méthode</a></div></nav><style>.nav-brand-link{color:white;text-decoration:none;font-weight:700;font-size:16px;white-space:nowrap;padding:4px 8px;border-radius:6px;transition:all .2s}.nav-brand-link:hover,.nav-brand-link.active{background:rgba(255,255,255,.15)}</style>
+<nav class="top-nav"><a href="accueil.html" class="nav-brand-link">ANIA Radar</a><div class="nav-links"><a href="accueil.html" class="nav-link active">Cockpit</a><a href="dossiers-chauds.html" class="nav-link ">Dossiers</a><a href="timeline-reglementaire.html" class="nav-link ">Timeline</a><a href="parlementaires.html" class="nav-link ">Élus</a><a href="index.html" class="nav-link ">Carte</a><a href="entreprises.html" class="nav-link ">Entreprises</a><a href="regions.html" class="nav-link ">Régions</a><a href="methodologie.html" class="nav-link ">Sources</a></div></nav>
 <div class="hero">
-  <div style="max-width:800px;margin:0 auto">
-    <div style="display:inline-block;background:rgba(232,93,4,.2);color:#e85d04;border:1px solid rgba(232,93,4,.4);padding:4px 16px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:18px;letter-spacing:.6px">NATIONAL · 16 ASSOCIATIONS ARIA · DONNÉES AVRIL 2026</div>
-    <div class="hero-title">Cartographie <span style="color:#e85d04">ANIA</span><br>× Parlementaires</div>
-    <div class="hero-subtitle">
-      27 201 sites industriels alimentaires (PME+) sur toute la France - 16 associations régionales ARIA - 925 parlementaires scorés
+  <div class="hero-grid">
+    <div class="hero-panel">
+      <div class="hero-kicker">Cockpit ANIA · affaires publiques</div>
+      <div class="hero-title">Voir ce qui bouge, ce qui compte, et où agir maintenant.</div>
+      <div class="hero-subtitle">Un front unique pour suivre les dossiers chauds, les signaux parlementaires, la pression réglementaire et la fraîcheur des sources officielles sans quitter le site statique.</div>
+      <div class="hero-cta">
+        <a href="dossiers-chauds.html" class="btn-primary">Ouvrir les dossiers chauds</a>
+        <a href="timeline-reglementaire.html" class="btn-secondary">Lire la timeline réglementaire</a>
+      </div>
     </div>
-    <div class="hero-cta">
-      <a href="index.html" class="btn-primary">Explorer la carte</a>
-      <a href="regions.html" class="btn-secondary">16 régions ARIA</a>
+    <div class="hero-panel">
+      <div class="hero-aside-title">Signaux des 7 derniers jours</div>
+      <div id="hero-signals">
+        <div class="signal-row"><div><div class="signal-title">Chargement des derniers signaux...</div></div></div>
+      </div>
     </div>
   </div>
 </div>
 <div class="container">
-  <div class="stats-grid" style="margin-top:32px;grid-template-columns:repeat(4,1fr)">
-    <div class="stat-card"><div class="stat-value">27 201</div><div class="stat-label">🏭 Sites IAA (PME+)</div></div>
-    <div class="stat-card"><div class="stat-value">925</div><div class="stat-label">🏛️ Parlementaires scorés</div></div>
-    <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">🌍 Régions ARIA</div></div>
-    <div class="stat-card"><div class="stat-value">5</div><div class="stat-label">🗳️ Votes suivis (EGALIM)</div></div>
-  </div>
-  <div class="section-cards">
-    <a href="index.html" class="feature-card">
-      <div class="feature-icon">🗺️</div>
-      <div class="feature-title">Carte interactive</div>
-      <div class="feature-desc">Choroplèthe départementale par intensité industrielle. Cliquez sur un département pour ses parlementaires.</div>
-    </a>
-    <a href="parlementaires.html" class="feature-card">
-      <div class="feature-icon">🏛️</div>
-      <div class="feature-title">Parlementaires</div>
-      <div class="feature-desc">925 élus (577 députés + 348 sénateurs) classés par score ANIA.</div>
-    </a>
-    <a href="regions.html" class="feature-card">
-      <div class="feature-icon">🌍</div>
-      <div class="feature-title">Régions ARIA</div>
-      <div class="feature-desc">16 associations régionales ARIA : répartition des sites, top départements, élu clé.</div>
-    </a>
-    <a href="partis.html" class="feature-card">
-      <div class="feature-icon">🎭</div>
-      <div class="feature-title">Partis politiques</div>
-      <div class="feature-desc">Exposition par groupe politique aux zones de production IAA nationale.</div>
-    </a>
-    <a href="groupes.html" class="feature-card">
-      <div class="feature-icon">🏭</div>
-      <div class="feature-title">Groupes industriels</div>
-      <div class="feature-desc">Groupes IAA multi-départements (21 374 SIREN uniques).</div>
-    </a>
-    <a href="methodologie.html" class="feature-card">
-      <div class="feature-icon">📊</div>
-      <div class="feature-title">Méthodologie</div>
-      <div class="feature-desc">Sources, formule de scoring ANIA, codes NAF IAA couverts.</div>
-    </a>
+  <div class="stats-grid" style="margin-top:32px">
+    <div class="stat-card"><div class="stat-value">27,181</div><div class="stat-label">Sites IAA géolocalisés</div></div>
+    <div class="stat-card"><div class="stat-value">925</div><div class="stat-label">Élus scorés</div></div>
+    <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">Régions ARIA</div></div>
+    <div class="stat-card"><div class="stat-value" id="fresh-source-count">-</div><div class="stat-label">Sources actives</div></div>
   </div>
 
-  <div class="card">
-    <div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#1a1a2e">Top 10 score ARIA - National</div>
-    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Théophile Dominique</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1420.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Califer Elie</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1103.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Baptiste Christian</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1103.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mathiasin Max</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Serva Olivier</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Lurel Victorin</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">7</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Nadille Solanges</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">8</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Guhl Antoinette</div><div style="font-size:11px;color:#888">SEN · 75 Paris</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">891.8</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">9</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Gaillard Perceval</div><div style="font-size:11px;color:#888">AN · 974 Réunion</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">785.4</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">10</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Naillet Philippe</div><div style="font-size:11px;color:#888">AN · 974 Réunion</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">777.7</span></div>
-    <div style="margin-top:12px;text-align:right">
-      <a href="parlementaires.html" style="font-size:12px;color:#e85d04;text-decoration:none;font-weight:600">Voir les 925 élus</a>
+  <div class="exec-grid">
+    <div class="card">
+      <div class="page-title" style="font-size:18px;margin-bottom:2px">Dossiers à arbitrer</div>
+      <div class="page-subtitle" style="margin-bottom:12px">Les sujets les plus actifs selon les flux officiels croisés</div>
+      <div class="exec-list" id="hot-dossiers-list"><div class="exec-item"><div>Chargement...</div></div></div>
+    </div>
+    <div class="card">
+      <div class="page-title" style="font-size:18px;margin-bottom:2px">Fraîcheur des sources</div>
+      <div class="page-subtitle" style="margin-bottom:12px">Provenance, dernière collecte et statut de repli</div>
+      <div class="exec-list" id="freshness-list"><div class="exec-item"><div>Chargement...</div></div></div>
     </div>
   </div>
 
-  <footer style="text-align:center;color:#888;font-size:12px;padding:32px 0">
-    Données : Assemblée Nationale · Sénat · SIRENE (INSEE) · 16 associations régionales ARIA · Avril 2026
-  </footer>
+  <div class="stacked-grid">
+    <a href="index.html" class="feature-card"><div class="feature-icon">Territoires</div><div class="feature-title">Carte interactive</div><div class="feature-desc">Lecture géographique de l’empreinte IAA et des élus exposés.</div></a>
+    <a href="dossiers-chauds.html" class="feature-card"><div class="feature-icon">Priorité</div><div class="feature-title">Dossiers chauds</div><div class="feature-desc">Priorisation par intensité de signal, récence et diversité des sources.</div></a>
+    <a href="timeline-reglementaire.html" class="feature-card"><div class="feature-icon">Veille</div><div class="feature-title">Timeline réglementaire</div><div class="feature-desc">Fil unifié des publications AN, Sénat, ANIA et signaux HATVP.</div></a>
+    <a href="veille-thematique.html" class="feature-card"><div class="feature-icon">Thèmes</div><div class="feature-title">Veille thématique</div><div class="feature-desc">Regroupement par thème métier: EGALIM, agriculture, emballages, santé, export.</div></a>
+    <a href="lobbying.html" class="feature-card"><div class="feature-icon">HATVP</div><div class="feature-title">Lobbying récent</div><div class="feature-desc">Lecture structurée: actions, volumes, décideurs publics et organisations.</div></a>
+    <a href="methodologie.html" class="feature-card"><div class="feature-icon">Preuves</div><div class="feature-title">Sources et méthode</div><div class="feature-desc">Règles de scoring, sources officielles et limites connues du build statique.</div></a>
+  </div>
+
+  <div class="card">
+    <div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#1a1a2e">Top 10 score ARIA · national</div>
+    <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Théophile Dominique</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1420.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Serva Olivier</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1202.3</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mathiasin Max</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1202.3</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Califer Elie</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Baptiste Christian</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Lurel Victorin</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">7</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Nadille Solanges</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">8</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Gaillard Perceval</div><div style="font-size:11px;color:#888">AN · 974 Réunion</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1078.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">9</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Ibled Catherine</div><div style="font-size:11px;color:#888">AN · 75 Paris</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">960.4</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">10</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mélin Joëlle</div><div style="font-size:11px;color:#888">AN · 13 Bouches-du-Rhône</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">949.2</span></div>
+    <div style="margin-top:12px;text-align:right"><a href="parlementaires.html" style="font-size:12px;color:#e85d04;text-decoration:none;font-weight:600">Voir les 925 élus</a></div>
+  </div>
+
+  <footer style="text-align:center;color:#888;font-size:12px;padding:32px 0">Sources officielles: Assemblée nationale · Sénat · HATVP · ANIA · Recherche-entreprises · Alim'confiance</footer>
 </div>
+<script>
+function prettyDate(value) {
+  if (!value) return 'n.c.';
+  return new Date(value).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' });
+}
+Promise.all([
+  fetch('data/hot_dossiers.json').then(r => r.json()),
+  fetch('data/freshness.json').then(r => r.json()),
+  fetch('data/timeline_reglementaire.json').then(r => r.json())
+]).then(([hot, freshness, timeline]) => {
+  document.getElementById('fresh-source-count').textContent = (freshness.sources||[]).filter(s => s.freshness_status !== 'disabled').length;
+  document.getElementById('hero-signals').innerHTML = (timeline||[]).slice(0, 5).map(item => `
+    <div class="signal-row">
+      <div>
+        <div class="signal-title">${item.title}</div>
+        <div class="signal-meta">${item.source} · ${prettyDate(item.published_at)}</div>
+      </div>
+      <span class="signal-badge">${(item.themes||[])[0]||'Signal'}</span>
+    </div>`).join('') || '<div class="signal-row"><div><div class="signal-title">Aucun signal récent</div></div></div>';
+  document.getElementById('hot-dossiers-list').innerHTML = (hot||[]).slice(0, 6).map(item => `
+    <div class="exec-item">
+      <div>
+        <div class="exec-item-title">${item.theme}</div>
+        <div class="exec-item-meta">${item.score} signaux · ${item.sources.join(' · ')}</div>
+      </div>
+      <span class="chip">${prettyDate(item.latest_at).split(' ')[0]}</span>
+    </div>`).join('') || '<div class="exec-item"><div>Aucun dossier chaud calculé.</div></div>';
+  document.getElementById('freshness-list').innerHTML = (freshness.sources||[]).slice(0, 8).map(source => `
+    <div class="exec-item">
+      <div>
+        <div class="exec-item-title">${source.label}</div>
+        <div class="exec-item-meta">${source.fallback_used ? 'fallback cache' : 'collecte nominale'} · ${source.item_count || 0} items</div>
+      </div>
+      <span class="chip">${source.freshness_status}</span>
+    </div>`).join('');
+}).catch(err => {
+  document.getElementById('hero-signals').innerHTML = `<div class="signal-row"><div class="signal-title">Erreur de chargement: ${err.message}</div></div>`;
+});
+</script>
 </body>
 </html>
