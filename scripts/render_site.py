@@ -1045,13 +1045,13 @@ def write_regions(regions_json):
 <body>
 {write_nav('regions.html')}
 <div class="container">
-  <div class="page-title">🌍 Régions ARIA</div>
+  <div class="page-title">Régions ARIA</div>
   <div class="page-subtitle">27 201 sites IAA (PME+) répartis par association ARIA régionale - Classés par volume</div>
   <div class="stats-grid">
     <div class="stat-card"><div class="stat-value">16</div><div class="stat-label">Associations ARIA</div></div>
     <div class="stat-card"><div class="stat-value">27 201</div><div class="stat-label">Sites IAA total</div></div>
-    <div class="stat-card"><div class="stat-value" id="sites-with-region">-</div><div class="stat-label">🏭 Sites rattachés à une ARIA</div></div>
-    <div class="stat-card"><div class="stat-value">103</div><div class="stat-label">📍 Départements couverts</div></div>
+    <div class="stat-card"><div class="stat-value" id="sites-with-region">-</div><div class="stat-label">Sites rattachés à une ARIA</div></div>
+    <div class="stat-card"><div class="stat-value">103</div><div class="stat-label">Départements couverts</div></div>
   </div>
   <div id="choropleth"></div>
   <input type="text" class="search-bar" id="search" placeholder="Filtrer par région ARIA..." oninput="renderRegions()">
@@ -1192,7 +1192,7 @@ def write_partis():
 <body>
 {write_nav('partis.html')}
 <div class="container">
-  <div class="page-title">🎭 Analyse par parti politique</div>
+  <div class="page-title">Analyse par parti politique</div>
   <div class="page-subtitle">Classement par exposition aux zones de production IAA nationale</div>
   <div class="filter-row">
     <select class="filter-select" id="f-chambre" onchange="renderPartis()"><option value="">AN + Sénat</option><option value="AN">Assemblée Nationale</option><option value="SEN">Sénat</option></select>
@@ -1260,7 +1260,7 @@ def write_groupes():
 <body>
 {write_nav('groupes.html')}
 <div class="container">
-  <div class="page-title">🏭 Groupes industriels</div>
+  <div class="page-title">Groupes industriels</div>
   <div class="page-subtitle">Groupes IAA multi-départements (21 374 SIREN uniques - groupes avec 2+ départements)</div>
   <div class="card">
     <label for="search" class="sr-only">Rechercher un groupe industriel</label>
@@ -1481,6 +1481,7 @@ def write_fiche_entreprise():
 .spinner {{ width:40px; height:40px; border:4px solid #eee; border-top:4px solid #1a1a2e; border-radius:50%; animation:spin 1s linear infinite; margin:40px auto 16px; }}
 @keyframes spin {{ to {{ transform:rotate(360deg); }} }}
 .back-link {{ display:inline-flex; align-items:center; gap:6px; color:#666; text-decoration:none; font-size:13px; margin-bottom:16px; }}
+.status-dot {{ width:8px; height:8px; border-radius:99px; display:inline-block; margin-right:6px; vertical-align:middle; background:currentColor; }}
 .denree-tag {{ display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; background:#f0f0f0; margin:2px; }}
 </style>
 </head>
@@ -1490,7 +1491,6 @@ def write_fiche_entreprise():
 <a href="entreprises.html" class="back-link">← Retour aux entreprises</a>
 <div id="loading"><div class="spinner"></div><p style="text-align:center;color:#888">Chargement de la fiche entreprise...</p></div>
 <div id="error" style="display:none;text-align:center;padding:40px">
-  <div style="font-size:48px;margin-bottom:16px">🔍</div>
   <h2>Entreprise non trouvée</h2>
   <p id="error-msg" style="color:#888;margin-top:8px"></p>
   <a href="entreprises.html" style="display:inline-block;margin-top:16px;padding:8px 20px;background:#1a1a2e;color:white;border-radius:8px;text-decoration:none">Revenir à la liste</a>
@@ -1551,28 +1551,28 @@ if (!siren) {{
           <span class="badge badge-eco">SIREN ${{ent.siren}}</span>
           ${{cat?'<span class="badge badge-agri">'+cat+'</span>':''}}
           ${{nafLabel?'<span class="badge badge-egalim">'+nafLabel+'</span>':''}}
-          <span class="badge" style="background:${{ent.etat_administratif==='A'?'#d4edda':'#f8d7da'}};color:${{ent.etat_administratif==='A'?'#155724':'#721c24'}}">${{ent.etat_administratif==='A'?'✅ Active':'❌ Fermée'}}</span>
+          <span class="badge" style="background:${{ent.etat_administratif==='A'?'#d4edda':'#f8d7da'}};color:${{ent.etat_administratif==='A'?'#155724':'#721c24'}}"><span class="status-dot"></span>${{ent.etat_administratif==='A'?'Active':'Fermée'}}</span>
         </div>`;
 
       const dirs = (ent.dirigeants||[]).map(d => (String(d.type_dirigeant||'').toLowerCase().includes('physique')
-        ? `<div class="dirigeant">👤 ${{d.prenoms||''}} ${{d.nom||''}}<div class="dir-qualite">${{d.qualite||''}}</div></div>`
-        : `<div class="dirigeant">🏢 ${{d.denomination||d.siren||''}}<div class="dir-qualite">${{d.qualite||''}}</div></div>`)).join('');
+        ? `<div class="dirigeant">${{d.prenoms||''}} ${{d.nom||''}}<div class="dir-qualite">${{d.qualite||''}}</div></div>`
+        : `<div class="dirigeant">${{d.denomination||d.siren||''}}<div class="dir-qualite">${{d.qualite||''}}</div></div>`)).join('');
       const labels = [];
       if (ent.complements) {{
-        if (ent.complements.est_bio) labels.push('🌿 Bio');
-        if (ent.complements.est_ess) labels.push('🤝 ESS');
-        if (ent.complements.est_rge) labels.push('♻️ RGE');
-        if (ent.complements.est_societe_mission) labels.push('🎯 Société à mission');
+        if (ent.complements.est_bio) labels.push('Bio');
+        if (ent.complements.est_ess) labels.push('ESS');
+        if (ent.complements.est_rge) labels.push('RGE');
+        if (ent.complements.est_societe_mission) labels.push('Société à mission');
       }}
       document.getElementById('info-card').innerHTML = `
-        <h3 style="margin-bottom:12px">📋 Informations</h3>
+        <h3 style="margin-bottom:12px">Informations</h3>
         <div class="info-row"><span class="info-label">Adresse siège</span><span class="info-value">${{siege.adresse||'-'}}</span></div>
         <div class="info-row"><span class="info-label">Commune</span><span class="info-value">${{siege.libelle_commune||siege.commune||'-'}} (${{siege.departement||''}})</span></div>
         <div class="info-row"><span class="info-label">Effectif</span><span class="info-value">${{EFFECTIF[String(ent.tranche_effectif_salarie)]||'-'}} salariés</span></div>
         <div class="info-row"><span class="info-label">Création</span><span class="info-value">${{fmtDate(ent.date_creation)}}</span></div>
         <div class="info-row"><span class="info-label">Établissements</span><span class="info-value">${{ent.nombre_etablissements_ouverts||0}} ouverts / ${{ent.nombre_etablissements||0}} total</span></div>
         ${{labels.length?'<div style="margin-top:8px">'+labels.join(' ')+'</div>':''}}
-        ${{dirs?'<h4 style="margin-top:16px;margin-bottom:8px">👥 Dirigeants</h4>'+dirs:''}}
+        ${{dirs?'<h4 style="margin-top:16px;margin-bottom:8px">Dirigeants</h4>'+dirs:''}}
         <div style="margin-top:14px;font-size:11px;color:#888">Cache local généré au build · provenance visible dans Méthodologie.</div>`;
 
       const map = L.map('map').setView([46.5, 2.5], 5);
@@ -1590,7 +1590,7 @@ if (!siren) {{
       if (bounds.length) map.fitBounds(bounds, {{padding:[30,30]}});
 
       const years = Object.keys(ent.finances||{{}}).sort().reverse();
-      let finHtml = '<h3 style="margin-bottom:12px">💰 Données financières</h3>';
+      let finHtml = '<h3 style="margin-bottom:12px">Données financières</h3>';
       if (years.length) {{
         years.forEach(y => {{
           const f = ent.finances[y] || {{}};
@@ -1605,7 +1605,7 @@ if (!siren) {{
       document.getElementById('finance-card').innerHTML = finHtml;
 
       const alimRecs = ent.alim_records || [];
-      let alimHtml = '<h3 style="margin-bottom:12px">🔬 Alim\\'confiance - inspections</h3>';
+      let alimHtml = '<h3 style="margin-bottom:12px">Alim\\'confiance - inspections</h3>';
       if (alimRecs.length) {{
         alimRecs.forEach(rec => {{
           const denrees = (rec.denree||'').split('|').filter(Boolean);
@@ -1628,7 +1628,7 @@ if (!siren) {{
 
       const deptSet = new Set([...(ent.ania_sites||[]).map(s => s.dept), siege.departement].filter(Boolean));
       const myParls = parlData.filter(p => deptSet.has(p.dept)).sort((a,b) => b.score-a.score).slice(0, 20);
-      let parlHtml = '<h3 style="margin-bottom:12px">🏛️ Parlementaires du territoire</h3>';
+      let parlHtml = '<h3 style="margin-bottom:12px">Élus du territoire</h3>';
       if (myParls.length) {{
         parlHtml += '<div style="overflow-x:auto"><table><thead><tr><th>Élu</th><th>Chambre</th><th>Groupe</th><th>Dept</th><th style="text-align:center">Score ARIA</th></tr></thead><tbody>';
         myParls.forEach(p => {{
@@ -1641,7 +1641,7 @@ if (!siren) {{
       }}
       document.getElementById('parl-card').innerHTML = parlHtml;
 
-      let sitesHtml = '<h3 style="margin-bottom:12px">📍 Sites de production ANIA ('+(ent.ania_sites||[]).length+')</h3>';
+      let sitesHtml = '<h3 style="margin-bottom:12px">Sites de production ANIA ('+(ent.ania_sites||[]).length+')</h3>';
       if ((ent.ania_sites||[]).length) {{
         ent.ania_sites.forEach(site => {{
           sitesHtml += `<div class="etab-item"><div><b>${{site.nom}}</b><div style="font-size:11px;color:#888">${{site.naf_label}} (${{site.naf}})</div></div><div style="text-align:right;font-size:12px;color:#666">${{site.cp}} ${{site.commune}}<br><span style="font-size:11px">Dept ${{site.dept}} - ${{site.aria_region}}</span></div></div>`;
@@ -1688,7 +1688,7 @@ def write_methodologie():
   <div class="page-subtitle">Comment sont calculés les scores et d'où viennent les données</div>
 
   <div class="meth-section">
-    <div class="meth-title">📊 Formule du score ARIA</div>
+    <div class="meth-title">Formule du score ARIA</div>
     <p style="font-size:13px;color:#555;margin-bottom:12px">Le score ARIA mesure la <strong>priorité de contact</strong> d'un élu pour les affaires publiques des industries alimentaires : un élu fortement ancré dans une zone de production IAA ET actif sur les dossiers agricoles est prioritaire.</p>
     <div class="formula-box">
 score_aria = score_eco x (1 + score_impl / 10)<br>
@@ -1705,7 +1705,7 @@ score_impl = 3 x membre_commission_agriculture<br>
   </div>
 
   <div class="meth-section">
-    <div class="meth-title">🗳️ Votes nominatifs suivis (5 scrutins)</div>
+    <div class="meth-title">Votes nominatifs suivis (5 scrutins)</div>
     <div class="vote-item"><span class="vote-badge">EGALIM 1</span><div><strong>Loi 2018-938</strong> - Relations commerciales dans le secteur agricole et alimentation</div></div>
     <div class="vote-item"><span class="vote-badge">EGALIM 2</span><div><strong>Loi 2021-1357</strong> - Protection de la rémunération des agriculteurs</div></div>
     <div class="vote-item"><span class="vote-badge">EGALIM 3</span><div><strong>Loi 2023-221 / Descrozaille</strong> - Equilibre des relations commerciales</div></div>
@@ -1714,7 +1714,7 @@ score_impl = 3 x membre_commission_agriculture<br>
   </div>
 
   <div class="meth-section">
-    <div class="meth-title">🌍 Périmètre national - 16 associations ARIA</div>
+    <div class="meth-title">Périmètre national - 16 associations ARIA</div>
     <p style="font-size:13px;color:#555;margin-bottom:12px">27 201 établissements IAA (PME, ETI, GE - codes NAF 10.* et 11.*) sur l'ensemble du territoire français.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px">
       <div style="padding:8px;background:#f8f9fa;border-radius:6px">AREA Occitanie (3 415 sites)</div>
@@ -1736,7 +1736,7 @@ score_impl = 3 x membre_commission_agriculture<br>
   </div>
 
   <div class="meth-section">
-    <div class="meth-title">📋 Sources de données</div>
+    <div class="meth-title">Sources de données</div>
     <table style="font-size:13px">
       <thead><tr><th>Source</th><th>Données</th></tr></thead>
       <tbody>
@@ -1782,7 +1782,12 @@ def write_fiche():
 .score-bar-fill {{ height:8px; border-radius:4px; background:#e85d04; }}
 .recent-row {{ display:grid; grid-template-columns:1fr auto; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0; }}
 .recent-row:last-child {{ border-bottom:none; }}
-@media(max-width:768px) {{ .grid-2 {{ grid-template-columns:1fr; }} }}
+.brief-grid {{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:14px; }}
+.score-breakdown {{ margin-top:12px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }}
+@media(max-width:768px) {{
+  .grid-2, .brief-grid, .score-breakdown {{ grid-template-columns:1fr; }}
+  .fiche-header {{ padding:22px 20px; }}
+}}
 </style>
 </head>
 <body>
@@ -1794,17 +1799,17 @@ def write_fiche():
 <script>
 const SCRUTINS_META = {scrutin_meta_json};
 const VOTE_COLORS = {{pour:'#28a745',contre:'#dc3545',abstention:'#fd7e14',absent:'#bbb'}};
-const VOTE_ICONS = {{pour:'✅',contre:'❌',abstention:'🟡',absent:'⬜'}};
+const VOTE_LABELS = {{pour:'Pour',contre:'Contre',abstention:'Abstention',absent:'Absent'}};
 
 function voteRow(label, v, loi) {{
   const c = VOTE_COLORS[v] || '#eee';
-  const icon = VOTE_ICONS[v] || '-';
+  const voteLabel = VOTE_LABELS[v] || '-';
   return `<div class="vote-row">
     <div>
       <div style="font-weight:600">${{label}}</div>
       ${{loi?`<div style="font-size:11px;color:#888">Loi ${{loi}}</div>`:''}}
     </div>
-    <span style="background:${{c}};color:${{v==='absent'||!v?'#555':'white'}};padding:4px 12px;border-radius:5px;font-size:12px;font-weight:600">${{icon}} ${{v||'-'}}</span>
+    <span style="background:${{c}};color:${{v==='absent'||!v?'#555':'white'}};padding:4px 12px;border-radius:5px;font-size:12px;font-weight:600">${{voteLabel}}</span>
   </div>`;
 }}
 
@@ -1847,10 +1852,10 @@ Promise.all([
   const chambreColor = p.chambre === 'AN' ? '#e85d04' : '#4361ee';
 
   const badgesHtml = [
-    p.commission_agri ? '<span class="badge badge-agri">🌾 Commission Agriculture</span>' : '',
-    p.commission_eco  ? '<span class="badge badge-eco">🏦 Commission Économique</span>' : '',
-    p.mission_egalim  ? '<span class="badge badge-egalim">⚖️ Mission EGALIM</span>' : '',
-    p.commission_env  ? '<span class="badge" style="background:#d1e7dd;color:#0a4023">🌿 Commission Environnement</span>' : '',
+    p.commission_agri ? '<span class="badge badge-agri">Commission Agriculture</span>' : '',
+    p.commission_eco  ? '<span class="badge badge-eco">Commission Économique</span>' : '',
+    p.mission_egalim  ? '<span class="badge badge-egalim">Mission EGALIM</span>' : '',
+    p.commission_env  ? '<span class="badge" style="background:#d1e7dd;color:#0a4023">Commission Environnement</span>' : '',
   ].filter(Boolean).join(' ');
 
   const votesHtml = p.chambre === 'AN' ?
@@ -1870,16 +1875,16 @@ Promise.all([
     <div class="fiche-header">
       <div class="fiche-nom">${{p.nom}}</div>
       <div class="fiche-meta">
-        <span style="background:${{chambreColor}};padding:3px 10px;border-radius:5px;font-size:13px;font-weight:600">${{p.chambre === 'AN' ? '🏛️ Assemblée Nationale' : '🏦 Sénat'}}</span>
-        <span>🏷️ ${{p.groupe}}</span>
-        <span>📍 Dept. ${{p.dept}} - ${{p.nom_dept}}</span>
+        <span style="background:${{chambreColor}};padding:3px 10px;border-radius:5px;font-size:13px;font-weight:600">${{p.chambre === 'AN' ? 'Assemblée nationale' : 'Sénat'}}</span>
+        <span>${{p.groupe}}</span>
+        <span>Dept. ${{p.dept}} - ${{p.nom_dept}}</span>
         ${{p.circo ? `<span>Circ. ${{p.circo}}</span>` : ''}}
       </div>
     </div>
 
     <div class="card" style="margin-bottom:16px;border-left:4px solid var(--accent)">
       <div class="section-title">Brief rendez-vous</div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px">
+      <div class="brief-grid">
         <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Priorité</div><div style="font-weight:800">${{priorityLabel(p)}}</div></div>
         <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Preuve locale</div><div style="font-weight:800">${{p.nb_sites}} site${{p.nb_sites>1?'s':''}} IAA</div></div>
         <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Posture</div><div style="font-weight:800">${{p.position||'non qualifiée'}}</div></div>
@@ -1894,53 +1899,53 @@ Promise.all([
 
     <div class="grid-2">
       <div class="card">
-        <div class="section-title">📊 Score ANIA</div>
+        <div class="section-title">Score ANIA</div>
         <div style="font-size:13px;color:#666;margin-bottom:4px">Score global (implantation × implication)</div>
         <div style="font-size:32px;font-weight:700;color:#e85d04">${{p.score.toFixed(1)}}</div>
         <div class="score-bar"><div class="score-bar-fill" style="width:${{scoreWidth}}%"></div></div>
-        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div class="score-breakdown">
           <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
             <div style="font-size:18px;font-weight:700">${{p.score_eco.toFixed(1)}}</div>
-            <div style="font-size:10px;color:#888">🏭 Implantation</div>
+            <div style="font-size:10px;color:#888">Implantation</div>
           </div>
           <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
             <div style="font-size:18px;font-weight:700">${{p.score_impl.toFixed(1)}}</div>
-            <div style="font-size:10px;color:#888">📋 Implication</div>
+            <div style="font-size:10px;color:#888">Implication</div>
           </div>
           <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
             <div style="font-size:18px;font-weight:700">${{p.score_egalim||0}}</div>
-            <div style="font-size:10px;color:#888">⚖️ EGALIM</div>
+            <div style="font-size:10px;color:#888">EGALIM</div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-title">🎭 Engagement parlementaire</div>
+        <div class="section-title">Engagement parlementaire</div>
         ${{badgesHtml || '<span style="color:#999;font-size:13px">Pas de commission agriculture identifiée</span>'}}
-        ${{p.position && p.position !== 'inconnu' ? `<div style="margin-top:10px;font-size:13px;font-weight:600">↗ Position votes : ${{p.position}}</div>` : ''}}
-        ${{p.commission ? `<div style="font-size:12px;color:#888;margin-top:8px">📌 ${{p.commission}}</div>` : ''}}
-        ${{p.aria_regions && p.aria_regions !== 'Non rattaché' ? `<div style="font-size:12px;color:#888;margin-top:4px">🌍 Région : ${{p.aria_regions}}</div>` : ''}}
-        ${{p.mail ? `<div style="margin-top:12px"><a href="mailto:${{p.mail}}" style="color:#4361ee;font-size:13px">✉️ ${{p.mail}}</a></div>` : ''}}
-        ${{p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${{p.twitter.replace('@','')}}" target="_blank" style="color:#1d9bf0;font-size:13px">🐦 @${{p.twitter.replace('@','')}}</a></div>` : ''}}
+        ${{p.position && p.position !== 'inconnu' ? `<div style="margin-top:10px;font-size:13px;font-weight:600">Position votes : ${{p.position}}</div>` : ''}}
+        ${{p.commission ? `<div style="font-size:12px;color:#888;margin-top:8px">${{p.commission}}</div>` : ''}}
+        ${{p.aria_regions && p.aria_regions !== 'Non rattaché' ? `<div style="font-size:12px;color:#888;margin-top:4px">Région : ${{p.aria_regions}}</div>` : ''}}
+        ${{p.mail ? `<div style="margin-top:12px"><a href="mailto:${{p.mail}}" style="color:#4361ee;font-size:13px">${{p.mail}}</a></div>` : ''}}
+        ${{p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${{p.twitter.replace('@','')}}" target="_blank" style="color:#1d9bf0;font-size:13px">@${{p.twitter.replace('@','')}}</a></div>` : ''}}
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="section-title">🗳️ Votes nominatifs</div>
+        <div class="section-title">Votes nominatifs</div>
         ${{votesHtml}}
       </div>
 
       <div class="card">
-        <div class="section-title">🏭 Sites IAA dans la zone (${{p.nb_sites}} site${{p.nb_sites>1?'s':''}})</div>
-        ${{p.nb_vins > 0 ? '<div style="font-size:11px;color:#8b1a1a;margin-bottom:6px">🍷 dont '+p.nb_vins+' sites viticoles</div>' : ''}}
-        ${{p.nb_huiles > 0 ? '<div style="font-size:11px;color:#6b9e3a;margin-bottom:6px">🫒 dont '+p.nb_huiles+' sites oléicoles</div>' : ''}}
+        <div class="section-title">Sites IAA dans la zone (${{p.nb_sites}} site${{p.nb_sites>1?'s':''}})</div>
+        ${{p.nb_vins > 0 ? '<div style="font-size:11px;color:#8b1a1a;margin-bottom:6px">dont '+p.nb_vins+' sites viticoles</div>' : ''}}
+        ${{p.nb_huiles > 0 ? '<div style="font-size:11px;color:#6b9e3a;margin-bottom:6px">dont '+p.nb_huiles+' sites oléicoles</div>' : ''}}
         <div style="max-height:300px;overflow-y:auto">${{sitesList}}</div>
       </div>
     </div>
 
     <div class="card">
-      <div class="section-title">🕒 Activité récente détectée</div>
+      <div class="section-title">Activité récente détectée</div>
       <div style="font-size:12px;color:#666;margin-bottom:8px">Flux croisés Assemblée, Sénat, ANIA et signaux de veille associés.</div>
       ${{recentHtml}}
     </div>

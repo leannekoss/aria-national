@@ -1,1 +1,4 @@
 build/raw/alimconfiance.json
+build/raw/*.zip
+scripts/__pycache__/
+*.pyc

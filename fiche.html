@@ -100,7 +100,12 @@ tr:hover td { background: #fbfcfe; }
 .score-bar-fill { height:8px; border-radius:4px; background:#e85d04; }
 .recent-row { display:grid; grid-template-columns:1fr auto; gap:10px; padding:10px 0; border-bottom:1px solid #f0f0f0; }
 .recent-row:last-child { border-bottom:none; }
-@media(max-width:768px) { .grid-2 { grid-template-columns:1fr; } }
+.brief-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:14px; }
+.score-breakdown { margin-top:12px; display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+@media(max-width:768px) {
+  .grid-2, .brief-grid, .score-breakdown { grid-template-columns:1fr; }
+  .fiche-header { padding:22px 20px; }
+}
 </style>
 </head>
 <body>
@@ -112,17 +117,17 @@ tr:hover td { background: #fbfcfe; }
 <script>
 const SCRUTINS_META = [{"id": "egalim1", "label": "EGALIM 1 (2018)", "loi": "2018-938"}, {"id": "egalim2", "label": "EGALIM 2 (2021)", "loi": "2021-1357"}, {"id": "egalim3", "label": "EGALIM 3 / Descrozaille (2023)", "loi": "2023-221"}, {"id": "loa2024", "label": "LOA 2024", "loi": "PLOA-2024"}, {"id": "revenu_agri", "label": "PPL Revenu agri (2024)", "loi": "PPL"}];
 const VOTE_COLORS = {pour:'#28a745',contre:'#dc3545',abstention:'#fd7e14',absent:'#bbb'};
-const VOTE_ICONS = {pour:'✅',contre:'❌',abstention:'🟡',absent:'⬜'};
+const VOTE_LABELS = {pour:'Pour',contre:'Contre',abstention:'Abstention',absent:'Absent'};
 
 function voteRow(label, v, loi) {
   const c = VOTE_COLORS[v] || '#eee';
-  const icon = VOTE_ICONS[v] || '-';
+  const voteLabel = VOTE_LABELS[v] || '-';
   return `<div class="vote-row">
     <div>
       <div style="font-weight:600">${label}</div>
       ${loi?`<div style="font-size:11px;color:#888">Loi ${loi}</div>`:''}
     </div>
-    <span style="background:${c};color:${v==='absent'||!v?'#555':'white'};padding:4px 12px;border-radius:5px;font-size:12px;font-weight:600">${icon} ${v||'-'}</span>
+    <span style="background:${c};color:${v==='absent'||!v?'#555':'white'};padding:4px 12px;border-radius:5px;font-size:12px;font-weight:600">${voteLabel}</span>
   </div>`;
 }
 
@@ -165,10 +170,10 @@ Promise.all([
   const chambreColor = p.chambre === 'AN' ? '#e85d04' : '#4361ee';
 
   const badgesHtml = [
-    p.commission_agri ? '<span class="badge badge-agri">🌾 Commission Agriculture</span>' : '',
-    p.commission_eco  ? '<span class="badge badge-eco">🏦 Commission Économique</span>' : '',
-    p.mission_egalim  ? '<span class="badge badge-egalim">⚖️ Mission EGALIM</span>' : '',
-    p.commission_env  ? '<span class="badge" style="background:#d1e7dd;color:#0a4023">🌿 Commission Environnement</span>' : '',
+    p.commission_agri ? '<span class="badge badge-agri">Commission Agriculture</span>' : '',
+    p.commission_eco  ? '<span class="badge badge-eco">Commission Économique</span>' : '',
+    p.mission_egalim  ? '<span class="badge badge-egalim">Mission EGALIM</span>' : '',
+    p.commission_env  ? '<span class="badge" style="background:#d1e7dd;color:#0a4023">Commission Environnement</span>' : '',
   ].filter(Boolean).join(' ');
 
   const votesHtml = p.chambre === 'AN' ?
@@ -188,16 +193,16 @@ Promise.all([
     <div class="fiche-header">
       <div class="fiche-nom">${p.nom}</div>
       <div class="fiche-meta">
-        <span style="background:${chambreColor};padding:3px 10px;border-radius:5px;font-size:13px;font-weight:600">${p.chambre === 'AN' ? '🏛️ Assemblée Nationale' : '🏦 Sénat'}</span>
-        <span>🏷️ ${p.groupe}</span>
-        <span>📍 Dept. ${p.dept} - ${p.nom_dept}</span>
+        <span style="background:${chambreColor};padding:3px 10px;border-radius:5px;font-size:13px;font-weight:600">${p.chambre === 'AN' ? 'Assemblée nationale' : 'Sénat'}</span>
+        <span>${p.groupe}</span>
+        <span>Dept. ${p.dept} - ${p.nom_dept}</span>
         ${p.circo ? `<span>Circ. ${p.circo}</span>` : ''}
       </div>
     </div>
 
     <div class="card" style="margin-bottom:16px;border-left:4px solid var(--accent)">
       <div class="section-title">Brief rendez-vous</div>
-      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:14px">
+      <div class="brief-grid">
         <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Priorité</div><div style="font-weight:800">${priorityLabel(p)}</div></div>
         <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Preuve locale</div><div style="font-weight:800">${p.nb_sites} site${p.nb_sites>1?'s':''} IAA</div></div>
         <div><div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">Posture</div><div style="font-weight:800">${p.position||'non qualifiée'}</div></div>
@@ -212,53 +217,53 @@ Promise.all([
 
     <div class="grid-2">
       <div class="card">
-        <div class="section-title">📊 Score ANIA</div>
+        <div class="section-title">Score ANIA</div>
         <div style="font-size:13px;color:#666;margin-bottom:4px">Score global (implantation × implication)</div>
         <div style="font-size:32px;font-weight:700;color:#e85d04">${p.score.toFixed(1)}</div>
         <div class="score-bar"><div class="score-bar-fill" style="width:${scoreWidth}%"></div></div>
-        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div class="score-breakdown">
           <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
             <div style="font-size:18px;font-weight:700">${p.score_eco.toFixed(1)}</div>
-            <div style="font-size:10px;color:#888">🏭 Implantation</div>
+            <div style="font-size:10px;color:#888">Implantation</div>
           </div>
           <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
             <div style="font-size:18px;font-weight:700">${p.score_impl.toFixed(1)}</div>
-            <div style="font-size:10px;color:#888">📋 Implication</div>
+            <div style="font-size:10px;color:#888">Implication</div>
           </div>
           <div style="text-align:center;background:#f8f9fa;border-radius:6px;padding:8px">
             <div style="font-size:18px;font-weight:700">${p.score_egalim||0}</div>
-            <div style="font-size:10px;color:#888">⚖️ EGALIM</div>
+            <div style="font-size:10px;color:#888">EGALIM</div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <div class="section-title">🎭 Engagement parlementaire</div>
+        <div class="section-title">Engagement parlementaire</div>
         ${badgesHtml || '<span style="color:#999;font-size:13px">Pas de commission agriculture identifiée</span>'}
-        ${p.position && p.position !== 'inconnu' ? `<div style="margin-top:10px;font-size:13px;font-weight:600">↗ Position votes : ${p.position}</div>` : ''}
-        ${p.commission ? `<div style="font-size:12px;color:#888;margin-top:8px">📌 ${p.commission}</div>` : ''}
-        ${p.aria_regions && p.aria_regions !== 'Non rattaché' ? `<div style="font-size:12px;color:#888;margin-top:4px">🌍 Région : ${p.aria_regions}</div>` : ''}
-        ${p.mail ? `<div style="margin-top:12px"><a href="mailto:${p.mail}" style="color:#4361ee;font-size:13px">✉️ ${p.mail}</a></div>` : ''}
-        ${p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${p.twitter.replace('@','')}" target="_blank" style="color:#1d9bf0;font-size:13px">🐦 @${p.twitter.replace('@','')}</a></div>` : ''}
+        ${p.position && p.position !== 'inconnu' ? `<div style="margin-top:10px;font-size:13px;font-weight:600">Position votes : ${p.position}</div>` : ''}
+        ${p.commission ? `<div style="font-size:12px;color:#888;margin-top:8px">${p.commission}</div>` : ''}
+        ${p.aria_regions && p.aria_regions !== 'Non rattaché' ? `<div style="font-size:12px;color:#888;margin-top:4px">Région : ${p.aria_regions}</div>` : ''}
+        ${p.mail ? `<div style="margin-top:12px"><a href="mailto:${p.mail}" style="color:#4361ee;font-size:13px">${p.mail}</a></div>` : ''}
+        ${p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${p.twitter.replace('@','')}" target="_blank" style="color:#1d9bf0;font-size:13px">@${p.twitter.replace('@','')}</a></div>` : ''}
       </div>
     </div>
 
     <div class="grid-2">
       <div class="card">
-        <div class="section-title">🗳️ Votes nominatifs</div>
+        <div class="section-title">Votes nominatifs</div>
         ${votesHtml}
       </div>
 
       <div class="card">
-        <div class="section-title">🏭 Sites IAA dans la zone (${p.nb_sites} site${p.nb_sites>1?'s':''})</div>
-        ${p.nb_vins > 0 ? '<div style="font-size:11px;color:#8b1a1a;margin-bottom:6px">🍷 dont '+p.nb_vins+' sites viticoles</div>' : ''}
-        ${p.nb_huiles > 0 ? '<div style="font-size:11px;color:#6b9e3a;margin-bottom:6px">🫒 dont '+p.nb_huiles+' sites oléicoles</div>' : ''}
+        <div class="section-title">Sites IAA dans la zone (${p.nb_sites} site${p.nb_sites>1?'s':''})</div>
+        ${p.nb_vins > 0 ? '<div style="font-size:11px;color:#8b1a1a;margin-bottom:6px">dont '+p.nb_vins+' sites viticoles</div>' : ''}
+        ${p.nb_huiles > 0 ? '<div style="font-size:11px;color:#6b9e3a;margin-bottom:6px">dont '+p.nb_huiles+' sites oléicoles</div>' : ''}
         <div style="max-height:300px;overflow-y:auto">${sitesList}</div>
       </div>
     </div>
 
     <div class="card">
-      <div class="section-title">🕒 Activité récente détectée</div>
+      <div class="section-title">Activité récente détectée</div>
       <div style="font-size:12px;color:#666;margin-bottom:8px">Flux croisés Assemblée, Sénat, ANIA et signaux de veille associés.</div>
       ${recentHtml}
     </div>

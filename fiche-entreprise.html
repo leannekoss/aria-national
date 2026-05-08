@@ -107,6 +107,7 @@ tr:hover td { background: #fbfcfe; }
 .spinner { width:40px; height:40px; border:4px solid #eee; border-top:4px solid #1a1a2e; border-radius:50%; animation:spin 1s linear infinite; margin:40px auto 16px; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .back-link { display:inline-flex; align-items:center; gap:6px; color:#666; text-decoration:none; font-size:13px; margin-bottom:16px; }
+.status-dot { width:8px; height:8px; border-radius:99px; display:inline-block; margin-right:6px; vertical-align:middle; background:currentColor; }
 .denree-tag { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; background:#f0f0f0; margin:2px; }
 </style>
 </head>
@@ -116,7 +117,6 @@ tr:hover td { background: #fbfcfe; }
 <a href="entreprises.html" class="back-link">← Retour aux entreprises</a>
 <div id="loading"><div class="spinner"></div><p style="text-align:center;color:#888">Chargement de la fiche entreprise...</p></div>
 <div id="error" style="display:none;text-align:center;padding:40px">
-  <div style="font-size:48px;margin-bottom:16px">🔍</div>
   <h2>Entreprise non trouvée</h2>
   <p id="error-msg" style="color:#888;margin-top:8px"></p>
   <a href="entreprises.html" style="display:inline-block;margin-top:16px;padding:8px 20px;background:#1a1a2e;color:white;border-radius:8px;text-decoration:none">Revenir à la liste</a>
@@ -177,28 +177,28 @@ if (!siren) {
           <span class="badge badge-eco">SIREN ${ent.siren}</span>
           ${cat?'<span class="badge badge-agri">'+cat+'</span>':''}
           ${nafLabel?'<span class="badge badge-egalim">'+nafLabel+'</span>':''}
-          <span class="badge" style="background:${ent.etat_administratif==='A'?'#d4edda':'#f8d7da'};color:${ent.etat_administratif==='A'?'#155724':'#721c24'}">${ent.etat_administratif==='A'?'✅ Active':'❌ Fermée'}</span>
+          <span class="badge" style="background:${ent.etat_administratif==='A'?'#d4edda':'#f8d7da'};color:${ent.etat_administratif==='A'?'#155724':'#721c24'}"><span class="status-dot"></span>${ent.etat_administratif==='A'?'Active':'Fermée'}</span>
         </div>`;
 
       const dirs = (ent.dirigeants||[]).map(d => (String(d.type_dirigeant||'').toLowerCase().includes('physique')
-        ? `<div class="dirigeant">👤 ${d.prenoms||''} ${d.nom||''}<div class="dir-qualite">${d.qualite||''}</div></div>`
-        : `<div class="dirigeant">🏢 ${d.denomination||d.siren||''}<div class="dir-qualite">${d.qualite||''}</div></div>`)).join('');
+        ? `<div class="dirigeant">${d.prenoms||''} ${d.nom||''}<div class="dir-qualite">${d.qualite||''}</div></div>`
+        : `<div class="dirigeant">${d.denomination||d.siren||''}<div class="dir-qualite">${d.qualite||''}</div></div>`)).join('');
       const labels = [];
       if (ent.complements) {
-        if (ent.complements.est_bio) labels.push('🌿 Bio');
-        if (ent.complements.est_ess) labels.push('🤝 ESS');
-        if (ent.complements.est_rge) labels.push('♻️ RGE');
-        if (ent.complements.est_societe_mission) labels.push('🎯 Société à mission');
+        if (ent.complements.est_bio) labels.push('Bio');
+        if (ent.complements.est_ess) labels.push('ESS');
+        if (ent.complements.est_rge) labels.push('RGE');
+        if (ent.complements.est_societe_mission) labels.push('Société à mission');
       }
       document.getElementById('info-card').innerHTML = `
-        <h3 style="margin-bottom:12px">📋 Informations</h3>
+        <h3 style="margin-bottom:12px">Informations</h3>
         <div class="info-row"><span class="info-label">Adresse siège</span><span class="info-value">${siege.adresse||'-'}</span></div>
         <div class="info-row"><span class="info-label">Commune</span><span class="info-value">${siege.libelle_commune||siege.commune||'-'} (${siege.departement||''})</span></div>
         <div class="info-row"><span class="info-label">Effectif</span><span class="info-value">${EFFECTIF[String(ent.tranche_effectif_salarie)]||'-'} salariés</span></div>
         <div class="info-row"><span class="info-label">Création</span><span class="info-value">${fmtDate(ent.date_creation)}</span></div>
         <div class="info-row"><span class="info-label">Établissements</span><span class="info-value">${ent.nombre_etablissements_ouverts||0} ouverts / ${ent.nombre_etablissements||0} total</span></div>
         ${labels.length?'<div style="margin-top:8px">'+labels.join(' ')+'</div>':''}
-        ${dirs?'<h4 style="margin-top:16px;margin-bottom:8px">👥 Dirigeants</h4>'+dirs:''}
+        ${dirs?'<h4 style="margin-top:16px;margin-bottom:8px">Dirigeants</h4>'+dirs:''}
         <div style="margin-top:14px;font-size:11px;color:#888">Cache local généré au build · provenance visible dans Méthodologie.</div>`;
 
       const map = L.map('map').setView([46.5, 2.5], 5);
@@ -216,7 +216,7 @@ if (!siren) {
       if (bounds.length) map.fitBounds(bounds, {padding:[30,30]});
 
       const years = Object.keys(ent.finances||{}).sort().reverse();
-      let finHtml = '<h3 style="margin-bottom:12px">💰 Données financières</h3>';
+      let finHtml = '<h3 style="margin-bottom:12px">Données financières</h3>';
       if (years.length) {
         years.forEach(y => {
           const f = ent.finances[y] || {};
@@ -231,7 +231,7 @@ if (!siren) {
       document.getElementById('finance-card').innerHTML = finHtml;
 
       const alimRecs = ent.alim_records || [];
-      let alimHtml = '<h3 style="margin-bottom:12px">🔬 Alim\'confiance - inspections</h3>';
+      let alimHtml = '<h3 style="margin-bottom:12px">Alim\'confiance - inspections</h3>';
       if (alimRecs.length) {
         alimRecs.forEach(rec => {
           const denrees = (rec.denree||'').split('|').filter(Boolean);
@@ -254,7 +254,7 @@ if (!siren) {
 
       const deptSet = new Set([...(ent.ania_sites||[]).map(s => s.dept), siege.departement].filter(Boolean));
       const myParls = parlData.filter(p => deptSet.has(p.dept)).sort((a,b) => b.score-a.score).slice(0, 20);
-      let parlHtml = '<h3 style="margin-bottom:12px">🏛️ Parlementaires du territoire</h3>';
+      let parlHtml = '<h3 style="margin-bottom:12px">Élus du territoire</h3>';
       if (myParls.length) {
         parlHtml += '<div style="overflow-x:auto"><table><thead><tr><th>Élu</th><th>Chambre</th><th>Groupe</th><th>Dept</th><th style="text-align:center">Score ARIA</th></tr></thead><tbody>';
         myParls.forEach(p => {
@@ -267,7 +267,7 @@ if (!siren) {
       }
       document.getElementById('parl-card').innerHTML = parlHtml;
 
-      let sitesHtml = '<h3 style="margin-bottom:12px">📍 Sites de production ANIA ('+(ent.ania_sites||[]).length+')</h3>';
+      let sitesHtml = '<h3 style="margin-bottom:12px">Sites de production ANIA ('+(ent.ania_sites||[]).length+')</h3>';
       if ((ent.ania_sites||[]).length) {
         ent.ania_sites.forEach(site => {
           sitesHtml += `<div class="etab-item"><div><b>${site.nom}</b><div style="font-size:11px;color:#888">${site.naf_label} (${site.naf})</div></div><div style="text-align:right;font-size:12px;color:#666">${site.cp} ${site.commune}<br><span style="font-size:11px">Dept ${site.dept} - ${site.aria_region}</span></div></div>`;
