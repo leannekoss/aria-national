@@ -6,6 +6,7 @@ import json
 from collections import defaultdict
 
 from common import ASSETS_DIR, DATA_DIR, NORMALIZED_DIR, RAW_DIR, ROOT_DIR, ensure_dirs, read_json, write_json
+from manual_companies import MANUAL_COMPANY_INDEX, MANUAL_SITES
 
 OUTPUT_DIR = NORMALIZED_DIR
 SITE_DIR = ROOT_DIR
@@ -108,6 +109,7 @@ def build_json_data():
         '11.01Z': 'Eaux-de-vie naturelles', '11.02A': 'Vins AOC', '11.02B': 'Autres vins',
         '11.03Z': 'Cidre / autres vins de fruits', '11.07A': 'Eaux minerales',
         '11.07B': 'Limonades et boissons',
+        '46.33Z': 'Commerce de gros produits laitiers',
     }
     sites_json = []
     for s in sites_raw:
@@ -195,6 +197,8 @@ def build_json_data():
             'naf': v['naf'], 'naf_label': v['naf_label'],
             'nb_depts': len(v['depts']),
             'aria_region': sorted(v['regions'])[0] if v['regions'] else '',
+            'aliases': MANUAL_COMPANY_INDEX.get(k, {}).get('aliases', []),
+            'manual_priority': bool(MANUAL_COMPANY_INDEX.get(k)),
         }
         for k, v in ent_agg.items()
     ]
@@ -204,6 +208,7 @@ def build_json_data():
 
     raw_sites_payload = read_json(RAW_DIR / 'sites_iaa_national.json', default={}) or {}
     raw_company_index = raw_sites_payload.get('entreprises', {}) or {}
+    raw_company_index.update(MANUAL_COMPANY_INDEX)
     alim_index = read_json(NORMALIZED_DIR / 'alim_index.json', default={}) or {}
     sites_by_siren = defaultdict(list)
     for site in sites_json:
@@ -215,6 +220,8 @@ def build_json_data():
         siren = raw_site.get('siren')
         if siren:
             raw_sites_by_siren[siren].append(raw_site)
+    for raw_site in MANUAL_SITES:
+        raw_sites_by_siren[raw_site['siren']].append(raw_site)
     company_details = {}
     for entreprise in entreprises_json:
         siren = entreprise['siren']
@@ -244,6 +251,8 @@ def build_json_data():
             'complements': raw_company.get('complements') or {},
             'finances': raw_company.get('finances') or {},
             'dirigeants': raw_company.get('dirigeants') or [],
+            'aliases': raw_company.get('aliases') or [],
+            'manual_reason': raw_company.get('manual_reason') or '',
             'siege': raw_company.get('siege') or {},
             'matching_etablissements': raw_company.get('matching_etablissements') or site_coordinates,
             'ania_sites': sites_for_company,
@@ -1338,6 +1347,7 @@ def write_entreprises():
         '10.86Z': 'Aliments diététiques', '10.89Z': 'Autres alimentaires',
         '11.01Z': 'Eaux-de-vie', '11.02A': 'Vins AOC', '11.02B': 'Autres vins',
         '11.03Z': 'Cidre/fruits', '11.07A': 'Eaux minérales', '11.07B': 'Limonades/boissons',
+        '46.33Z': 'Commerce de gros produits laitiers',
     }, ensure_ascii=False)
     html = f"""<!DOCTYPE html>
 <html lang="fr">
@@ -1415,13 +1425,19 @@ function render(){{
   const naf=document.getElementById('fNaf').value;
   const minS=parseInt(document.getElementById('fSites').value)||0;
   filtered=data.filter(e=>{{
-    if(q&&!(e.nom.toLowerCase().includes(q)||e.siren.includes(q))) return false;
+    const haystack = [e.nom, e.siren, ...(e.aliases||[])].join(' ').toLowerCase();
+    if(q&&!haystack.includes(q)) return false;
     if(reg&&e.aria_region!==reg) return false;
     if(naf&&e.naf!==naf) return false;
     if(minS&&e.nb_sites<minS) return false;
     return true;
   }});
   filtered.sort((a,b)=>{{
+    if(q) {{
+      const ma = a.manual_priority ? 1 : 0;
+      const mb = b.manual_priority ? 1 : 0;
+      if (ma !== mb) return mb - ma;
+    }}
     const va=a[sortCol]??'', vb=b[sortCol]??'';
     return sortDir*(va>vb?1:va<vb?-1:0);
   }});
@@ -1514,7 +1530,7 @@ def write_fiche_entreprise():
 const EFFECTIF = {{'00':'Non employeur','01':'1-2','02':'3-5','03':'6-9','11':'10-19','12':'20-49','21':'50-99','22':'100-199','31':'200-249','32':'250-499','41':'500-999','42':'1 000-1 999','51':'2 000-4 999','52':'5 000-9 999','53':'10 000+'}};
 const CAT_LABELS = {{'PME':'PME','ETI':'ETI','GE':'Grande entreprise','MIC':'Micro-entreprise'}};
 const ALIM_SCORES = {{1:'Très satisfaisant',2:'Satisfaisant',3:'À améliorer',4:'À corriger de manière urgente'}};
-const NAF_LABELS = {{'10.11Z':'Abattage/viande','10.12Z':'Volaille','10.13A':'Prépa viande','10.13B':'Charcuterie','10.31Z':'Pommes de terre','10.32Z':'Jus','10.39A':'Légumes surgelés','10.39B':'Fruits/légumes','10.41A':'Huile olive','10.41B':'Huiles végétales','10.51A':'Lait/crème','10.51C':'Beurre','10.51D':'Fromage','10.52Z':'Glaces','10.72Z':'Biscuits','10.84Z':'Condiments','10.85Z':'Plats préparés','10.86Z':'Diététiques','10.89Z':'Autres alim.','11.01Z':'Eaux-de-vie','11.02A':'Vins AOC','11.02B':'Autres vins','11.03Z':'Cidre','11.07A':'Eaux minérales','11.07B':'Boissons'}};
+const NAF_LABELS = {{'10.11Z':'Abattage/viande','10.12Z':'Volaille','10.13A':'Prépa viande','10.13B':'Charcuterie','10.31Z':'Pommes de terre','10.32Z':'Jus','10.39A':'Légumes surgelés','10.39B':'Fruits/légumes','10.41A':'Huile olive','10.41B':'Huiles végétales','10.51A':'Lait/crème','10.51C':'Beurre','10.51D':'Fromage','10.52Z':'Glaces','10.72Z':'Biscuits','10.84Z':'Condiments','10.85Z':'Plats préparés','10.86Z':'Diététiques','10.89Z':'Autres alim.','11.01Z':'Eaux-de-vie','11.02A':'Vins AOC','11.02B':'Autres vins','11.03Z':'Cidre','11.07A':'Eaux minérales','11.07B':'Boissons','46.33Z':'Commerce de gros produits laitiers'}};
 const params = new URLSearchParams(location.search);
 const siren = params.get('siren') || (params.get('siret') ? params.get('siret').slice(0,9) : null);
 function fmtDate(value) {{ return value ? new Date(value).toLocaleDateString('fr-FR') : '-'; }}
@@ -1551,6 +1567,7 @@ if (!siren) {{
           <span class="badge badge-eco">SIREN ${{ent.siren}}</span>
           ${{cat?'<span class="badge badge-agri">'+cat+'</span>':''}}
           ${{nafLabel?'<span class="badge badge-egalim">'+nafLabel+'</span>':''}}
+          ${{(ent.aliases||[]).length?'<span class="badge">Alias: '+ent.aliases[0]+'</span>':''}}
           <span class="badge" style="background:${{ent.etat_administratif==='A'?'#d4edda':'#f8d7da'}};color:${{ent.etat_administratif==='A'?'#155724':'#721c24'}}"><span class="status-dot"></span>${{ent.etat_administratif==='A'?'Active':'Fermée'}}</span>
         </div>`;
 
@@ -1571,6 +1588,7 @@ if (!siren) {{
         <div class="info-row"><span class="info-label">Effectif</span><span class="info-value">${{EFFECTIF[String(ent.tranche_effectif_salarie)]||'-'}} salariés</span></div>
         <div class="info-row"><span class="info-label">Création</span><span class="info-value">${{fmtDate(ent.date_creation)}}</span></div>
         <div class="info-row"><span class="info-label">Établissements</span><span class="info-value">${{ent.nombre_etablissements_ouverts||0}} ouverts / ${{ent.nombre_etablissements||0}} total</span></div>
+        ${{ent.manual_reason?'<div class="info-row"><span class="info-label">Périmètre</span><span class="info-value">Exception ANIA documentée</span></div>':''}}
         ${{labels.length?'<div style="margin-top:8px">'+labels.join(' ')+'</div>':''}}
         ${{dirs?'<h4 style="margin-top:16px;margin-bottom:8px">Dirigeants</h4>'+dirs:''}}
         <div style="margin-top:14px;font-size:11px;color:#888">Cache local généré au build · provenance visible dans Méthodologie.</div>`;

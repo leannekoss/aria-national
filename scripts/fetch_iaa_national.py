@@ -15,6 +15,7 @@ import urllib.request
 from collections import defaultdict
 
 from common import RAW_DIR, ensure_dirs, utc_now_iso
+from manual_companies import MANUAL_COMPANY_INDEX, MANUAL_SITES
 
 
 NAF_ARIA = [
@@ -254,6 +255,16 @@ def main() -> None:
         naf_stats[site["naf"]] += 1
         categorie_stats[site["categorie_entreprise"]] += 1
 
+    for site in MANUAL_SITES:
+        key = site["siret"] or f'{site["siren"]}|{site["adresse"]}'
+        if key not in all_sites:
+            all_sites[key] = site
+            region_stats[site["aria_region"]] += 1
+            dept_stats[site["dept"]] += 1
+            naf_stats[site["naf"]] += 1
+            categorie_stats[site["categorie_entreprise"]] += 1
+    company_index.update(MANUAL_COMPANY_INDEX)
+
     payload = {
         "metadata": {
             "source": "recherche-entreprises.api.gouv.fr",
@@ -262,6 +273,7 @@ def main() -> None:
             "naf_codes": NAF_ARIA,
             "artisanal_excluded": sorted(ARTISANAL),
             "categories_kept": sorted(CATEGORIES_KEEP),
+            "manual_inclusions": sorted(MANUAL_COMPANY_INDEX),
             "total": len(all_sites),
             "duration_seconds": round(elapsed),
             "by_region": dict(region_stats),

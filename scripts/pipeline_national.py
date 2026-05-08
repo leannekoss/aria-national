@@ -19,6 +19,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from common import NORMALIZED_DIR, RAW_DIR, cache_fetch, ensure_dirs
+from manual_companies import MANUAL_SITES
 
 
 OUTPUT_DIR_NATIONAL = NORMALIZED_DIR
@@ -136,6 +137,36 @@ def load_sites_national():
         groupes[siren]['nb_sites'] += 1
         groupes[siren]['departements'].add(e.get('dept', ''))
         groupes[siren]['sites'].append(site)
+
+    existing_site_keys = {site.get('siret') or f"{site.get('siren')}|{site.get('adresse')}" for site in sites}
+    for e in MANUAL_SITES:
+        key = e.get('siret') or f"{e.get('siren')}|{e.get('adresse')}"
+        if key in existing_site_keys:
+            continue
+        site = {
+            'nom_entreprise_aria': e['nom_complet'],
+            'nom_api': e['nom_complet'],
+            'siren': e['siren'],
+            'siret': e['siret'],
+            'categorie_entreprise': e.get('categorie_entreprise', ''),
+            'syndicat_regional': e.get('aria_region', ''),
+            'code_dept': e.get('dept', ''),
+            'adresse': e.get('adresse', ''),
+            'commune': e.get('commune', ''),
+            'code_postal': e.get('code_postal', ''),
+            'naf': e.get('naf', ''),
+            'aria_region': e.get('aria_region', ''),
+            'latitude': e.get('latitude', 0),
+            'longitude': e.get('longitude', 0),
+        }
+        sites.append(site)
+        siren = e['siren']
+        if siren not in groupes:
+            groupes[siren] = {'nom': e['nom_complet'], 'nb_sites': 0, 'departements': set(), 'sites': []}
+        groupes[siren]['nb_sites'] += 1
+        groupes[siren]['departements'].add(e.get('dept', ''))
+        groupes[siren]['sites'].append(site)
+        existing_site_keys.add(key)
 
     print(f"    {len(etabs)} établissements bruts")
     print(f"    {len(sites)} sites retenus, {len(groupes)} groupes (SIREN uniques)")

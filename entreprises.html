@@ -130,7 +130,7 @@ tr:hover td { background: #fbfcfe; }
 </div>
 </div>
 <script>
-const NAF_LABELS = {"10.11Z": "Abattage / viande", "10.12Z": "Volaille", "10.13A": "Prépa viande", "10.13B": "Charcuterie", "10.31Z": "Pommes de terre", "10.32Z": "Jus fruits/légumes", "10.39A": "Légumes surgelés", "10.39B": "Transfo fruits/légumes", "10.41A": "Huile olive", "10.41B": "Huiles végétales", "10.51A": "Lait/crème", "10.51C": "Beurre", "10.51D": "Fromage", "10.52Z": "Glaces/sorbets", "10.72Z": "Biscuits/pâtisseries", "10.84Z": "Condiments", "10.85Z": "Plats préparés", "10.86Z": "Aliments diététiques", "10.89Z": "Autres alimentaires", "11.01Z": "Eaux-de-vie", "11.02A": "Vins AOC", "11.02B": "Autres vins", "11.03Z": "Cidre/fruits", "11.07A": "Eaux minérales", "11.07B": "Limonades/boissons"};
+const NAF_LABELS = {"10.11Z": "Abattage / viande", "10.12Z": "Volaille", "10.13A": "Prépa viande", "10.13B": "Charcuterie", "10.31Z": "Pommes de terre", "10.32Z": "Jus fruits/légumes", "10.39A": "Légumes surgelés", "10.39B": "Transfo fruits/légumes", "10.41A": "Huile olive", "10.41B": "Huiles végétales", "10.51A": "Lait/crème", "10.51C": "Beurre", "10.51D": "Fromage", "10.52Z": "Glaces/sorbets", "10.72Z": "Biscuits/pâtisseries", "10.84Z": "Condiments", "10.85Z": "Plats préparés", "10.86Z": "Aliments diététiques", "10.89Z": "Autres alimentaires", "11.01Z": "Eaux-de-vie", "11.02A": "Vins AOC", "11.02B": "Autres vins", "11.03Z": "Cidre/fruits", "11.07A": "Eaux minérales", "11.07B": "Limonades/boissons", "46.33Z": "Commerce de gros produits laitiers"};
 const NAF_COLORS = {'10.1':'#7b2d8b','10.3':'#2e8b57','10.4':'#6b9e3a','10.5':'#d4a017','10.7':'#c17f3a','10.8':'#e85d04','10.9':'#555','11.0':'#8b1a1a'};
 function nafColor(c) { const p=c?c.slice(0,4):''; for(const[k,v] of Object.entries(NAF_COLORS)) if(p.startsWith(k)) return v; return '#666'; }
 let data=[], filtered=[], sortCol='nb_sites', sortDir=-1, page=1;
@@ -156,13 +156,19 @@ function render(){
   const naf=document.getElementById('fNaf').value;
   const minS=parseInt(document.getElementById('fSites').value)||0;
   filtered=data.filter(e=>{
-    if(q&&!(e.nom.toLowerCase().includes(q)||e.siren.includes(q))) return false;
+    const haystack = [e.nom, e.siren, ...(e.aliases||[])].join(' ').toLowerCase();
+    if(q&&!haystack.includes(q)) return false;
     if(reg&&e.aria_region!==reg) return false;
     if(naf&&e.naf!==naf) return false;
     if(minS&&e.nb_sites<minS) return false;
     return true;
   });
   filtered.sort((a,b)=>{
+    if(q) {
+      const ma = a.manual_priority ? 1 : 0;
+      const mb = b.manual_priority ? 1 : 0;
+      if (ma !== mb) return mb - ma;
+    }
     const va=a[sortCol]??'', vb=b[sortCol]??'';
     return sortDir*(va>vb?1:va<vb?-1:0);
   });
