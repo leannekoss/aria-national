@@ -363,6 +363,14 @@ def write_nav(active_page):
     )
 
 
+def write_footer():
+    return """<footer class="site-footer">
+  <div class="site-footer-main">Sources officielles: Assemblée nationale · Sénat · HATVP · ANIA · Recherche-entreprises · Alim'confiance</div>
+  <div class="site-footer-disclaimer">Les données proviennent de sources publiques tierces susceptibles d'erreurs, de retards ou de modifications. Leur exactitude et leur exhaustivité ne sont pas garanties; ce site n'engage pas son auteur et ne constitue ni un conseil juridique, ni une position politique.</div>
+  <div class="site-footer-credit">Fait par <a href="https://www.linkedin.com/in/henricasalis/" target="_blank" rel="noopener noreferrer">Henri Casalis</a>.</div>
+</footer>"""
+
+
 BASE_CSS = """
 :root {
   --ink: #172033;
@@ -427,6 +435,11 @@ tr:hover td { background: #fbfcfe; }
 .page-btn:hover:not(.active) { background: #f0f3f6; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.site-footer { max-width:1200px; margin:26px auto 0; padding:26px 20px 34px; color:#7b8492; font-size:12px; line-height:1.55; text-align:center; border-top:1px solid var(--line); }
+.site-footer-main { font-weight:700; color:#5f6a7a; margin-bottom:8px; }
+.site-footer-disclaimer { max-width:92ch; margin:0 auto 8px; }
+.site-footer a { color:var(--accent); font-weight:800; text-decoration:none; }
+.site-footer a:hover { text-decoration:underline; }
 .mobile-cards { display: none; }
 @media(max-width:760px) {
   .top-nav { padding: 8px 12px; align-items: flex-start; flex-direction: column; gap: 6px; min-height: 0; }
@@ -605,8 +618,8 @@ def write_accueil(parl_json, sites_json, regions_json):
     <div style="margin-top:12px;text-align:right"><a href="parlementaires.html" style="font-size:12px;color:#e85d04;text-decoration:none;font-weight:600">Voir les {nb_parls} élus</a></div>
   </div>
 
-  <footer style="text-align:center;color:#888;font-size:12px;padding:32px 0">Sources officielles: Assemblée nationale · Sénat · HATVP · ANIA · Recherche-entreprises · Alim'confiance</footer>
 </div>
+{write_footer()}
 <script>
 {JS_SAFE_HELPERS}
 Promise.all([
@@ -901,6 +914,7 @@ leg.onAdd=()=>{{
 }};
 leg.addTo(map);
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'index.html').write_text(html, encoding='utf-8')
@@ -1090,6 +1104,7 @@ function renderTable() {{
 
 function goPage(p) {{ page=p; renderTable(); window.scrollTo(0,0); }}
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'parlementaires.html').write_text(html, encoding='utf-8')
@@ -1248,6 +1263,7 @@ function renderRegions() {{
 
 renderRegions();
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'regions.html').write_text(html, encoding='utf-8')
@@ -1320,6 +1336,7 @@ function renderPartis() {{
   }}).join('');
 }}
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'partis.html').write_text(html, encoding='utf-8')
@@ -1398,9 +1415,10 @@ function renderGroupes() {{
 
 function sortTable(col) {{
   if (sortCol===col) sortDir*=-1; else {{sortCol=col;sortDir=col>=2?-1:1;}}
-  renderGroupes();
+renderGroupes();
 }}
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'groupes.html').write_text(html, encoding='utf-8')
@@ -1535,6 +1553,7 @@ function paginate(){{
   if(pages>10){{const s=document.createElement('span');s.textContent=` ... ${{pages}}`;s.style.cssText='padding:5px;font-size:13px;color:#888';pag.appendChild(s);}}
 }}
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'entreprises.html').write_text(html, encoding='utf-8')
@@ -1749,6 +1768,7 @@ if (!siren) {{
   }})();
 }}
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'fiche-entreprise.html').write_text(html, encoding='utf-8')
@@ -1843,6 +1863,7 @@ score_impl = 3 x membre_commission_agriculture<br>
     Cartographie <strong style="color:#e85d04">ANIA × Parlementaires</strong> - 16 associations ARIA - Données collectées en avril 2026
   </div>
 </div>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'methodologie.html').write_text(html, encoding='utf-8')
@@ -2043,6 +2064,7 @@ Promise.all([
   `;
 }});
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'fiche.html').write_text(html, encoding='utf-8')
@@ -2087,6 +2109,7 @@ fetch('data/hot_dossiers.json').then(r => r.json()).then(rows => {{
     </div>`).join('') || '<div class="card">Aucun dossier chaud calculé.</div>';
 }});
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'dossiers-chauds.html').write_text(html, encoding='utf-8')
@@ -2129,6 +2152,7 @@ fetch('data/timeline_reglementaire.json').then(r => r.json()).then(rows => {{
     </div>`).join('');
 }});
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'timeline-reglementaire.html').write_text(html, encoding='utf-8')
@@ -2170,6 +2194,7 @@ fetch('data/veille_thematique.json').then(r => r.json()).then(rows => {{
     </div>`).join('');
 }});
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'veille-thematique.html').write_text(html, encoding='utf-8')
@@ -2226,6 +2251,7 @@ fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {{
     </div>`).join('');
 }});
 </script>
+{write_footer()}
 </body>
 </html>"""
     (SITE_DIR / 'lobbying.html').write_text(html, encoding='utf-8')
