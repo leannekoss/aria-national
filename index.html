@@ -4,13 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="description" content="Audit des 30 élus prioritaires, cartographie parlementaire, veille parlementaire et intelligence territoriale pour les affaires publiques agroalimentaires.">
+<meta name="description" content="Carte interactive des sites agroalimentaires, départements, régions ARIA et parlementaires exposés pour prioriser les actions affaires publiques.">
+<link rel="canonical" href="https://leannekoss.github.io/aria-national/index.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ANIA Radar">
-<meta property="og:title" content="ANIA Radar · Cartographie parlementaire agroalimentaire">
-<meta property="og:description" content="Audit 30 élus prioritaires, dossiers chauds, entreprises alimentaires, régions ARIA et sources fraîches pour affaires publiques.">
-<meta property="og:url" content="https://leannekoss.github.io/aria-national/">
+<meta property="og:title" content="Carte parlementaire agroalimentaire - élus et sites IAA">
+<meta property="og:description" content="Carte interactive des sites agroalimentaires, départements, régions ARIA et parlementaires exposés pour prioriser les actions affaires publiques.">
+<meta property="og:url" content="https://leannekoss.github.io/aria-national/index.html">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Carte parlementaire agroalimentaire - élus et sites IAA">
+<meta name="twitter:description" content="Carte interactive des sites agroalimentaires, départements, régions ARIA et parlementaires exposés pour prioriser les actions affaires publiques.">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.fr https://tile.openstreetmap.fr; font-src 'self' data:; connect-src 'self'; frame-src 'none'; form-action 'self' mailto:;">
 <title>ANIA - Carte parlementaire</title>
@@ -81,6 +84,7 @@ tr:hover td { background: #fbfcfe; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .site-footer { max-width:1200px; margin:26px auto 0; padding:26px 20px 34px; color:#7b8492; font-size:12px; line-height:1.55; text-align:center; border-top:1px solid var(--line); }
 .site-footer-main { font-weight:700; color:#5f6a7a; margin-bottom:8px; }
+.site-footer-topics { max-width:96ch; margin:0 auto 10px; }
 .site-footer-disclaimer { max-width:92ch; margin:0 auto 8px; }
 .site-footer a { color:var(--accent); font-weight:800; text-decoration:none; }
 .site-footer a:hover { text-decoration:underline; }
@@ -347,6 +351,7 @@ leg.addTo(map);
 </script>
 <footer class="site-footer">
   <div class="site-footer-main">Sources officielles: Assemblée nationale · Sénat · HATVP · ANIA · Recherche-entreprises · Alim'confiance</div>
+  <div class="site-footer-topics">Pages thématiques: <a href="audit-30-elus-prioritaires.html">Audit 30 élus prioritaires pour fédération professionnelle</a> · <a href="cartographie-parlementaire-federation.html">Cartographie parlementaire pour fédération professionnelle</a> · <a href="veille-parlementaire-federation.html">Veille parlementaire pour fédération professionnelle</a> · <a href="affaires-publiques-agroalimentaire.html">Affaires publiques agroalimentaires: élus, territoires et dossiers</a> · <a href="intelligence-territoriale-filiere.html">Intelligence territoriale pour filière et fédération</a> · <a href="scoring-elus-priorite-relationnelle.html">Scoring élus: priorité relationnelle, pas notation politique</a></div>
   <div class="site-footer-disclaimer">Les données proviennent de sources publiques tierces susceptibles d'erreurs, de retards ou de modifications. Leur exactitude et leur exhaustivité ne sont pas garanties; ce site n'engage pas son auteur et ne constitue ni un conseil juridique, ni une position politique.</div>
   <div class="site-footer-credit">Fait par <a href="https://www.linkedin.com/in/henricasalis/" target="_blank" rel="noopener noreferrer">Henri Casalis</a>.</div>
 </footer>

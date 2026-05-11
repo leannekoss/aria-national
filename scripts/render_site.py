@@ -2,10 +2,11 @@
 """Generate the static ANIA cockpit from normalized CSV/JSON inputs."""
 
 import csv
+import html as html_lib
 import json
 from collections import defaultdict
 
-from common import ASSETS_DIR, DATA_DIR, NORMALIZED_DIR, RAW_DIR, ROOT_DIR, ensure_dirs, read_json, write_json
+from common import ASSETS_DIR, DATA_DIR, NORMALIZED_DIR, RAW_DIR, ROOT_DIR, ensure_dirs, read_json, utc_now_iso, write_json
 from manual_companies import MANUAL_COMPANY_INDEX, MANUAL_SITES
 
 OUTPUT_DIR = NORMALIZED_DIR
@@ -340,6 +341,239 @@ function fmtDateSafe(value, withTime=false) {
 """
 
 
+SEO_LANDING_PAGES = [
+    {
+        "slug": "audit-30-elus-prioritaires.html",
+        "title": "Audit 30 élus prioritaires pour fédération professionnelle",
+        "description": "Méthode et exemple d'audit pour identifier les 30 parlementaires prioritaires d'une fédération professionnelle avec preuves territoriales et sources publiques.",
+        "h1": "Audit 30 élus prioritaires pour fédération professionnelle",
+        "kicker": "Offre affaires publiques",
+        "intent": "Transformer une masse d'élus, de textes et de territoires en liste courte actionnable pour rendez-vous institutionnels.",
+        "keywords": ["audit parlementaires prioritaires", "fédération professionnelle", "plan de contact parlementaire"],
+        "sections": [
+            ("Ce que l'audit résout", "Une fédération sait souvent quels élus la connaissent déjà, mais pas toujours quels parlementaires ont objectivement la filière dans leur territoire. L'audit croise implantations économiques, commissions, votes, dossiers chauds et activité récente."),
+            ("Livrables attendus", "Le livrable type comprend une carte élus-sites, un top 30 priorisé, des fiches rendez-vous, les angles d'approche par territoire et les liens vers les preuves publiques."),
+            ("Pourquoi c'est vendable", "Le client n'achète pas une base brute: il achète une décision. La valeur est dans la priorisation, la justification sourcée et la capacité à préparer un plan d'action en quelques jours."),
+        ],
+        "faq": [
+            ("Est-ce un score politique ?", "Non. Le score est une priorité relationnelle fondée sur des données publiques et territoriales, pas une opinion sur l'élu."),
+            ("À qui s'adresse cette approche ?", "Aux fédérations professionnelles, associations sectorielles, cabinets affaires publiques et directions institutionnelles multi-sites."),
+        ],
+        "links": [("Voir les élus priorisés", "parlementaires.html"), ("Explorer la carte", "index.html"), ("Lire la méthode", "methodologie.html")],
+    },
+    {
+        "slug": "cartographie-parlementaire-federation.html",
+        "title": "Cartographie parlementaire pour fédération professionnelle",
+        "description": "Cartographie parlementaire sectorielle pour relier élus, territoires, entreprises, commissions et dossiers réglementaires utiles à une fédération.",
+        "h1": "Cartographie parlementaire pour fédération professionnelle",
+        "kicker": "Cartographie d'influence",
+        "intent": "Visualiser quels élus comptent pour une filière, où ils sont élus, quels territoires sont exposés et quels dossiers justifient une prise de contact.",
+        "keywords": ["cartographie parlementaire", "cartographie institutionnelle", "fédération professionnelle"],
+        "sections": [
+            ("Au-delà d'une carte", "La carte n'est utile que si elle répond à une question métier: qui contacter, sur quel sujet, avec quelle preuve territoriale et quelle source publique."),
+            ("Croisement territoire x mandat", "Le cockpit relie les départements, régions ARIA, sites IAA, parlementaires, groupes politiques et signaux récents pour objectiver la priorité de contact."),
+            ("Usage en comité de direction", "La visualisation sert à expliquer rapidement un plan parlementaire à une direction générale, un bureau de fédération ou des adhérents."),
+        ],
+        "faq": [
+            ("Quelle différence avec une veille parlementaire classique ?", "La veille dit ce qui se passe. La cartographie montre qui est concerné territorialement et pourquoi le contacter."),
+            ("Peut-on l'adapter à une autre filière ?", "Oui, si la filière dispose d'une empreinte économique ou d'une base d'adhérents géolocalisable."),
+        ],
+        "links": [("Ouvrir la carte", "index.html"), ("Voir les régions", "regions.html"), ("Voir les entreprises", "entreprises.html")],
+    },
+    {
+        "slug": "veille-parlementaire-federation.html",
+        "title": "Veille parlementaire pour fédération professionnelle",
+        "description": "Veille parlementaire orientée décision pour fédérations: dossiers chauds, timeline réglementaire, sources officielles et fraîcheur des données.",
+        "h1": "Veille parlementaire pour fédération professionnelle",
+        "kicker": "Veille actionnable",
+        "intent": "Ne pas seulement suivre les textes, mais comprendre quels signaux méritent une note, un arbitrage ou un rendez-vous.",
+        "keywords": ["veille parlementaire", "veille réglementaire", "fédération professionnelle"],
+        "sections": [
+            ("Prioriser le signal", "Les flux Assemblée, Sénat, ANIA et HATVP sont utiles seulement s'ils sont classés par thème, récence et intérêt métier."),
+            ("Dossiers chauds", "La page dossiers chauds met en avant les thèmes dont l'intensité augmente afin de préparer une réaction avant que le sujet ne soit saturé."),
+            ("Fraîcheur et preuve", "Chaque bloc doit afficher source, date de publication, date de collecte et statut de fraîcheur pour éviter les décisions sur données opaques."),
+        ],
+        "faq": [
+            ("Est-ce un remplaçant de Legiwatch ou Pappers Politique ?", "Non, c'est une couche sectorielle de priorisation et de briefing qui peut compléter une veille horizontale."),
+            ("Pourquoi afficher la fraîcheur ?", "Parce qu'une équipe affaires publiques doit savoir si elle lit un signal récent, un cache ou une source indisponible."),
+        ],
+        "links": [("Dossiers chauds", "dossiers-chauds.html"), ("Timeline réglementaire", "timeline-reglementaire.html"), ("Veille thématique", "veille-thematique.html")],
+    },
+    {
+        "slug": "affaires-publiques-agroalimentaire.html",
+        "title": "Affaires publiques agroalimentaires et cartographie d'influence",
+        "description": "Cockpit affaires publiques agroalimentaire: élus prioritaires, entreprises alimentaires, territoires ARIA, EGALIM, agriculture, nutrition et emballages.",
+        "h1": "Affaires publiques agroalimentaires: élus, territoires et dossiers",
+        "kicker": "Agroalimentaire",
+        "intent": "Structurer les arguments institutionnels d'une filière agroalimentaire avec données territoriales, signaux parlementaires et preuves publiques.",
+        "keywords": ["affaires publiques agroalimentaire", "ANIA", "EGALIM", "filière alimentaire"],
+        "sections": [
+            ("Une filière très territorialisée", "L'agroalimentaire se défend par les territoires: usines, PME, emplois, inspections, adhérents et bassins de production."),
+            ("Dossiers sensibles", "EGALIM, souveraineté alimentaire, emballages, santé nutrition, export et compétitivité nécessitent des relais parlementaires identifiés."),
+            ("Briefs rendez-vous", "Les fiches élus synthétisent angle d'approche, justification, signaux récents et points de vigilance pour préparer des échanges institutionnels."),
+        ],
+        "faq": [
+            ("Pourquoi partir des territoires ?", "Parce qu'un élu réagit plus facilement à une réalité économique locale documentée qu'à un message national abstrait."),
+            ("Le site couvre-t-il seulement l'ANIA ?", "Le démonstrateur est agroalimentaire, mais la méthode peut être adaptée à d'autres fédérations sectorielles."),
+        ],
+        "links": [("Voir les entreprises", "entreprises.html"), ("Voir les élus", "parlementaires.html"), ("Lire la veille thématique", "veille-thematique.html")],
+    },
+    {
+        "slug": "intelligence-territoriale-filiere.html",
+        "title": "Intelligence territoriale pour filière et fédération",
+        "description": "Intelligence territoriale appliquée aux affaires publiques: relier implantations, départements, élus, régions et arguments de filière.",
+        "h1": "Intelligence territoriale pour filière et fédération",
+        "kicker": "Territoires",
+        "intent": "Transformer les implantations économiques d'une filière en plan d'influence parlementaire défendable.",
+        "keywords": ["intelligence territoriale", "filière", "cartographie élus entreprises"],
+        "sections": [
+            ("Du site industriel au parlementaire", "Le croisement géographique permet de relier une entreprise ou un établissement à un département, une région, une circonscription et des élus."),
+            ("Lecture régionale", "Les régions ARIA structurent une lecture utile pour mobiliser les associations régionales et préparer des preuves locales."),
+            ("Argumentaire local", "Une fiche territoire peut résumer entreprises exposées, élus à activer, dossiers chauds et messages de preuve."),
+        ],
+        "faq": [
+            ("Quelles données faut-il pour une autre filière ?", "Une base d'implantations, des identifiants SIREN/SIRET si possible, une taxonomie de thèmes et les sources institutionnelles pertinentes."),
+            ("Pourquoi l'intelligence territoriale aide-t-elle le lobbying ?", "Elle rend le plaidoyer concret, localisable et vérifiable."),
+        ],
+        "links": [("Carte territoriale", "index.html"), ("Régions ARIA", "regions.html"), ("Entreprises", "entreprises.html")],
+    },
+    {
+        "slug": "scoring-elus-priorite-relationnelle.html",
+        "title": "Scoring élus: priorité relationnelle, pas notation politique",
+        "description": "Méthodologie de scoring des élus pour affaires publiques: priorité relationnelle, critères publics, limites, transparence et conformité.",
+        "h1": "Scoring élus: priorité relationnelle, pas notation politique",
+        "kicker": "Méthodologie",
+        "intent": "Cadrer juridiquement et réputationnellement la priorisation d'élus avec des critères publics et explicables.",
+        "keywords": ["scoring élus", "priorité relationnelle", "cartographie parties prenantes"],
+        "sections": [
+            ("Un score explicable", "Le score doit aider à prioriser les contacts selon des critères publics: territoire, rôle institutionnel, activité parlementaire et signaux de dossier."),
+            ("Ce que le score ne fait pas", "Il ne classe pas les opinions privées, ne remplace pas le jugement humain et ne constitue pas une décision automatisée sur une personne."),
+            ("Transparence des sources", "Chaque recommandation doit rester auditable: source, date, périmètre et limite sont aussi importants que le résultat."),
+        ],
+        "faq": [
+            ("Pourquoi éviter les mots ami ou ennemi ?", "Parce qu'ils sont politiquement risqués et moins professionnels qu'une priorité relationnelle objectivée."),
+            ("Le score peut-il être contesté ?", "Oui, c'est pour cela que les critères et limites doivent être affichés clairement."),
+        ],
+        "links": [("Méthodologie", "methodologie.html"), ("Élus priorisés", "parlementaires.html"), ("Fiches élus", "fiche.html")],
+    },
+    {
+        "slug": "lobbying-hatvp-federation.html",
+        "title": "Lobbying HATVP pour fédération: données ouvertes et veille",
+        "description": "Exploiter les données HATVP pour comprendre l'activité de représentation d'intérêts autour d'une fédération, d'une filière et de ses dossiers.",
+        "h1": "Lobbying HATVP pour fédération: données ouvertes et veille",
+        "kicker": "HATVP",
+        "intent": "Lire les déclarations publiques de représentation d'intérêts comme un signal de contexte, pas comme une vérité exhaustive.",
+        "keywords": ["HATVP lobbying", "représentation d'intérêts", "fédération professionnelle"],
+        "sections": [
+            ("Un registre utile mais déclaratif", "La HATVP apporte des signaux publics sur organisations, thèmes, actions et décideurs, avec les limites propres à une source déclarative."),
+            ("Cas d'usage fédération", "Une fédération peut suivre les organisations actives, les thèmes déclarés, les volumes par année et les destinataires publics."),
+            ("Lecture prudente", "Les données HATVP doivent être sourcées et contextualisées: elles n'épuisent pas l'ensemble des interactions institutionnelles."),
+        ],
+        "faq": [
+            ("La HATVP suffit-elle pour suivre le lobbying ?", "Non, elle fournit une base publique précieuse mais doit être croisée avec veille parlementaire et analyse métier."),
+            ("Pourquoi l'afficher dans le cockpit ?", "Pour documenter l'environnement d'influence et rendre la veille plus transparente."),
+        ],
+        "links": [("Lobbying récent", "lobbying.html"), ("Sources", "methodologie.html"), ("Timeline", "timeline-reglementaire.html")],
+    },
+    {
+        "slug": "brief-rendez-vous-parlementaire.html",
+        "title": "Brief rendez-vous parlementaire pour fédération",
+        "description": "Préparer un brief de rendez-vous parlementaire avec fiche élu, territoire, entreprises concernées, signaux récents et arguments sourcés.",
+        "h1": "Brief rendez-vous parlementaire pour fédération",
+        "kicker": "Briefing institutionnel",
+        "intent": "Passer de la donnée à une note courte utilisable avant un rendez-vous avec un député ou un sénateur.",
+        "keywords": ["brief parlementaire", "fiche élu", "rendez-vous affaires publiques"],
+        "sections": [
+            ("Le format utile", "Un brief doit tenir en peu de pages: qui est l'élu, pourquoi il compte, quel angle adopter, quelles preuves citer et quels risques éviter."),
+            ("Sources à citer", "Votes, commissions, dossiers récents, implantation économique locale et données d'entreprise doivent être reliés à des sources visibles."),
+            ("Décision attendue", "Le brief doit conclure sur l'action: rencontrer, surveiller, mobiliser un adhérent local, préparer une note ou attendre."),
+        ],
+        "faq": [
+            ("Qu'est-ce qu'une bonne fiche élu ?", "Une fiche qui permet de décider quoi dire, pourquoi maintenant, et avec quelle preuve territoriale."),
+            ("Peut-on automatiser entièrement le brief ?", "Non. L'automatisation prépare la matière; la validation humaine reste nécessaire."),
+        ],
+        "links": [("Élus", "parlementaires.html"), ("Fiche élu", "fiche.html"), ("Dossiers chauds", "dossiers-chauds.html")],
+    },
+    {
+        "slug": "egalim-relations-commerciales.html",
+        "title": "EGALIM et relations commerciales: suivi parlementaire agroalimentaire",
+        "description": "Suivi parlementaire EGALIM, relations commerciales, revenu agricole et négociations distributeurs pour fédérations agroalimentaires.",
+        "h1": "EGALIM et relations commerciales: suivi parlementaire",
+        "kicker": "Dossier réglementaire",
+        "intent": "Faire le lien entre textes EGALIM, votes, signaux parlementaires et parlementaires à suivre pour l'industrie alimentaire.",
+        "keywords": ["EGALIM", "relations commerciales", "veille parlementaire agroalimentaire"],
+        "sections": [
+            ("Un dossier récurrent", "EGALIM et les relations commerciales structurent une partie importante du dialogue entre producteurs, industriels, distributeurs et pouvoirs publics."),
+            ("Ce qu'il faut suivre", "Les textes, propositions de loi, rapports, amendements, débats et prises de parole doivent être reliés à des élus, commissions et territoires exposés."),
+            ("Usage pour une fédération", "Une fédération peut préparer des notes courtes, identifier les relais utiles et expliquer l'impact territorial des règles de négociation commerciale."),
+        ],
+        "faq": [
+            ("Pourquoi isoler EGALIM ?", "Parce que le sujet revient régulièrement dans les travaux parlementaires et mobilise des intérêts économiques territorialisés."),
+            ("La page remplace-t-elle une analyse juridique ?", "Non, elle sert de veille et de priorisation affaires publiques; l'analyse juridique reste à valider séparément."),
+        ],
+        "links": [("Timeline réglementaire", "timeline-reglementaire.html"), ("Élus prioritaires", "parlementaires.html"), ("Méthodologie", "methodologie.html")],
+    },
+    {
+        "slug": "souverainete-alimentaire-parlement.html",
+        "title": "Souveraineté alimentaire au Parlement: veille et territoires IAA",
+        "description": "Analyse des signaux parlementaires sur souveraineté alimentaire, agriculture, production et empreinte industrielle agroalimentaire.",
+        "h1": "Souveraineté alimentaire au Parlement",
+        "kicker": "Agriculture et production",
+        "intent": "Identifier les signaux parlementaires et territoriaux liés à la souveraineté alimentaire et aux capacités de production.",
+        "keywords": ["souveraineté alimentaire", "Parlement", "industrie agroalimentaire"],
+        "sections": [
+            ("Un thème transversal", "La souveraineté alimentaire relie agriculture, transformation, logistique, prix, importations, normes et capacités industrielles."),
+            ("Lecture parlementaire", "Les rapports, textes et débats doivent être reliés aux commissions, territoires de production et sites agroalimentaires concernés."),
+            ("Argument territorial", "L'empreinte locale d'une filière aide à transformer un sujet national en enjeu de département ou de région."),
+        ],
+        "faq": [
+            ("Quels élus suivre sur la souveraineté alimentaire ?", "Les élus de territoires productifs, membres de commissions pertinentes ou actifs dans les débats agricoles et économiques."),
+            ("Pourquoi croiser avec les entreprises ?", "Pour documenter l'impact concret d'un texte sur des sites, PME et bassins d'emploi."),
+        ],
+        "links": [("Régions", "regions.html"), ("Entreprises", "entreprises.html"), ("Veille thématique", "veille-thematique.html")],
+    },
+    {
+        "slug": "emballages-environnement-agroalimentaire.html",
+        "title": "Emballages et environnement: veille réglementaire agroalimentaire",
+        "description": "Veille des textes et débats sur emballages, environnement, consigne, plastique et obligations réglementaires de la filière alimentaire.",
+        "h1": "Emballages et environnement agroalimentaire",
+        "kicker": "Environnement",
+        "intent": "Suivre les signaux réglementaires environnementaux qui peuvent affecter les entreprises alimentaires et leurs fédérations.",
+        "keywords": ["réglementation emballages agroalimentaire", "veille environnement alimentation", "consigne plastique"],
+        "sections": [
+            ("Un sujet réglementaire sensible", "Les emballages relient environnement, coûts industriels, distribution, sécurité sanitaire, logistique et attentes consommateurs."),
+            ("Veille utile", "La veille doit distinguer les signaux faibles, les textes applicables, les rapports parlementaires et les prises de position publiques."),
+            ("Décision affaires publiques", "L'objectif est de savoir quand préparer un argumentaire, mobiliser des adhérents ou qualifier un élu relais."),
+        ],
+        "faq": [
+            ("Pourquoi une page dédiée aux emballages ?", "Parce que le sujet combine contraintes réglementaires, impact économique et visibilité politique."),
+            ("Comment relier environnement et cartographie ?", "En croisant les textes avec les entreprises et territoires les plus exposés."),
+        ],
+        "links": [("Veille thématique", "veille-thematique.html"), ("Timeline", "timeline-reglementaire.html"), ("Entreprises", "entreprises.html")],
+    },
+]
+
+
+def seo_meta(title: str, description: str, path: str, structured_data: dict | list[dict] | None = None) -> str:
+    canonical = f"{SITE_URL}{path}"
+    payload = f"""<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="description" content="{html_lib.escape(description, quote=True)}">
+<link rel="canonical" href="{canonical}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ANIA Radar">
+<meta property="og:title" content="{html_lib.escape(title, quote=True)}">
+<meta property="og:description" content="{html_lib.escape(description, quote=True)}">
+<meta property="og:url" content="{canonical}">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="{html_lib.escape(title, quote=True)}">
+<meta name="twitter:description" content="{html_lib.escape(description, quote=True)}">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.fr https://tile.openstreetmap.fr; font-src 'self' data:; connect-src 'self'; frame-src 'none'; form-action 'self' mailto:;">"""
+    if structured_data:
+        payload += "\n<script type=\"application/ld+json\">" + json.dumps(structured_data, ensure_ascii=False, separators=(",", ":")) + "</script>"
+    return payload
+
+
 def write_nav(active_page):
     pages = [
         ('accueil.html', 'Cockpit'),
@@ -364,8 +598,13 @@ def write_nav(active_page):
 
 
 def write_footer():
+    seo_links = " · ".join(
+        f'<a href="{page["slug"]}">{html_lib.escape(page["h1"])}</a>'
+        for page in SEO_LANDING_PAGES[:6]
+    )
     return """<footer class="site-footer">
   <div class="site-footer-main">Sources officielles: Assemblée nationale · Sénat · HATVP · ANIA · Recherche-entreprises · Alim'confiance</div>
+  <div class="site-footer-topics">Pages thématiques: """ + seo_links + """</div>
   <div class="site-footer-disclaimer">Les données proviennent de sources publiques tierces susceptibles d'erreurs, de retards ou de modifications. Leur exactitude et leur exhaustivité ne sont pas garanties; ce site n'engage pas son auteur et ne constitue ni un conseil juridique, ni une position politique.</div>
   <div class="site-footer-credit">Fait par <a href="https://www.linkedin.com/in/henricasalis/" target="_blank" rel="noopener noreferrer">Henri Casalis</a>.</div>
 </footer>"""
@@ -437,6 +676,7 @@ tr:hover td { background: #fbfcfe; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .site-footer { max-width:1200px; margin:26px auto 0; padding:26px 20px 34px; color:#7b8492; font-size:12px; line-height:1.55; text-align:center; border-top:1px solid var(--line); }
 .site-footer-main { font-weight:700; color:#5f6a7a; margin-bottom:8px; }
+.site-footer-topics { max-width:96ch; margin:0 auto 10px; }
 .site-footer-disclaimer { max-width:92ch; margin:0 auto 8px; }
 .site-footer a { color:var(--accent); font-weight:800; text-decoration:none; }
 .site-footer a:hover { text-decoration:underline; }
@@ -479,7 +719,7 @@ def write_accueil(parl_json, sites_json, regions_json):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("ANIA Radar - audit 30 élus prioritaires", "Cockpit de cartographie parlementaire, veille parlementaire et intelligence territoriale pour fédérations agroalimentaires.", "accueil.html")}
 <title>Cockpit ANIA · accueil</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -668,7 +908,7 @@ def write_index():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Carte parlementaire agroalimentaire - élus et sites IAA", "Carte interactive des sites agroalimentaires, départements, régions ARIA et parlementaires exposés pour prioriser les actions affaires publiques.", "index.html")}
 <title>ANIA - Carte parlementaire</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -930,7 +1170,7 @@ def write_parlementaires():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Élus prioritaires pour l'industrie alimentaire", "Liste des députés et sénateurs priorisés selon empreinte IAA, territoire, commissions, votes et signaux publics.", "parlementaires.html")}
 <title>ANIA - Élus prioritaires</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -1120,7 +1360,7 @@ def write_regions(regions_json):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Régions ARIA et cartographie territoriale IAA", "Vue régionale des sites agroalimentaires, départements clés et parlementaires prioritaires pour les associations ARIA.", "regions.html")}
 <title>ANIA - 16 régions ARIA</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -1276,7 +1516,7 @@ def write_partis():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Analyse politique des groupes parlementaires pour l'agroalimentaire", "Lecture par groupes politiques et chambres des élus exposés aux enjeux agroalimentaires et territoriaux.", "partis.html")}
 <title>ANIA - Analyse par parti</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -1349,7 +1589,7 @@ def write_groupes():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Groupes industriels agroalimentaires multi-territoires", "Groupes et entreprises agroalimentaires présents dans plusieurs départements pour relier empreinte économique et priorisation parlementaire.", "groupes.html")}
 <title>ANIA - Groupes industriels</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -1445,7 +1685,7 @@ def write_entreprises():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{NOINDEX}
+{seo_meta("Entreprises alimentaires et empreinte territoriale", "Base d'entreprises et sites agroalimentaires pour documenter les enjeux territoriaux d'une fédération professionnelle.", "entreprises.html")}
 <title>ANIA - Entreprises IAA</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -1567,7 +1807,7 @@ def write_fiche_entreprise():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-{NOINDEX}
+{seo_meta("Fiche entreprise agroalimentaire - territoire et élus associés", "Fiche entreprise avec sites, données publiques, inspections disponibles, territoire et parlementaires associés.", "fiche-entreprise.html")}
 <title>Fiche entreprise - ANIA x Parlementaires</title>
 {FAVICON}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9/dist/leaflet.css"/>
@@ -1781,7 +2021,7 @@ def write_methodologie():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Méthodologie du scoring parlementaire et sources publiques", "Sources, limites, fraîcheur des données et méthode de priorité relationnelle pour cartographie parlementaire agroalimentaire.", "methodologie.html")}
 <title>ANIA - Méthodologie</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -1879,7 +2119,7 @@ def write_fiche():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Fiche parlementaire affaires publiques agroalimentaires", "Fiche élu avec priorité relationnelle, territoire, votes, activité récente et signaux publics pour préparer un brief rendez-vous.", "fiche.html")}
 <title>ANIA - Fiche parlementaire</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -2077,7 +2317,7 @@ def write_dossiers_chauds():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Dossiers chauds parlementaires agroalimentaires", "Dossiers chauds détectés dans les sources Assemblée, Sénat, ANIA et HATVP pour prioriser les actions affaires publiques.", "dossiers-chauds.html")}
 <title>ANIA · Dossiers chauds</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -2122,7 +2362,7 @@ def write_timeline_reglementaire():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Timeline réglementaire agroalimentaire", "Fil chronologique des publications Assemblée nationale, Sénat, ANIA et HATVP liées aux enjeux agroalimentaires.", "timeline-reglementaire.html")}
 <title>ANIA · Timeline réglementaire</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -2165,7 +2405,7 @@ def write_veille_thematique():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Veille thématique agroalimentaire - EGALIM, agriculture, emballages", "Veille par thèmes métier pour fédérations agroalimentaires: EGALIM, agriculture, emballages, santé, nutrition et export.", "veille-thematique.html")}
 <title>ANIA · Veille thématique</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -2207,7 +2447,7 @@ def write_lobbying():
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{NOINDEX}
+{seo_meta("Lobbying HATVP et représentation d'intérêts agroalimentaire", "Lecture des données HATVP de représentation d'intérêts pour comprendre organisations, thèmes et actions récentes.", "lobbying.html")}
 <title>ANIA · Lobbying récent</title>
 {FAVICON}
 <style>{BASE_CSS}
@@ -2258,26 +2498,204 @@ fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {{
     print('    OK lobbying.html')
 
 
+def write_seo_landing_pages(parl_json, sites_json, entreprises_json, regions_json):
+    total_pages = len(SEO_LANDING_PAGES)
+    topic_nav = "".join(
+        f'<a href="{page["slug"]}">{html_lib.escape(page["kicker"])}</a>'
+        for page in SEO_LANDING_PAGES
+    )
+    for idx, page in enumerate(SEO_LANDING_PAGES, start=1):
+        canonical = f'{SITE_URL}{page["slug"]}'
+        structured_data = [
+            {
+                "@context": "https://schema.org",
+                "@type": "WebPage",
+                "@id": canonical,
+                "url": canonical,
+                "name": page["title"],
+                "description": page["description"],
+                "isPartOf": {"@type": "WebSite", "name": "ANIA Radar", "url": SITE_URL},
+                "about": page["keywords"],
+                "inLanguage": "fr-FR",
+            },
+            {
+                "@context": "https://schema.org",
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    {"@type": "ListItem", "position": 1, "name": "Cockpit", "item": f"{SITE_URL}accueil.html"},
+                    {"@type": "ListItem", "position": 2, "name": page["h1"], "item": canonical},
+                ],
+            },
+            {
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": question,
+                        "acceptedAnswer": {"@type": "Answer", "text": answer},
+                    }
+                    for question, answer in page["faq"]
+                ],
+            },
+            {
+                "@context": "https://schema.org",
+                "@type": "Dataset",
+                "name": "ANIA Radar - données publiques affaires publiques agroalimentaires",
+                "description": "Jeu statique combinant parlementaires, sites IAA, entreprises, régions ARIA et signaux publics officiels.",
+                "url": SITE_URL,
+                "keywords": ["parlementaires", "industrie agroalimentaire", "fédérations professionnelles", "veille parlementaire"],
+                "variableMeasured": [
+                    f"{len(parl_json)} parlementaires",
+                    f"{len(sites_json)} sites IAA géolocalisés",
+                    f"{len(entreprises_json)} entreprises",
+                    f"{len(regions_json)} régions ARIA",
+                ],
+            },
+        ]
+
+        section_html = "".join(
+            f"""<section class="seo-section">
+  <h2>{html_lib.escape(title)}</h2>
+  <p>{html_lib.escape(body)}</p>
+</section>"""
+            for title, body in page["sections"]
+        )
+        faq_html = "".join(
+            f"""<details class="faq-item">
+  <summary>{html_lib.escape(question)}</summary>
+  <p>{html_lib.escape(answer)}</p>
+</details>"""
+            for question, answer in page["faq"]
+        )
+        link_html = "".join(
+            f'<a class="seo-link-card" href="{href}"><span>{html_lib.escape(label)}</span><small>Explorer la preuve</small></a>'
+            for label, href in page["links"]
+        )
+        keyword_html = "".join(f"<span>{html_lib.escape(keyword)}</span>" for keyword in page["keywords"])
+
+        html = f"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+{seo_meta(page["title"], page["description"], page["slug"], structured_data)}
+<title>{html_lib.escape(page["title"])}</title>
+{FAVICON}
+<style>{BASE_CSS}
+.seo-hero {{ background:linear-gradient(135deg,#1a1a2e 0%,#26324a 58%,#3a2a22 100%); color:white; padding:58px 20px; }}
+.seo-hero-inner {{ max-width:1120px; margin:0 auto; display:grid; grid-template-columns:1.2fr .8fr; gap:24px; align-items:start; }}
+.seo-kicker {{ display:inline-flex; color:#ffb27a; border:1px solid rgba(255,178,122,.35); background:rgba(232,93,4,.16); border-radius:999px; padding:5px 11px; font-size:11px; font-weight:850; text-transform:uppercase; letter-spacing:.08em; margin-bottom:18px; }}
+.seo-h1 {{ font-size:clamp(30px,4vw,50px); line-height:1.04; max-width:14ch; margin-bottom:16px; font-weight:900; }}
+.seo-intent {{ color:rgba(255,255,255,.78); font-size:15px; line-height:1.65; max-width:68ch; }}
+.seo-hero-card {{ background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:20px; }}
+.seo-proof-grid {{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:14px; }}
+.seo-proof {{ border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:12px; }}
+.seo-proof strong {{ display:block; font-size:22px; line-height:1; color:white; }}
+.seo-proof span {{ display:block; font-size:11px; color:rgba(255,255,255,.68); margin-top:6px; }}
+.seo-layout {{ max-width:1120px; margin:0 auto; padding:30px 20px; display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:22px; }}
+.seo-content {{ display:grid; gap:16px; }}
+.seo-section {{ background:white; border:1px solid var(--line); border-radius:12px; padding:22px; box-shadow:var(--shadow); }}
+.seo-section h2 {{ color:var(--navy); font-size:20px; line-height:1.2; margin-bottom:8px; }}
+.seo-section p {{ color:#4f5b6b; font-size:14px; line-height:1.7; }}
+.seo-links {{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; }}
+.seo-link-card {{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px; color:var(--ink); text-decoration:none; box-shadow:var(--shadow); }}
+.seo-link-card span {{ display:block; font-weight:850; font-size:13px; }}
+.seo-link-card small {{ display:block; color:var(--muted); margin-top:4px; font-size:11px; }}
+.seo-aside {{ position:sticky; top:80px; align-self:start; display:grid; gap:14px; }}
+.seo-aside-card {{ background:white; border:1px solid var(--line); border-radius:12px; padding:18px; box-shadow:var(--shadow); }}
+.seo-keywords {{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }}
+.seo-keywords span {{ background:var(--accent-soft); color:#8b3908; border:1px solid #f1c7ad; border-radius:999px; padding:4px 8px; font-size:11px; font-weight:800; }}
+.topic-nav {{ display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }}
+.topic-nav a {{ color:#334155; background:#f4f6f8; border:1px solid var(--line); border-radius:999px; padding:5px 8px; font-size:11px; font-weight:750; text-decoration:none; }}
+.faq-item {{ background:white; border:1px solid var(--line); border-radius:10px; padding:14px 16px; }}
+.faq-item summary {{ cursor:pointer; font-weight:850; color:var(--navy); }}
+.faq-item p {{ color:#4f5b6b; font-size:13px; line-height:1.6; margin-top:8px; }}
+@media(max-width:900px) {{ .seo-hero-inner,.seo-layout {{ grid-template-columns:1fr; }} .seo-aside {{ position:static; }} .seo-links {{ grid-template-columns:1fr; }} }}
+</style>
+</head>
+<body>
+{write_nav('')}
+<main>
+  <section class="seo-hero">
+    <div class="seo-hero-inner">
+      <div>
+        <div class="seo-kicker">{html_lib.escape(page["kicker"])} · page {idx}/{total_pages}</div>
+        <h1 class="seo-h1">{html_lib.escape(page["h1"])}</h1>
+        <p class="seo-intent">{html_lib.escape(page["intent"])}</p>
+      </div>
+      <aside class="seo-hero-card" aria-label="Chiffres clés">
+        <div class="hero-aside-title">Base de preuve du cockpit</div>
+        <div class="seo-proof-grid">
+          <div class="seo-proof"><strong>{len(parl_json)}</strong><span>parlementaires scorés</span></div>
+          <div class="seo-proof"><strong>{len(sites_json):,}</strong><span>sites IAA géolocalisés</span></div>
+          <div class="seo-proof"><strong>{len(entreprises_json):,}</strong><span>entreprises consolidées</span></div>
+          <div class="seo-proof"><strong>{len(regions_json)}</strong><span>régions ARIA</span></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+  <div class="seo-layout">
+    <article class="seo-content">
+      {section_html}
+      <section class="seo-section">
+        <h2>Pages utiles pour vérifier la preuve</h2>
+        <p>Ces liens internes relient la page thématique aux données du cockpit: élus, territoires, entreprises, dossiers chauds, sources et limites méthodologiques.</p>
+        <div class="seo-links">{link_html}</div>
+      </section>
+      <section class="seo-section">
+        <h2>Questions fréquentes</h2>
+        <div style="display:grid;gap:10px">{faq_html}</div>
+      </section>
+    </article>
+    <aside class="seo-aside">
+      <div class="seo-aside-card">
+        <div class="section-title">Requêtes ciblées</div>
+        <div class="seo-keywords">{keyword_html}</div>
+      </div>
+      <div class="seo-aside-card">
+        <div class="section-title">Explorer par thème</div>
+        <div class="topic-nav">{topic_nav}</div>
+      </div>
+      <div class="seo-aside-card">
+        <div class="section-title">Positionnement</div>
+        <p style="font-size:13px;color:#647084;line-height:1.6">Site démonstrateur statique: la valeur SEO/GEO vient du contenu rendu côté build, du maillage interne et des sources publiques datées.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+{write_footer()}
+</body>
+</html>"""
+        (SITE_DIR / page["slug"]).write_text(html, encoding="utf-8")
+    print(f"    OK pages SEO/GEO ({total_pages} pages)")
+
+
 def write_index_redirect():
     """Ajoute un index.html a la racine si accueil.html est la page principale."""
     pass  # index.html est deja la carte interactive
 
 
 def write_seo_files():
-    pages = [
-        "accueil.html",
-        "dossiers-chauds.html",
-        "timeline-reglementaire.html",
-        "veille-thematique.html",
-        "parlementaires.html",
-        "index.html",
-        "entreprises.html",
-        "regions.html",
-        "methodologie.html",
-        "lobbying.html",
-        "groupes.html",
-        "partis.html",
+    core_pages = [
+        ("accueil.html", "daily", "1.0"),
+        ("dossiers-chauds.html", "daily", "0.8"),
+        ("timeline-reglementaire.html", "daily", "0.8"),
+        ("veille-thematique.html", "daily", "0.8"),
+        ("parlementaires.html", "weekly", "0.8"),
+        ("fiche.html", "monthly", "0.4"),
+        ("index.html", "weekly", "0.7"),
+        ("entreprises.html", "weekly", "0.7"),
+        ("fiche-entreprise.html", "monthly", "0.4"),
+        ("regions.html", "weekly", "0.7"),
+        ("methodologie.html", "monthly", "0.7"),
+        ("lobbying.html", "weekly", "0.7"),
+        ("groupes.html", "monthly", "0.5"),
+        ("partis.html", "monthly", "0.5"),
     ]
+    seo_pages = [(page["slug"], "monthly", "0.75") for page in SEO_LANDING_PAGES]
+    pages = core_pages + seo_pages
+    lastmod = utc_now_iso().split("+")[0] + "Z"
     robots = "\n".join([
         "User-agent: *",
         "Allow: /",
@@ -2287,8 +2705,8 @@ def write_seo_files():
     (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
 
     sitemap_items = "\n".join(
-        f"  <url><loc>{SITE_URL}{page}</loc><changefreq>daily</changefreq><priority>{'1.0' if page == 'accueil.html' else '0.7'}</priority></url>"
-        for page in pages
+        f"  <url><loc>{SITE_URL}{page}</loc><lastmod>{lastmod}</lastmod><changefreq>{changefreq}</changefreq><priority>{priority}</priority></url>"
+        for page, changefreq, priority in pages
     )
     sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -2324,6 +2742,7 @@ def main():
     write_partis()
     write_groupes()
     write_methodologie()
+    write_seo_landing_pages(parl, sites, entreprises, regions)
     write_seo_files()
 
     print(f'\nMinisite genere dans {SITE_DIR}/')
