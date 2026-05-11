@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://leannekoss.github.io/aria-national/sitemap.xml

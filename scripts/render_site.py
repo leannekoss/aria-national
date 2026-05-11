@@ -307,8 +307,37 @@ def build_json_data():
     return parl_json, sites_json, partis_json, groupes_json, regions_json, entreprises_json
 
 
-NOINDEX = '<meta name="robots" content="noindex, nofollow">'
+SITE_URL = "https://leannekoss.github.io/aria-national/"
+NOINDEX = f"""<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="description" content="Cockpit ANIA de cartographie d'influence, veille parlementaire et intelligence territoriale pour les affaires publiques agroalimentaires.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ANIA Radar">
+<meta property="og:title" content="ANIA Radar · Cockpit affaires publiques">
+<meta property="og:description" content="Dossiers chauds, élus prioritaires, entreprises alimentaires, régions ARIA et sources fraîches.">
+<meta property="og:url" content="{SITE_URL}">
+<meta name="twitter:card" content="summary">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.fr https://tile.openstreetmap.fr; font-src 'self' data:; connect-src 'self'; frame-src 'none'; form-action 'self' mailto:;">"""
 FAVICON = '<link rel="icon" href="data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 32 32\'><rect x=\'2\' y=\'17\' width=\'6\' height=\'13\' fill=\'%23e85d04\'/><rect x=\'11\' y=\'9\' width=\'6\' height=\'21\' fill=\'%231a1a2e\'/><rect x=\'20\' y=\'2\' width=\'6\' height=\'28\' fill=\'%23e85d04\'/><rect x=\'1\' y=\'30\' width=\'30\' height=\'2\' fill=\'%231a1a2e\'/></svg>">'
+
+JS_SAFE_HELPERS = """
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function safeHref(value) {
+  try {
+    const url = new URL(String(value || ''), location.href);
+    return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.href : '#';
+  } catch (_) {
+    return '#';
+  }
+}
+function fmtDateSafe(value, withTime=false) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '-';
+  return withTime ? d.toLocaleString('fr-FR') : d.toLocaleDateString('fr-FR');
+}
+"""
 
 
 def write_nav(active_page):
@@ -1944,7 +1973,7 @@ Promise.all([
         ${{p.commission ? `<div style="font-size:12px;color:#888;margin-top:8px">${{p.commission}}</div>` : ''}}
         ${{p.aria_regions && p.aria_regions !== 'Non rattaché' ? `<div style="font-size:12px;color:#888;margin-top:4px">Région : ${{p.aria_regions}}</div>` : ''}}
         ${{p.mail ? `<div style="margin-top:12px"><a href="mailto:${{p.mail}}" style="color:#4361ee;font-size:13px">${{p.mail}}</a></div>` : ''}}
-        ${{p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${{p.twitter.replace('@','')}}" target="_blank" style="color:#1d9bf0;font-size:13px">@${{p.twitter.replace('@','')}}</a></div>` : ''}}
+        ${{p.twitter ? `<div style="margin-top:4px"><a href="https://twitter.com/${{p.twitter.replace('@','')}}" target="_blank" rel="noopener noreferrer" style="color:#1d9bf0;font-size:13px">@${{p.twitter.replace('@','')}}</a></div>` : ''}}
       </div>
     </div>
 
@@ -1998,18 +2027,19 @@ def write_dossiers_chauds():
   <div id="dossiers"></div>
 </div>
 <script>
+{JS_SAFE_HELPERS}
 fetch('data/hot_dossiers.json').then(r => r.json()).then(rows => {{
   document.getElementById('dossiers').innerHTML = rows.map(row => `
     <div class="dossier-card">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
         <div>
-          <div style="font-size:20px;font-weight:800;color:#1a1a2e">${{row.theme}}</div>
-          <div style="font-size:12px;color:#666;margin-top:4px">${{row.score}} signaux · ${{row.source_count}} sources · dernier signal ${{new Date(row.latest_at).toLocaleDateString('fr-FR')}}</div>
+          <div style="font-size:20px;font-weight:800;color:#1a1a2e">${{esc(row.theme)}}</div>
+          <div style="font-size:12px;color:#666;margin-top:4px">${{Number(row.score||0)}} signaux · ${{Number(row.source_count||0)}} sources · dernier signal ${{fmtDateSafe(row.latest_at)}}</div>
         </div>
-        <span class="badge badge-egalim">Priorité ${{row.score}}</span>
+        <span class="badge badge-egalim">Priorité ${{Number(row.score||0)}}</span>
       </div>
-      <div style="margin-top:12px;font-size:12px;color:#555">Sources: ${{row.sources.join(' · ')}}</div>
-      ${{row.evidence.map(item => `<div class="evidence-item"><a href="${{item.source_url}}" target="_blank" style="color:#1a1a2e;text-decoration:none;font-weight:600">${{item.title}}</a><div style="font-size:11px;color:#888">${{item.source}} · ${{new Date(item.published_at).toLocaleDateString('fr-FR')}}</div></div>`).join('')}}
+      <div style="margin-top:12px;font-size:12px;color:#555">Sources: ${{(row.sources||[]).map(esc).join(' · ')}}</div>
+      ${{(row.evidence||[]).map(item => `<div class="evidence-item"><a href="${{safeHref(item.source_url)}}" target="_blank" rel="noopener noreferrer" style="color:#1a1a2e;text-decoration:none;font-weight:600">${{esc(item.title)}}</a><div style="font-size:11px;color:#888">${{esc(item.source)}} · ${{fmtDateSafe(item.published_at)}}</div></div>`).join('')}}
     </div>`).join('') || '<div class="card">Aucun dossier chaud calculé.</div>';
 }});
 </script>
@@ -2040,16 +2070,17 @@ def write_timeline_reglementaire():
   <div id="timeline"></div>
 </div>
 <script>
+{JS_SAFE_HELPERS}
 fetch('data/timeline_reglementaire.json').then(r => r.json()).then(rows => {{
   document.getElementById('timeline').innerHTML = rows.slice(0, 120).map(item => `
     <div class="timeline-item">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
         <div>
-          <a href="${{item.source_url}}" target="_blank" style="font-size:16px;font-weight:700;color:#1a1a2e;text-decoration:none">${{item.title}}</a>
-          <div style="font-size:12px;color:#777;margin-top:6px">${{item.source}} · ${{new Date(item.published_at).toLocaleString('fr-FR')}}</div>
-          ${{item.summary ? `<div style="font-size:13px;color:#444;line-height:1.5;margin-top:10px">${{item.summary}}</div>` : ''}}
+          <a href="${{safeHref(item.source_url)}}" target="_blank" rel="noopener noreferrer" style="font-size:16px;font-weight:700;color:#1a1a2e;text-decoration:none">${{esc(item.title)}}</a>
+          <div style="font-size:12px;color:#777;margin-top:6px">${{esc(item.source)}} · ${{fmtDateSafe(item.published_at, true)}}</div>
+          ${{item.summary ? `<div style="font-size:13px;color:#444;line-height:1.5;margin-top:10px">${{esc(item.summary)}}</div>` : ''}}
         </div>
-        <span class="badge" style="background:#f3f4f6;color:#374151">${{(item.themes||[])[0]||'Signal'}}</span>
+        <span class="badge" style="background:#f3f4f6;color:#374151">${{esc((item.themes||[])[0]||'Signal')}}</span>
       </div>
     </div>`).join('');
 }});
@@ -2081,15 +2112,16 @@ def write_veille_thematique():
   <div id="themes"></div>
 </div>
 <script>
+{JS_SAFE_HELPERS}
 fetch('data/veille_thematique.json').then(r => r.json()).then(rows => {{
   document.getElementById('themes').innerHTML = rows.map(row => `
     <div class="theme-card">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
-        <div><div style="font-size:18px;font-weight:800">${{row.theme}}</div><div style="font-size:12px;color:#777;margin-top:4px">${{row.count}} signaux · dernier mouvement ${{new Date(row.latest_at).toLocaleDateString('fr-FR')}}</div></div>
-        <span class="badge badge-eco">${{row.count}}</span>
+        <div><div style="font-size:18px;font-weight:800">${{esc(row.theme)}}</div><div style="font-size:12px;color:#777;margin-top:4px">${{Number(row.count||0)}} signaux · dernier mouvement ${{fmtDateSafe(row.latest_at)}}</div></div>
+        <span class="badge badge-eco">${{Number(row.count||0)}}</span>
       </div>
       <div style="margin-top:12px;display:grid;gap:8px">
-        ${{row.items.map(item => `<div style="padding-top:8px;border-top:1px solid #f1f1f1"><a href="${{item.source_url}}" target="_blank" style="color:#1a1a2e;text-decoration:none;font-weight:600">${{item.title}}</a><div style="font-size:11px;color:#888">${{item.source}} · ${{new Date(item.published_at).toLocaleDateString('fr-FR')}}</div></div>`).join('')}}
+        ${{(row.items||[]).map(item => `<div style="padding-top:8px;border-top:1px solid #f1f1f1"><a href="${{safeHref(item.source_url)}}" target="_blank" rel="noopener noreferrer" style="color:#1a1a2e;text-decoration:none;font-weight:600">${{esc(item.title)}}</a><div style="font-size:11px;color:#888">${{esc(item.source)}} · ${{fmtDateSafe(item.published_at)}}</div></div>`).join('')}}
       </div>
     </div>`).join('');
 }});
@@ -2127,6 +2159,7 @@ def write_lobbying():
   <div id="actions"></div>
 </div>
 <script>
+{JS_SAFE_HELPERS}
 fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {{
   const actions = payload.recent_actions || [];
   const orgs = payload.top_organisations || [];
@@ -2134,17 +2167,17 @@ fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {{
   document.getElementById('lobby-actions').textContent = actions.length;
   document.getElementById('lobby-orgs').textContent = orgs.length;
   document.getElementById('lobby-years').textContent = years;
-  document.getElementById('top-orgs').innerHTML = '<div style="font-size:16px;font-weight:700;margin-bottom:10px">Organisations les plus visibles</div>' + orgs.map(row => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f1f1f1"><span>${{row.organisation}}</span><span class="badge badge-agri">${{row.count}}</span></div>`).join('');
+  document.getElementById('top-orgs').innerHTML = '<div style="font-size:16px;font-weight:700;margin-bottom:10px">Organisations les plus visibles</div>' + orgs.map(row => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f1f1f1"><span>${{esc(row.organisation)}}</span><span class="badge badge-agri">${{Number(row.count||0)}}</span></div>`).join('');
   document.getElementById('actions').innerHTML = actions.map(action => `
     <div class="action-card">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
         <div>
-          <div style="font-size:16px;font-weight:800;color:#1a1a2e">${{action.organisation || 'Organisation non renseignée'}}</div>
-          <div style="font-size:12px;color:#777;margin-top:4px">${{new Date(action.published_at).toLocaleDateString('fr-FR')}} · ${{action.categorie || 'Catégorie non renseignée'}}</div>
-          <div style="font-size:14px;font-weight:700;margin-top:10px">${{action.title}}</div>
-          ${{action.summary ? `<div style="font-size:13px;color:#444;margin-top:8px;line-height:1.5">${{action.summary}}</div>` : ''}}
+          <div style="font-size:16px;font-weight:800;color:#1a1a2e">${{esc(action.organisation || 'Organisation non renseignée')}}</div>
+          <div style="font-size:12px;color:#777;margin-top:4px">${{fmtDateSafe(action.published_at)}} · ${{esc(action.categorie || 'Catégorie non renseignée')}}</div>
+          <div style="font-size:14px;font-weight:700;margin-top:10px">${{esc(action.title)}}</div>
+          ${{action.summary ? `<div style="font-size:13px;color:#444;margin-top:8px;line-height:1.5">${{esc(action.summary)}}</div>` : ''}}
         </div>
-        <span class="badge" style="background:#f3f4f6;color:#374151">${{(action.themes||[])[0]||'Signal'}}</span>
+        <span class="badge" style="background:#f3f4f6;color:#374151">${{esc((action.themes||[])[0]||'Signal')}}</span>
       </div>
     </div>`).join('');
 }});
@@ -2158,6 +2191,43 @@ fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {{
 def write_index_redirect():
     """Ajoute un index.html a la racine si accueil.html est la page principale."""
     pass  # index.html est deja la carte interactive
+
+
+def write_seo_files():
+    pages = [
+        "accueil.html",
+        "dossiers-chauds.html",
+        "timeline-reglementaire.html",
+        "veille-thematique.html",
+        "parlementaires.html",
+        "index.html",
+        "entreprises.html",
+        "regions.html",
+        "methodologie.html",
+        "lobbying.html",
+        "groupes.html",
+        "partis.html",
+    ]
+    robots = "\n".join([
+        "User-agent: *",
+        "Allow: /",
+        f"Sitemap: {SITE_URL}sitemap.xml",
+        "",
+    ])
+    (SITE_DIR / "robots.txt").write_text(robots, encoding="utf-8")
+
+    sitemap_items = "\n".join(
+        f"  <url><loc>{SITE_URL}{page}</loc><changefreq>daily</changefreq><priority>{'1.0' if page == 'accueil.html' else '0.7'}</priority></url>"
+        for page in pages
+    )
+    sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{sitemap_items}
+</urlset>
+"""
+    (SITE_DIR / "sitemap.xml").write_text(sitemap, encoding="utf-8")
+    (SITE_DIR / ".nojekyll").write_text("", encoding="utf-8")
+    print("    OK robots.txt / sitemap.xml / .nojekyll")
 
 
 def main():
@@ -2184,6 +2254,7 @@ def main():
     write_partis()
     write_groupes()
     write_methodologie()
+    write_seo_files()
 
     print(f'\nMinisite genere dans {SITE_DIR}/')
     print(f'   {len(list(SITE_DIR.glob("*.html")))} pages HTML')

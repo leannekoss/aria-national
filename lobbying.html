@@ -3,7 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="description" content="Cockpit ANIA de cartographie d'influence, veille parlementaire et intelligence territoriale pour les affaires publiques agroalimentaires.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ANIA Radar">
+<meta property="og:title" content="ANIA Radar · Cockpit affaires publiques">
+<meta property="og:description" content="Dossiers chauds, élus prioritaires, entreprises alimentaires, régions ARIA et sources fraîches.">
+<meta property="og:url" content="https://leannekoss.github.io/aria-national/">
+<meta name="twitter:card" content="summary">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.fr https://tile.openstreetmap.fr; font-src 'self' data:; connect-src 'self'; frame-src 'none'; form-action 'self' mailto:;">
 <title>ANIA · Lobbying récent</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='2' y='17' width='6' height='13' fill='%23e85d04'/><rect x='11' y='9' width='6' height='21' fill='%231a1a2e'/><rect x='20' y='2' width='6' height='28' fill='%23e85d04'/><rect x='1' y='30' width='30' height='2' fill='%231a1a2e'/></svg>">
 <style>
@@ -106,6 +115,24 @@ tr:hover td { background: #fbfcfe; }
   <div id="actions"></div>
 </div>
 <script>
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+function safeHref(value) {
+  try {
+    const url = new URL(String(value || ''), location.href);
+    return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.href : '#';
+  } catch (_) {
+    return '#';
+  }
+}
+function fmtDateSafe(value, withTime=false) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '-';
+  return withTime ? d.toLocaleString('fr-FR') : d.toLocaleDateString('fr-FR');
+}
+
 fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {
   const actions = payload.recent_actions || [];
   const orgs = payload.top_organisations || [];
@@ -113,17 +140,17 @@ fetch('data/lobbying_recent.json').then(r => r.json()).then(payload => {
   document.getElementById('lobby-actions').textContent = actions.length;
   document.getElementById('lobby-orgs').textContent = orgs.length;
   document.getElementById('lobby-years').textContent = years;
-  document.getElementById('top-orgs').innerHTML = '<div style="font-size:16px;font-weight:700;margin-bottom:10px">Organisations les plus visibles</div>' + orgs.map(row => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f1f1f1"><span>${row.organisation}</span><span class="badge badge-agri">${row.count}</span></div>`).join('');
+  document.getElementById('top-orgs').innerHTML = '<div style="font-size:16px;font-weight:700;margin-bottom:10px">Organisations les plus visibles</div>' + orgs.map(row => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid #f1f1f1"><span>${esc(row.organisation)}</span><span class="badge badge-agri">${Number(row.count||0)}</span></div>`).join('');
   document.getElementById('actions').innerHTML = actions.map(action => `
     <div class="action-card">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
         <div>
-          <div style="font-size:16px;font-weight:800;color:#1a1a2e">${action.organisation || 'Organisation non renseignée'}</div>
-          <div style="font-size:12px;color:#777;margin-top:4px">${new Date(action.published_at).toLocaleDateString('fr-FR')} · ${action.categorie || 'Catégorie non renseignée'}</div>
-          <div style="font-size:14px;font-weight:700;margin-top:10px">${action.title}</div>
-          ${action.summary ? `<div style="font-size:13px;color:#444;margin-top:8px;line-height:1.5">${action.summary}</div>` : ''}
+          <div style="font-size:16px;font-weight:800;color:#1a1a2e">${esc(action.organisation || 'Organisation non renseignée')}</div>
+          <div style="font-size:12px;color:#777;margin-top:4px">${fmtDateSafe(action.published_at)} · ${esc(action.categorie || 'Catégorie non renseignée')}</div>
+          <div style="font-size:14px;font-weight:700;margin-top:10px">${esc(action.title)}</div>
+          ${action.summary ? `<div style="font-size:13px;color:#444;margin-top:8px;line-height:1.5">${esc(action.summary)}</div>` : ''}
         </div>
-        <span class="badge" style="background:#f3f4f6;color:#374151">${(action.themes||[])[0]||'Signal'}</span>
+        <span class="badge" style="background:#f3f4f6;color:#374151">${esc((action.themes||[])[0]||'Signal')}</span>
       </div>
     </div>`).join('');
 });
