@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="description" content="Cockpit ANIA de cartographie d'influence, veille parlementaire et intelligence territoriale pour les affaires publiques agroalimentaires.">
+<meta name="description" content="Audit des 30 élus prioritaires, cartographie parlementaire, veille parlementaire et intelligence territoriale pour les affaires publiques agroalimentaires.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="ANIA Radar">
-<meta property="og:title" content="ANIA Radar · Cockpit affaires publiques">
-<meta property="og:description" content="Dossiers chauds, élus prioritaires, entreprises alimentaires, régions ARIA et sources fraîches.">
+<meta property="og:title" content="ANIA Radar · Cartographie parlementaire agroalimentaire">
+<meta property="og:description" content="Audit 30 élus prioritaires, dossiers chauds, entreprises alimentaires, régions ARIA et sources fraîches pour affaires publiques.">
 <meta property="og:url" content="https://leannekoss.github.io/aria-national/">
 <meta name="twitter:card" content="summary">
 <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -102,17 +102,31 @@ tr:hover td { background: #fbfcfe; }
 .hero-grid { max-width:1200px; margin:0 auto; display:grid; grid-template-columns:1.3fr .9fr; gap:18px; align-items:start; }
 .hero-panel { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:22px; }
 .hero-kicker { display:inline-block; background:rgba(232,93,4,.2); color:#ffb27a; border:1px solid rgba(232,93,4,.35); padding:5px 12px; border-radius:999px; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:18px; }
-.hero-title { font-size:clamp(28px,4vw,46px); line-height:1.05; font-weight:850; max-width:14ch; margin-bottom:14px; }
+.hero-title { font-size:clamp(28px,4vw,46px); line-height:1.05; font-weight:850; max-width:18ch; margin-bottom:14px; }
 .hero-subtitle { font-size:15px; line-height:1.65; color:rgba(255,255,255,.78); max-width:60ch; }
 .hero-cta { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; }
 .btn-primary { background:var(--accent); color:white; padding:12px 18px; border-radius:8px; text-decoration:none; font-weight:750; font-size:14px; }
 .btn-secondary { background:rgba(255,255,255,.08); color:white; padding:12px 18px; border-radius:8px; text-decoration:none; font-weight:750; font-size:14px; border:1px solid rgba(255,255,255,.15); }
+.hero-proof { display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+.hero-proof span { display:inline-flex; border:1px solid rgba(255,255,255,.14); border-radius:999px; padding:5px 9px; color:rgba(255,255,255,.78); font-size:11px; font-weight:700; }
 .hero-aside-title { font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:#ffb27a; margin-bottom:10px; }
 .signal-row { display:grid; grid-template-columns:1fr auto; gap:8px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.08); }
 .signal-row:last-child { border-bottom:none; }
 .signal-title { font-size:13px; line-height:1.35; }
 .signal-meta { font-size:11px; color:rgba(255,255,255,.65); margin-top:4px; }
 .signal-badge { font-size:11px; border-radius:999px; padding:3px 8px; background:rgba(255,255,255,.08); color:white; align-self:start; }
+.offer-band { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:24px 0; }
+.offer-panel { background:white; border:1px solid var(--line); border-radius:12px; padding:22px; box-shadow:var(--shadow); }
+.offer-kicker { color:var(--accent); font-size:11px; font-weight:850; letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; }
+.offer-title { font-size:20px; line-height:1.15; font-weight:850; color:var(--navy); margin-bottom:8px; }
+.offer-copy { font-size:13px; color:var(--muted); line-height:1.6; max-width:70ch; }
+.deliverable-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px; margin-top:16px; }
+.deliverable { border:1px solid #eef2f5; background:#fbfcfe; border-radius:9px; padding:12px; }
+.deliverable strong { display:block; font-size:13px; color:var(--ink); margin-bottom:4px; }
+.deliverable span { display:block; font-size:12px; color:var(--muted); line-height:1.45; }
+.proof-list { display:grid; gap:10px; margin-top:14px; }
+.proof-item { display:grid; grid-template-columns:auto 1fr; gap:10px; align-items:start; font-size:13px; color:var(--ink); }
+.proof-mark { width:22px; height:22px; border-radius:50%; background:var(--accent-soft); color:#8b3908; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:850; flex-shrink:0; }
 .exec-grid { display:grid; grid-template-columns:1.2fr .8fr; gap:16px; margin:24px 0; }
 .exec-list { display:grid; gap:10px; }
 .exec-item { display:grid; grid-template-columns:1fr auto; gap:10px; padding:12px 0; border-bottom:1px solid #f0f0f0; }
@@ -126,7 +140,8 @@ tr:hover td { background: #fbfcfe; }
 .feature-icon { font-size:11px; font-weight:850; letter-spacing:.08em; color:var(--accent); text-transform:uppercase; margin-bottom:10px; }
 .feature-title { font-size:15px; font-weight:700; margin-bottom:5px; }
 .feature-desc { font-size:12px; color:#666; line-height:1.5; }
-@media(max-width:900px) { .hero-grid,.exec-grid { grid-template-columns:1fr; } }
+@media(max-width:900px) { .hero-grid,.exec-grid,.offer-band { grid-template-columns:1fr; } }
+@media(max-width:620px) { .deliverable-grid { grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -134,16 +149,23 @@ tr:hover td { background: #fbfcfe; }
 <div class="hero">
   <div class="hero-grid">
     <div class="hero-panel">
-      <div class="hero-kicker">Cockpit ANIA · affaires publiques</div>
-      <div class="hero-title">Voir ce qui bouge, ce qui compte, et où agir maintenant.</div>
-      <div class="hero-subtitle">Un front unique pour suivre les dossiers chauds, les signaux parlementaires, la pression réglementaire et la fraîcheur des sources officielles sans quitter le site statique.</div>
+      <div class="hero-kicker">Audit 30 élus prioritaires · cartographie parlementaire</div>
+      <div class="hero-title">Identifier les élus à activer en priorité pour une filière agroalimentaire.</div>
+      <div class="hero-subtitle">ANIA Radar croise empreinte territoriale, entreprises alimentaires, dossiers chauds et signaux parlementaires sourcés pour préparer un plan d’action affaires publiques défendable.</div>
+      <div class="hero-proof">
+        <span>Précision</span>
+        <span>Autorité</span>
+        <span>Clarté</span>
+        <span>Sources datées</span>
+      </div>
       <div class="hero-cta">
         <a href="dossiers-chauds.html" class="btn-primary">Ouvrir les dossiers chauds</a>
-        <a href="timeline-reglementaire.html" class="btn-secondary">Lire la timeline réglementaire</a>
+        <a href="index.html" class="btn-secondary">Explorer la carte territoriale</a>
+        <a href="parlementaires.html" class="btn-secondary">Voir les élus priorisés</a>
       </div>
     </div>
     <div class="hero-panel">
-      <div class="hero-aside-title">Signaux des 7 derniers jours</div>
+      <div class="hero-aside-title">Signaux publics récents à qualifier</div>
       <div id="hero-signals">
         <div class="signal-row"><div><div class="signal-title">Chargement des derniers signaux...</div></div></div>
       </div>
@@ -158,30 +180,55 @@ tr:hover td { background: #fbfcfe; }
     <div class="stat-card"><div class="stat-value" id="fresh-source-count">-</div><div class="stat-label">Sources actives</div></div>
   </div>
 
+  <div class="offer-band">
+    <section class="offer-panel">
+      <div class="offer-kicker">Offre démontrée par le cockpit</div>
+      <div class="offer-title">Audit 30 élus prioritaires pour votre filière</div>
+      <p class="offer-copy">Le site sert de support de preuve pour vendre une analyse courte: quels parlementaires ont une raison territoriale, institutionnelle ou réglementaire de s’intéresser à la filière, et avec quel angle les approcher.</p>
+      <div class="deliverable-grid">
+        <div class="deliverable"><strong>Top élus priorisés</strong><span>Score de priorité relationnelle, territoire, chambre, groupe et justification synthétique.</span></div>
+        <div class="deliverable"><strong>Fiches rendez-vous</strong><span>Angle d’approche, points de vigilance, activité récente et sources à citer.</span></div>
+        <div class="deliverable"><strong>Carte territoriale</strong><span>Empreinte IAA par département et régions ARIA pour objectiver les relais locaux.</span></div>
+        <div class="deliverable"><strong>Veille actionnable</strong><span>Dossiers chauds, timeline réglementaire, signaux AN/Sénat/ANIA/HATVP et fraîcheur.</span></div>
+      </div>
+    </section>
+    <section class="offer-panel">
+      <div class="offer-kicker">Pourquoi c’est défendable</div>
+      <div class="offer-title">Une priorisation sourcée, pas une notation politique</div>
+      <p class="offer-copy">Le score ARIA mesure une priorité de contact pour les affaires publiques: empreinte économique locale, rôle parlementaire, signaux publics et données officielles. Il n’infère pas d’opinion privée.</p>
+      <div class="proof-list">
+        <div class="proof-item"><span class="proof-mark">1</span><div>Données publiques ou caches collectés: Assemblée nationale, Sénat, HATVP, ANIA, SIRENE et Alim’confiance.</div></div>
+        <div class="proof-item"><span class="proof-mark">2</span><div>Chaque bloc frais expose provenance, date de publication, date de collecte et statut de fraîcheur.</div></div>
+        <div class="proof-item"><span class="proof-mark">3</span><div>Les limites sont visibles: fallback cache si une source tombe, Légifrance désactivé tant que l’auth PISTE n’est pas configurée.</div></div>
+      </div>
+    </section>
+  </div>
+
   <div class="exec-grid">
     <div class="card">
-      <div class="page-title" style="font-size:18px;margin-bottom:2px">Dossiers à arbitrer</div>
-      <div class="page-subtitle" style="margin-bottom:12px">Les sujets les plus actifs selon les flux officiels croisés</div>
+      <div class="page-title" style="font-size:18px;margin-bottom:2px">Dossiers à arbitrer en priorité</div>
+      <div class="page-subtitle" style="margin-bottom:12px">Les thèmes qui montent dans les flux officiels et peuvent déclencher un brief ou un rendez-vous.</div>
       <div class="exec-list" id="hot-dossiers-list"><div class="exec-item"><div>Chargement...</div></div></div>
     </div>
     <div class="card">
       <div class="page-title" style="font-size:18px;margin-bottom:2px">Fraîcheur des sources</div>
-      <div class="page-subtitle" style="margin-bottom:12px">Provenance, dernière collecte et statut de repli</div>
+      <div class="page-subtitle" style="margin-bottom:12px">Provenance, dernière collecte et statut de repli pour décider avec des données datées.</div>
       <div class="exec-list" id="freshness-list"><div class="exec-item"><div>Chargement...</div></div></div>
     </div>
   </div>
 
   <div class="stacked-grid">
-    <a href="index.html" class="feature-card"><div class="feature-icon">Territoires</div><div class="feature-title">Carte interactive</div><div class="feature-desc">Lecture géographique de l’empreinte IAA et des élus exposés.</div></a>
-    <a href="dossiers-chauds.html" class="feature-card"><div class="feature-icon">Priorité</div><div class="feature-title">Dossiers chauds</div><div class="feature-desc">Priorisation par intensité de signal, récence et diversité des sources.</div></a>
-    <a href="timeline-reglementaire.html" class="feature-card"><div class="feature-icon">Veille</div><div class="feature-title">Timeline réglementaire</div><div class="feature-desc">Fil unifié des publications AN, Sénat, ANIA et signaux HATVP.</div></a>
-    <a href="veille-thematique.html" class="feature-card"><div class="feature-icon">Thèmes</div><div class="feature-title">Veille thématique</div><div class="feature-desc">Regroupement par thème métier: EGALIM, agriculture, emballages, santé, export.</div></a>
-    <a href="lobbying.html" class="feature-card"><div class="feature-icon">HATVP</div><div class="feature-title">Lobbying récent</div><div class="feature-desc">Lecture structurée: actions, volumes, décideurs publics et organisations.</div></a>
-    <a href="methodologie.html" class="feature-card"><div class="feature-icon">Preuves</div><div class="feature-title">Sources et méthode</div><div class="feature-desc">Règles de scoring, sources officielles et limites connues du build statique.</div></a>
+    <a href="index.html" class="feature-card"><div class="feature-icon">Territoires</div><div class="feature-title">Carte élus × empreinte IAA</div><div class="feature-desc">Passer d’un département à ses enjeux économiques, ses sites et ses parlementaires à prioriser.</div></a>
+    <a href="dossiers-chauds.html" class="feature-card"><div class="feature-icon">Priorité</div><div class="feature-title">Dossiers chauds</div><div class="feature-desc">Détecter les sujets qui méritent une note, un appel ou une prise de position rapide.</div></a>
+    <a href="timeline-reglementaire.html" class="feature-card"><div class="feature-icon">Veille</div><div class="feature-title">Timeline réglementaire</div><div class="feature-desc">Relier publications AN, Sénat, ANIA et HATVP dans un fil daté et consultable.</div></a>
+    <a href="veille-thematique.html" class="feature-card"><div class="feature-icon">Thèmes</div><div class="feature-title">Radar par enjeu métier</div><div class="feature-desc">Lire EGALIM, agriculture, emballages, santé ou export par signaux plutôt que par flux brut.</div></a>
+    <a href="entreprises.html" class="feature-card"><div class="feature-icon">Économie locale</div><div class="feature-title">Entreprises et sites exposés</div><div class="feature-desc">Appuyer l’argumentaire territorial avec des établissements, inspections et données publiques.</div></a>
+    <a href="methodologie.html" class="feature-card"><div class="feature-icon">Preuves</div><div class="feature-title">Sources, méthode et limites</div><div class="feature-desc">Expliquer le score, la fraîcheur, les fallbacks et le périmètre des données utilisées.</div></a>
   </div>
 
   <div class="card">
-    <div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#1a1a2e">Top 10 score ARIA · national</div>
+    <div style="font-size:15px;font-weight:700;margin-bottom:4px;color:#1a1a2e">Extrait de priorisation · top 10 national</div>
+    <div style="font-size:12px;color:#647084;margin-bottom:12px">Point de départ pour constituer la liste courte des 30 élus à qualifier dans l’audit.</div>
     <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Théophile Dominique</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1420.9</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Serva Olivier</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1202.3</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mathiasin Max</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1202.3</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Califer Elie</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Baptiste Christian</div><div style="font-size:11px;color:#888">AN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Lurel Victorin</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">7</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Nadille Solanges</div><div style="font-size:11px;color:#888">SEN · 971 Guadeloupe</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1093.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">8</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Gaillard Perceval</div><div style="font-size:11px;color:#888">AN · 974 Réunion</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">1078.0</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">9</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Ibled Catherine</div><div style="font-size:11px;color:#888">AN · 75 Paris</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">960.4</span></div><div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0"><span style="width:22px;height:22px;border-radius:50%;background:#e85d04;color:white;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">10</span><div style="flex:1;min-width:0"><div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Mélin Joëlle</div><div style="font-size:11px;color:#888">AN · 13 Bouches-du-Rhône</div></div><span style="background:#1a1a2e;color:white;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;flex-shrink:0">949.2</span></div>
     <div style="margin-top:12px;text-align:right"><a href="parlementaires.html" style="font-size:12px;color:#e85d04;text-decoration:none;font-weight:600">Voir les 925 élus</a></div>
   </div>
@@ -189,10 +236,24 @@ tr:hover td { background: #fbfcfe; }
   <footer style="text-align:center;color:#888;font-size:12px;padding:32px 0">Sources officielles: Assemblée nationale · Sénat · HATVP · ANIA · Recherche-entreprises · Alim'confiance</footer>
 </div>
 <script>
-function prettyDate(value) {
-  if (!value) return 'n.c.';
-  return new Date(value).toLocaleString('fr-FR', { dateStyle:'short', timeStyle:'short' });
+
+function esc(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
+function safeHref(value) {
+  try {
+    const url = new URL(String(value || ''), location.href);
+    return ['http:', 'https:', 'mailto:'].includes(url.protocol) ? url.href : '#';
+  } catch (_) {
+    return '#';
+  }
+}
+function fmtDateSafe(value, withTime=false) {
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) return '-';
+  return withTime ? d.toLocaleString('fr-FR') : d.toLocaleDateString('fr-FR');
+}
+
 Promise.all([
   fetch('data/hot_dossiers.json').then(r => r.json()),
   fetch('data/freshness.json').then(r => r.json()),
@@ -202,29 +263,29 @@ Promise.all([
   document.getElementById('hero-signals').innerHTML = (timeline||[]).slice(0, 5).map(item => `
     <div class="signal-row">
       <div>
-        <div class="signal-title">${item.title}</div>
-        <div class="signal-meta">${item.source} · ${prettyDate(item.published_at)}</div>
+        <div class="signal-title">${esc(item.title)}</div>
+        <div class="signal-meta">${esc(item.source)} · ${fmtDateSafe(item.published_at, true)}</div>
       </div>
-      <span class="signal-badge">${(item.themes||[])[0]||'Signal'}</span>
+      <span class="signal-badge">${esc((item.themes||[])[0]||'Signal')}</span>
     </div>`).join('') || '<div class="signal-row"><div><div class="signal-title">Aucun signal récent</div></div></div>';
   document.getElementById('hot-dossiers-list').innerHTML = (hot||[]).slice(0, 6).map(item => `
     <div class="exec-item">
       <div>
-        <div class="exec-item-title">${item.theme}</div>
-        <div class="exec-item-meta">${item.score} signaux · ${item.sources.join(' · ')}</div>
+        <div class="exec-item-title">${esc(item.theme)}</div>
+        <div class="exec-item-meta">${esc(item.score)} signaux · ${esc((item.sources||[]).join(' · '))}</div>
       </div>
-      <span class="chip">${prettyDate(item.latest_at).split(' ')[0]}</span>
+      <span class="chip">${fmtDateSafe(item.latest_at)}</span>
     </div>`).join('') || '<div class="exec-item"><div>Aucun dossier chaud calculé.</div></div>';
   document.getElementById('freshness-list').innerHTML = (freshness.sources||[]).slice(0, 8).map(source => `
     <div class="exec-item">
       <div>
-        <div class="exec-item-title">${source.label}</div>
-        <div class="exec-item-meta">${source.fallback_used ? 'fallback cache' : 'collecte nominale'} · ${source.item_count || 0} items</div>
+        <div class="exec-item-title">${esc(source.label)}</div>
+        <div class="exec-item-meta">${source.fallback_used ? 'fallback cache' : 'collecte nominale'} · ${esc(source.item_count || 0)} items</div>
       </div>
-      <span class="chip">${source.freshness_status}</span>
+      <span class="chip">${esc(source.freshness_status)}</span>
     </div>`).join('');
 }).catch(err => {
-  document.getElementById('hero-signals').innerHTML = `<div class="signal-row"><div class="signal-title">Erreur de chargement: ${err.message}</div></div>`;
+  document.getElementById('hero-signals').innerHTML = `<div class="signal-row"><div class="signal-title">Erreur de chargement: ${esc(err.message)}</div></div>`;
 });
 </script>
 </body>
